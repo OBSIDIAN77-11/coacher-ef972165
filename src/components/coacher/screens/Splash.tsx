@@ -1,24 +1,29 @@
 import { useEffect } from "react";
-import { GradientBg } from "../Backdrop";
+import { Shell } from "../Shell";
 import { Logo } from "../Logo";
 
 export function Splash({ onDone }: { onDone: () => void }) {
   useEffect(() => {
-    const t = setTimeout(onDone, 1800);
+    const t = setTimeout(onDone, 2200);
     return () => clearTimeout(t);
   }, [onDone]);
 
   return (
-    <GradientBg>
+    <Shell>
       <div className="flex flex-1 flex-col items-center justify-center">
-        <Logo size={52} float />
-        <p
-          className="mt-6 uppercase"
-          style={{ fontSize: 12, letterSpacing: 2, color: "#8ABAAA", fontWeight: 700 }}
+        <Logo float />
+        <div
+          className="mt-12 overflow-hidden"
+          style={{
+            width: 120,
+            height: 2,
+            borderRadius: 2,
+            background: "#1E2E28",
+          }}
         >
-          Laden
-        </p>
+          <div className="shimmer h-full w-full" />
+        </div>
       </div>
-    </GradientBg>
+    </Shell>
   );
 }
