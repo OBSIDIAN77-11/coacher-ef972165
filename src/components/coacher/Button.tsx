@@ -1,6 +1,6 @@
 import { type ButtonHTMLAttributes, forwardRef } from "react";
 
-type Variant = "primary" | "outline" | "ghost" | "muted" | "danger" | "white";
+type Variant = "primary" | "outline" | "ghost" | "muted" | "danger";
 type Size = "sm" | "md" | "lg";
 
 interface BtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -11,40 +11,46 @@ interface BtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const sizes: Record<Size, string> = {
-  sm: "px-3.5 py-[7px] text-[12px] rounded-[11px]",
-  md: "px-5 py-[11px] text-[13px] rounded-[13px]",
-  lg: "px-[26px] py-[14px] text-[15px] rounded-[16px]",
+  sm: "px-4 py-2 text-[12px] rounded-[12px]",
+  md: "px-5 py-3 text-[13px] rounded-[14px]",
+  lg: "px-6 py-4 text-[15px] rounded-[16px]",
 };
 
 function variantStyle(v: Variant): React.CSSProperties {
   switch (v) {
     case "primary":
       return {
-        background: "linear-gradient(135deg,#12C98E,#3B9DD4)",
+        background: "linear-gradient(135deg,#00C896,#3D8EF0)",
         color: "white",
-        boxShadow: "0 4px 14px rgba(18,201,142,0.30)",
+        boxShadow: "0 4px 20px rgba(0,200,150,0.30)",
       };
     case "outline":
-      return { background: "transparent", color: "#12C98E", border: "2px solid #12C98E" };
+      return {
+        background: "transparent",
+        color: "#F0FAF6",
+        border: "1.5px solid #2A4038",
+      };
     case "ghost":
-      return { background: "#E8F9F3", color: "#0DA070" };
+      return { background: "rgba(0,200,150,0.10)", color: "#00C896" };
     case "muted":
-      return { background: "#F0F5F3", color: "#3A6B58" };
+      return { background: "#162019", color: "#8BA89D", border: "1px solid #1E2E28" };
     case "danger":
-      return { background: "#FEE2E2", color: "#F43F5E" };
-    case "white":
-      return { background: "white", color: "#12C98E", boxShadow: "0 2px 16px rgba(18,201,142,0.10)" };
+      return { background: "rgba(255,77,106,0.12)", color: "#FF4D6A" };
   }
 }
 
 export const Button = forwardRef<HTMLButtonElement, BtnProps>(
-  ({ variant = "primary", size = "md", loading, fullWidth, className = "", children, disabled, style, ...rest }, ref) => {
+  (
+    { variant = "primary", size = "md", loading, fullWidth, className = "", children, disabled, style, ...rest },
+    ref,
+  ) => {
+    const isPrimary = variant === "primary";
     return (
       <button
         ref={ref}
         disabled={disabled || loading}
         className={`relative font-extrabold transition-all duration-150 active:translate-y-[1px] hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed ${sizes[size]} ${fullWidth ? "w-full" : ""} ${className}`}
-        style={{ border: "none", ...variantStyle(variant), ...style }}
+        style={{ border: isPrimary ? "none" : undefined, ...variantStyle(variant), ...style }}
         {...rest}
       >
         {loading ? (
@@ -55,7 +61,7 @@ export const Button = forwardRef<HTMLButtonElement, BtnProps>(
                 width: 16,
                 height: 16,
                 borderRadius: "50%",
-                border: "2.5px solid rgba(255,255,255,0.3)",
+                border: "2.5px solid rgba(255,255,255,0.25)",
                 borderTopColor: "white",
               }}
             />

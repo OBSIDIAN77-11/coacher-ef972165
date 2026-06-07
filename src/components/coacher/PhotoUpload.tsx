@@ -1,3 +1,4 @@
+import { Camera } from "lucide-react";
 import { useRef, useState } from "react";
 
 export function PhotoUpload({ size = 80 }: { size?: number }) {
@@ -7,8 +8,9 @@ export function PhotoUpload({ size = 80 }: { size?: number }) {
   const onPick = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
     if (!f) return;
-    const url = URL.createObjectURL(f);
-    setSrc(url);
+    const reader = new FileReader();
+    reader.onload = () => setSrc(reader.result as string);
+    reader.readAsDataURL(f);
   };
 
   return (
@@ -21,34 +23,19 @@ export function PhotoUpload({ size = 80 }: { size?: number }) {
           width: size,
           height: size,
           borderRadius: "50%",
-          border: `2px dashed ${src ? "#12C98E" : "#D8F0E6"}`,
-          background: src ? "transparent" : "#E8F9F3",
+          border: `2px dashed ${src ? "#00C896" : "#2A4038"}`,
+          background: src ? "transparent" : "#111815",
           cursor: "pointer",
         }}
       >
         {src ? (
-          <>
-            <img src={src} alt="" className="h-full w-full object-cover" />
-            <span
-              className="absolute bottom-0 left-0 right-0 text-center uppercase"
-              style={{
-                background: "rgba(0,0,0,0.4)",
-                color: "white",
-                fontSize: 9,
-                fontWeight: 800,
-                padding: "3px 0",
-                letterSpacing: "0.5px",
-              }}
-            >
-              Wijzigen
-            </span>
-          </>
+          <img src={src} alt="" className="h-full w-full object-cover" />
         ) : (
-          <div className="flex flex-col items-center">
-            <span style={{ color: "#12C98E", fontSize: 20, fontWeight: 900, lineHeight: 1 }}>+</span>
+          <div className="flex flex-col items-center gap-1">
+            <Camera color="#00C896" size={22} />
             <span
               className="uppercase"
-              style={{ color: "#12C98E", fontSize: 9, fontWeight: 800, marginTop: 2, letterSpacing: "0.5px" }}
+              style={{ color: "#00C896", fontSize: 9, fontWeight: 800, letterSpacing: "0.6px" }}
             >
               Foto
             </span>

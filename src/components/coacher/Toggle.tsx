@@ -7,10 +7,12 @@ export function Toggle({ on, onChange }: { on: boolean; onChange: (v: boolean) =
         width: 44,
         height: 24,
         borderRadius: 12,
-        background: on ? "linear-gradient(135deg,#12C98E,#3B9DD4)" : "#D8F0E6",
+        background: on ? "linear-gradient(135deg,#00C896,#3D8EF0)" : "#1E2E28",
         position: "relative",
         transition: "background 0.2s",
         flexShrink: 0,
+        border: "none",
+        cursor: "pointer",
       }}
       aria-pressed={on}
     >
@@ -23,7 +25,7 @@ export function Toggle({ on, onChange }: { on: boolean; onChange: (v: boolean) =
           height: 18,
           borderRadius: "50%",
           background: "white",
-          boxShadow: "0 1px 4px rgba(0,0,0,0.2)",
+          boxShadow: "0 1px 4px rgba(0,0,0,0.4)",
           transition: "left 0.2s",
         }}
       />

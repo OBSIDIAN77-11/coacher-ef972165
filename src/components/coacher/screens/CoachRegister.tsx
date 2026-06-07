@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { GradientBg } from "../Backdrop";
+import { Shell } from "../Shell";
 import { Button } from "../Button";
 import { FieldError, Input, Label, Select } from "../Field";
 import { PhotoUpload } from "../PhotoUpload";
@@ -14,7 +14,13 @@ const SPECIALIZATIONS = [
   "Hardlopen",
 ];
 
-export function CoachRegister({ onBack, onSubmit }: { onBack: () => void; onSubmit: () => void }) {
+export function CoachRegister({
+  onBack,
+  onSubmit,
+}: {
+  onBack: () => void;
+  onSubmit: () => void;
+}) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
@@ -38,39 +44,31 @@ export function CoachRegister({ onBack, onSubmit }: { onBack: () => void; onSubm
     e.preventDefault();
     if (!valid) return;
     setLoading(true);
-    setTimeout(() => onSubmit(), 700);
+    setTimeout(onSubmit, 700);
   };
 
   return (
-    <GradientBg>
-      <div className="flex flex-1 flex-col fade py-4">
-        <form
-          onSubmit={submit}
-          className="w-full"
-          style={{
-            background: "white",
-            borderRadius: 22,
-            padding: "24px 20px",
-            maxWidth: 400,
-            margin: "0 auto",
-            boxShadow: "0 8px 28px rgba(18,201,142,0.18)",
-          }}
-        >
-          <h2 className="text-grad text-center" style={{ fontSize: 19, fontWeight: 900 }}>
+    <Shell>
+      <div className="flex flex-1 flex-col fade pt-2 pb-6">
+        <form onSubmit={submit} className="w-full">
+          <h2
+            className="text-center"
+            style={{ fontSize: 22, fontWeight: 900, color: "#F0FAF6", letterSpacing: "-0.5px" }}
+          >
             Coach registratie
           </h2>
           <p
             className="text-center"
-            style={{ fontSize: 12, color: "#8ABAAA", fontWeight: 600, marginBottom: 16 }}
+            style={{ fontSize: 12, color: "#8BA89D", fontWeight: 600, marginBottom: 18 }}
           >
             Eerste maand gratis
           </p>
 
-          <div style={{ marginBottom: 16 }}>
+          <div style={{ marginBottom: 18 }}>
             <PhotoUpload />
           </div>
 
-          <div className="flex flex-col gap-2.5">
+          <div className="flex flex-col gap-3">
             <div>
               <Label>Naam</Label>
               <Input
@@ -120,7 +118,7 @@ export function CoachRegister({ onBack, onSubmit }: { onBack: () => void; onSubm
                 ))}
               </Select>
             </div>
-            <div className="grid grid-cols-2 gap-2.5">
+            <div className="grid grid-cols-2 gap-3">
               <div>
                 <Label>Uurtarief (€)</Label>
                 <Input
@@ -143,16 +141,18 @@ export function CoachRegister({ onBack, onSubmit }: { onBack: () => void; onSubm
             <div
               className="flex items-center gap-3"
               style={{
-                padding: "11px 12px",
-                borderRadius: 12,
-                background: "#F8FDFB",
-                border: "1.5px solid #D8F0E6",
+                padding: "12px 14px",
+                borderRadius: 13,
+                background: "#111815",
+                border: "1px solid #1E2E28",
               }}
             >
               <Toggle on={online} onChange={setOnline} />
               <div className="flex-1">
-                <div style={{ fontSize: 13, fontWeight: 700, color: "#0C2D22" }}>Online coaching</div>
-                <div style={{ fontSize: 11, color: "#8ABAAA", fontWeight: 600 }}>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "#F0FAF6" }}>
+                  Online coaching aanbieden
+                </div>
+                <div style={{ fontSize: 11, color: "#8BA89D", fontWeight: 600 }}>
                   Bereik klanten door heel NL
                 </div>
               </div>
@@ -160,19 +160,19 @@ export function CoachRegister({ onBack, onSubmit }: { onBack: () => void; onSubm
 
             <div
               style={{
-                padding: "10px 12px",
-                borderRadius: 11,
-                background: "#E8F9F3",
-                border: "1px solid #B9EAD8",
+                padding: "12px 14px",
+                borderRadius: 13,
+                background: "rgba(0,200,150,0.08)",
+                border: "1px solid rgba(0,200,150,0.25)",
               }}
             >
-              <p style={{ fontSize: 12, color: "#0F6E56", lineHeight: 1.65, fontWeight: 600 }}>
+              <p style={{ fontSize: 12, color: "#00C896", lineHeight: 1.55, fontWeight: 600 }}>
                 Na registratie verifiëren we je diploma en VOG — 1-2 werkdagen.
               </p>
             </div>
           </div>
 
-          <div className="mt-3 flex items-center gap-2.5">
+          <div className="mt-5 flex items-center gap-2.5">
             <Button type="button" variant="muted" onClick={onBack}>
               Terug
             </Button>
@@ -180,16 +180,8 @@ export function CoachRegister({ onBack, onSubmit }: { onBack: () => void; onSubm
               Account aanmaken
             </Button>
           </div>
-
-          <button
-            type="button"
-            className="mt-2.5 block w-full text-center"
-            style={{ fontSize: 12, color: "#8ABAAA", fontWeight: 600 }}
-          >
-            Wachtwoord vergeten?
-          </button>
         </form>
       </div>
-    </GradientBg>
+    </Shell>
   );
 }

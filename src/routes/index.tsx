@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
+import { AppShell } from "@/components/coacher/app/AppShell";
 import { ClientRegister } from "@/components/coacher/screens/ClientRegister";
 import { CoachRegister } from "@/components/coacher/screens/CoachRegister";
 import { type Role, RoleSelect } from "@/components/coacher/screens/RoleSelect";
@@ -10,13 +11,13 @@ import { Welcome } from "@/components/coacher/screens/Welcome";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Coacher — Vind je personal coach" },
+      { title: "Coacher — Jouw coach. Jouw resultaat." },
       {
         name: "description",
         content:
-          "Coacher is het Nederlandse platform dat personal trainers en klanten samenbrengt. Veilig, persoonlijk, alles in één app.",
+          "Het Nederlandse platform dat personal trainers en klanten samenbrengt. Veilig, persoonlijk, alles in één app.",
       },
-      { property: "og:title", content: "Coacher — Vind je personal coach" },
+      { property: "og:title", content: "Coacher — Jouw coach. Jouw resultaat." },
       {
         property: "og:description",
         content: "Coaches en klanten samen in één veilig platform. VOG-geverifieerd, AVG-proof, iDEAL.",
@@ -26,7 +27,7 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-type Step = "splash" | "welcome" | "role" | "register" | "success";
+type Step = "splash" | "welcome" | "role" | "register" | "success" | "app";
 
 function Index() {
   const [step, setStep] = useState<Step>("splash");
@@ -39,7 +40,10 @@ function Index() {
       return (
         <Welcome
           onStart={() => setStep("role")}
-          onDemo={() => setStep("role")}
+          onDemo={() => {
+            setRole("klant");
+            setStep("app");
+          }}
         />
       );
     case "role":
@@ -59,10 +63,15 @@ function Index() {
         <ClientRegister onBack={() => setStep("role")} onSubmit={() => setStep("success")} />
       );
     case "success":
+      return <Success role={role ?? "klant"} onOpen={() => setStep("app")} />;
+    case "app":
       return (
-        <Success
-          role={role ?? "klant"}
-          onOpen={() => setStep("splash")}
+        <AppShell
+          initialMode={role ?? "klant"}
+          onLogout={() => {
+            setRole(null);
+            setStep("welcome");
+          }}
         />
       );
   }

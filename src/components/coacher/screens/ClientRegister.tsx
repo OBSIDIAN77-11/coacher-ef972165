@@ -1,11 +1,18 @@
+import { Check } from "lucide-react";
 import { useMemo, useState } from "react";
-import { GradientBg } from "../Backdrop";
+import { Shell } from "../Shell";
 import { Button } from "../Button";
 import { FieldError, Input, Label } from "../Field";
 
 const GOALS = ["Afvallen", "Spieropbouw", "Conditie", "Kracht", "Voeding", "Mindset"];
 
-export function ClientRegister({ onBack, onSubmit }: { onBack: () => void; onSubmit: () => void }) {
+export function ClientRegister({
+  onBack,
+  onSubmit,
+}: {
+  onBack: () => void;
+  onSubmit: () => void;
+}) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
@@ -29,38 +36,34 @@ export function ClientRegister({ onBack, onSubmit }: { onBack: () => void; onSub
     e.preventDefault();
     if (!valid) return;
     setLoading(true);
-    setTimeout(() => onSubmit(), 700);
+    setTimeout(onSubmit, 700);
   };
 
   return (
-    <GradientBg>
-      <div className="flex flex-1 flex-col fade py-4">
-        <form
-          onSubmit={submit}
-          className="w-full"
-          style={{
-            background: "white",
-            borderRadius: 22,
-            padding: "24px 20px",
-            maxWidth: 400,
-            margin: "0 auto",
-            boxShadow: "0 8px 28px rgba(18,201,142,0.18)",
-          }}
-        >
-          <h2 className="text-grad text-center" style={{ fontSize: 19, fontWeight: 900 }}>
+    <Shell>
+      <div className="flex flex-1 flex-col fade pt-2 pb-6">
+        <form onSubmit={submit} className="w-full">
+          <h2
+            className="text-center"
+            style={{ fontSize: 22, fontWeight: 900, color: "#F0FAF6", letterSpacing: "-0.5px" }}
+          >
             Klant registratie
           </h2>
           <p
             className="text-center"
-            style={{ fontSize: 12, color: "#8ABAAA", fontWeight: 600, marginBottom: 16 }}
+            style={{ fontSize: 12, color: "#8BA89D", fontWeight: 600, marginBottom: 20 }}
           >
             €10/maand — altijd opzegbaar
           </p>
 
-          <div className="flex flex-col gap-2.5">
+          <div className="flex flex-col gap-3">
             <div>
               <Label>Naam</Label>
-              <Input placeholder="Sophie B." value={name} onChange={(e) => setName(e.target.value)} />
+              <Input
+                placeholder="Sophie Bakker"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
             </div>
             <div>
               <Label>E-mail</Label>
@@ -97,13 +100,13 @@ export function ClientRegister({ onBack, onSubmit }: { onBack: () => void; onSub
             </div>
 
             <div className="mt-1">
-              <div className="mb-1.5 flex items-baseline gap-1.5">
+              <div className="mb-2 flex items-baseline gap-2">
                 <Label>Mijn doelen</Label>
-                <span style={{ fontSize: 10, color: "#8ABAAA", fontWeight: 600 }}>
+                <span style={{ fontSize: 10, color: "#4A6358", fontWeight: 600 }}>
                   (meerdere mogelijk)
                 </span>
               </div>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-2.5">
                 {GOALS.map((g) => {
                   const active = goals.includes(g);
                   return (
@@ -113,13 +116,13 @@ export function ClientRegister({ onBack, onSubmit }: { onBack: () => void; onSub
                       onClick={() => toggle(g)}
                       className="relative text-center transition-all"
                       style={{
-                        padding: "11px 8px",
-                        borderRadius: 12,
+                        padding: "13px 8px",
+                        borderRadius: 13,
                         fontSize: 13,
                         fontWeight: 700,
-                        border: `${active ? 2 : 1.5}px solid ${active ? "#12C98E" : "#D8F0E6"}`,
-                        background: active ? "#E8F9F3" : "white",
-                        color: active ? "#12C98E" : "#8ABAAA",
+                        border: `1.5px solid ${active ? "#00C896" : "#1E2E28"}`,
+                        background: active ? "rgba(0,200,150,0.10)" : "#162019",
+                        color: active ? "#00C896" : "#8BA89D",
                       }}
                     >
                       {g}
@@ -127,18 +130,15 @@ export function ClientRegister({ onBack, onSubmit }: { onBack: () => void; onSub
                         <span
                           className="absolute flex items-center justify-center"
                           style={{
-                            top: 4,
-                            right: 6,
-                            width: 14,
-                            height: 14,
+                            top: 5,
+                            right: 7,
+                            width: 16,
+                            height: 16,
                             borderRadius: "50%",
-                            background: "#12C98E",
-                            color: "white",
-                            fontSize: 8,
-                            fontWeight: 900,
+                            background: "#00C896",
                           }}
                         >
-                          ✓
+                          <Check color="white" size={10} strokeWidth={3.5} />
                         </span>
                       )}
                     </button>
@@ -148,7 +148,7 @@ export function ClientRegister({ onBack, onSubmit }: { onBack: () => void; onSub
             </div>
           </div>
 
-          <div className="mt-3 flex items-center gap-2.5">
+          <div className="mt-5 flex items-center gap-2.5">
             <Button type="button" variant="muted" onClick={onBack}>
               Terug
             </Button>
@@ -156,16 +156,8 @@ export function ClientRegister({ onBack, onSubmit }: { onBack: () => void; onSub
               Account aanmaken
             </Button>
           </div>
-
-          <button
-            type="button"
-            className="mt-2.5 block w-full text-center"
-            style={{ fontSize: 12, color: "#8ABAAA", fontWeight: 600 }}
-          >
-            Wachtwoord vergeten?
-          </button>
         </form>
       </div>
-    </GradientBg>
+    </Shell>
   );
 }

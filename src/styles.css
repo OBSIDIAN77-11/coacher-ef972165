@@ -1,84 +1,80 @@
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
-@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap");
 
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-sans: "Nunito", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
 
   --radius-sm: 8px;
-  --radius-md: 11px;
-  --radius-lg: 13px;
-  --radius-xl: 18px;
-  --radius-2xl: 22px;
-  --radius-3xl: 24px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 24px;
+  --radius-3xl: 28px;
 
-  --color-bg: var(--bg);
-  --color-background: var(--bg);
-  --color-foreground: var(--dark);
-  --color-white: #ffffff;
+  --color-bg: #0a0f0d;
+  --color-background: #0a0f0d;
+  --color-foreground: #f0faf6;
+  --color-surface: #111815;
+  --color-card: #162019;
+  --color-card-foreground: #f0faf6;
 
-  --color-green: #12c98e;
-  --color-green-dark: #0da070;
-  --color-green-light: #e8f9f3;
-  --color-blue: #3b9dd4;
-  --color-blue-dark: #2a7faf;
-  --color-blue-light: #e0f2fe;
+  --color-emerald: #00c896;
+  --color-emerald-dark: #00a87e;
+  --color-emerald-light: rgba(0, 200, 150, 0.1);
+  --color-sapphire: #3d8ef0;
+  --color-sapphire-light: rgba(61, 142, 240, 0.1);
 
-  --color-dark: #0c2d22;
-  --color-mid: #3a6b58;
-  --color-muted: #8abaaa;
-  --color-light: #b0d8cc;
-  --color-border: #d8f0e6;
-  --color-danger: #f43f5e;
-  --color-warning: #fb923c;
-  --color-star: #f59e0b;
+  --color-text-p: #f0faf6;
+  --color-text-s: #8ba89d;
+  --color-text-m: #4a6358;
+  --color-border-dark: #1e2e28;
+  --color-border-hover: #2a4038;
 
-  /* shadcn aliases (so existing UI primitives still work) */
-  --color-primary: var(--color-green);
+  --color-red: #ff4d6a;
+  --color-orange: #ff8c42;
+  --color-yellow: #ffd166;
+
+  /* shadcn aliases (kept so primitives compile) */
+  --color-primary: var(--color-emerald);
   --color-primary-foreground: #ffffff;
-  --color-secondary: var(--color-green-light);
-  --color-secondary-foreground: var(--color-green-dark);
-  --color-card: #ffffff;
-  --color-card-foreground: var(--color-dark);
-  --color-popover: #ffffff;
-  --color-popover-foreground: var(--color-dark);
-  --color-muted-foreground: var(--color-muted);
-  --color-accent: var(--color-green-light);
-  --color-accent-foreground: var(--color-green-dark);
-  --color-destructive: var(--color-danger);
+  --color-secondary: var(--color-emerald-light);
+  --color-secondary-foreground: var(--color-emerald);
+  --color-popover: var(--color-card);
+  --color-popover-foreground: var(--color-text-p);
+  --color-muted: var(--color-surface);
+  --color-muted-foreground: var(--color-text-s);
+  --color-accent: var(--color-emerald-light);
+  --color-accent-foreground: var(--color-emerald);
+  --color-destructive: var(--color-red);
   --color-destructive-foreground: #ffffff;
-  --color-input: var(--color-border);
-  --color-ring: var(--color-green);
+  --color-input: var(--color-border-dark);
+  --color-ring: var(--color-emerald);
+  --color-border: var(--color-border-dark);
 }
 
 :root {
-  --bg: #f5fefb;
-  --dark: #0c2d22;
-  --grad: linear-gradient(135deg, #12c98e 0%, #3b9dd4 100%);
-  --grad-soft: linear-gradient(135deg, #e8f9f3 0%, #e0f2fe 100%);
-  --shadow: 0 2px 16px rgba(18, 201, 142, 0.1);
-  --shadow-lg: 0 8px 28px rgba(18, 201, 142, 0.18);
-  --shadow-xl: 0 16px 48px rgba(18, 201, 142, 0.24);
-  --radius: 13px;
+  --grad: linear-gradient(135deg, #00c896 0%, #3d8ef0 100%);
+  --grad-soft: linear-gradient(135deg, rgba(0, 200, 150, 0.1) 0%, rgba(61, 142, 240, 0.08) 100%);
+  --shadow-glow: 0 4px 20px rgba(0, 200, 150, 0.18);
 }
 
 html,
 body {
-  background: #0c2d22;
+  background: #0a0f0d;
 }
 
 body {
-  font-family: "Nunito", sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif;
   -webkit-font-smoothing: antialiased;
-  color: var(--color-dark);
+  color: #f0faf6;
 }
 
 @layer base {
   * {
-    border-color: var(--color-border);
+    border-color: #1e2e28;
   }
 }
 
@@ -96,34 +92,36 @@ body {
   -webkit-text-fill-color: transparent;
   color: transparent;
 }
-.shadow-soft {
-  box-shadow: var(--shadow);
-}
-.shadow-pop {
-  box-shadow: var(--shadow-lg);
-}
-.shadow-xl-brand {
-  box-shadow: var(--shadow-xl);
+.shadow-glow {
+  box-shadow: var(--shadow-glow);
 }
 
 /* Animations */
 @keyframes fadeUp {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(14px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
-@keyframes floatY {
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes float {
   0%,
   100% {
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-8px);
+    transform: translateY(-10px);
   }
 }
 @keyframes spinSlow {
@@ -131,14 +129,42 @@ body {
     transform: rotate(360deg);
   }
 }
+@keyframes softPulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
 .fade {
-  animation: fadeUp 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: fadeUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.slide-up {
+  animation: slideUp 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 .float {
-  animation: floatY 2s ease-in-out infinite;
+  animation: float 3s ease-in-out infinite;
 }
 .spinner {
   animation: spinSlow 0.7s linear infinite;
+}
+.dot-pulse {
+  animation: softPulse 1.6s ease-in-out infinite;
+}
+.shimmer {
+  background: linear-gradient(90deg, transparent, rgba(0, 200, 150, 0.6), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
 }
 
 /* App container framing */
@@ -146,7 +172,18 @@ body {
   max-width: 430px;
   margin: 0 auto;
   min-height: 100vh;
-  background: var(--bg);
+  background: #0a0f0d;
   position: relative;
   overflow: hidden;
+}
+.ambient-glow {
+  position: absolute;
+  top: -120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(0, 200, 150, 0.12) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
 }
