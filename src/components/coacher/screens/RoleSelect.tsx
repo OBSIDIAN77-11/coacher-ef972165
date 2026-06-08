@@ -34,7 +34,7 @@ export function RoleSelect({
       <div className="flex flex-1 flex-col fade pt-8">
         <h1
           className="text-center"
-          style={{ fontSize: 26, fontWeight: 900, color: "#F0FAF6", letterSpacing: "-0.5px" }}
+          style={{ fontSize: 30, fontWeight: 900, color: "#F0FAF6", letterSpacing: "-0.5px" }}
         >
           Wie ben jij?
         </h1>
