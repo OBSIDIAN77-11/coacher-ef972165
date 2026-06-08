@@ -9,13 +9,13 @@ const options: { role: Role; title: string; sub: string; Icon: typeof Dumbbell }
   {
     role: "coach",
     title: "Ik ben Coach",
-    sub: "Ik begeleid klanten en wil mijn praktijk professionaliseren.",
+    sub: "Maak een profiel en begeleid cliënten",
     Icon: Dumbbell,
   },
   {
     role: "klant",
     title: "Ik zoek een Coach",
-    sub: "Ik wil begeleiding bij fitness, voeding of sport.",
+    sub: "Vind een trainer en bereik je doelen",
     Icon: Search,
   },
 ];
