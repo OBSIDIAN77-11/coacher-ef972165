@@ -27,7 +27,7 @@ export function Success({ role, onOpen }: { role: Role; onOpen: () => void }) {
         </div>
         <h1
           style={{
-            fontSize: 26,
+            fontSize: 30,
             fontWeight: 900,
             color: "#F0FAF6",
             letterSpacing: "-0.5px",
