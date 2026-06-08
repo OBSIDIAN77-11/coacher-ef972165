@@ -23,7 +23,7 @@ export function Welcome({ onStart, onDemo }: { onStart: () => void; onDemo: () =
             style={{ width: 7, height: 7, borderRadius: "50%", background: "#00C896" }}
           />
           <span style={{ fontSize: 12, fontWeight: 700, color: "#00C896" }}>
-            Beschikbaar in Nederland
+            Nu beschikbaar in Nederland
           </span>
         </div>
 
@@ -46,7 +46,7 @@ export function Welcome({ onStart, onDemo }: { onStart: () => void; onDemo: () =
           className="mt-5"
           style={{ fontSize: 15, color: "#8BA89D", lineHeight: 1.6, maxWidth: 320, fontWeight: 500 }}
         >
-          Het platform dat personal trainers en klanten samenbrengt. Veilig, persoonlijk, alles in
+          Vind een gecertificeerde personal trainer, plan sessies en bereik je doelen — alles in
           één app.
         </p>
 
@@ -72,10 +72,10 @@ export function Welcome({ onStart, onDemo }: { onStart: () => void; onDemo: () =
 
         {/* CTAs */}
         <div className="mt-9 flex flex-col gap-3">
-          <Button size="lg" fullWidth onClick={onStart}>
+          <Button size="lg" fullWidth onClick={onStart} style={{ borderRadius: 50 }}>
             Gratis beginnen
           </Button>
-          <Button size="lg" variant="outline" fullWidth onClick={onDemo}>
+          <Button size="lg" variant="outline" fullWidth onClick={onDemo} style={{ borderRadius: 50 }}>
             Demo bekijken
           </Button>
         </div>

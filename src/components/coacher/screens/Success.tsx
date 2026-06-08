@@ -6,8 +6,8 @@ import type { Role } from "./RoleSelect";
 export function Success({ role, onOpen }: { role: Role; onOpen: () => void }) {
   const sub =
     role === "coach"
-      ? "Je account is aangemaakt. We verifiëren je diploma en VOG binnen 2 werkdagen."
-      : "Je account is actief. Vind nu je eerste coach en begin met trainen!";
+      ? "We verifiëren je VOG binnen 2 werkdagen"
+      : "Je account is actief. Vind nu je eerste coach!";
 
   return (
     <Shell>
@@ -27,7 +27,7 @@ export function Success({ role, onOpen }: { role: Role; onOpen: () => void }) {
         </div>
         <h1
           style={{
-            fontSize: 26,
+            fontSize: 30,
             fontWeight: 900,
             color: "#F0FAF6",
             letterSpacing: "-0.5px",

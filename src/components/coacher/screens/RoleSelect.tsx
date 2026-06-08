@@ -9,13 +9,13 @@ const options: { role: Role; title: string; sub: string; Icon: typeof Dumbbell }
   {
     role: "coach",
     title: "Ik ben Coach",
-    sub: "Ik begeleid klanten en wil mijn praktijk professionaliseren.",
+    sub: "Maak een profiel en begeleid cliënten",
     Icon: Dumbbell,
   },
   {
     role: "klant",
     title: "Ik zoek een Coach",
-    sub: "Ik wil begeleiding bij fitness, voeding of sport.",
+    sub: "Vind een trainer en bereik je doelen",
     Icon: Search,
   },
 ];
@@ -34,7 +34,7 @@ export function RoleSelect({
       <div className="flex flex-1 flex-col fade pt-8">
         <h1
           className="text-center"
-          style={{ fontSize: 26, fontWeight: 900, color: "#F0FAF6", letterSpacing: "-0.5px" }}
+          style={{ fontSize: 30, fontWeight: 900, color: "#F0FAF6", letterSpacing: "-0.5px" }}
         >
           Wie ben jij?
         </h1>
