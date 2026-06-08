@@ -46,7 +46,7 @@ export function Welcome({ onStart, onDemo }: { onStart: () => void; onDemo: () =
           className="mt-5"
           style={{ fontSize: 15, color: "#8BA89D", lineHeight: 1.6, maxWidth: 320, fontWeight: 500 }}
         >
-          Het platform dat personal trainers en klanten samenbrengt. Veilig, persoonlijk, alles in
+          Vind een gecertificeerde personal trainer, plan sessies en bereik je doelen — alles in
           één app.
         </p>
 
