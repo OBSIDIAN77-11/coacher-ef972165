@@ -3,9 +3,11 @@ import { useState } from "react";
 import { AppShell } from "@/components/coacher/app/AppShell";
 import { ClientRegister } from "@/components/coacher/screens/ClientRegister";
 import { CoachRegister } from "@/components/coacher/screens/CoachRegister";
+import { Payment } from "@/components/coacher/screens/Payment";
 import { type Role, RoleSelect } from "@/components/coacher/screens/RoleSelect";
 import { Splash } from "@/components/coacher/screens/Splash";
 import { Success } from "@/components/coacher/screens/Success";
+import { Verification } from "@/components/coacher/screens/Verification";
 import { Welcome } from "@/components/coacher/screens/Welcome";
 
 export const Route = createFileRoute("/")({
@@ -27,7 +29,15 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-type Step = "splash" | "welcome" | "role" | "register" | "success" | "app";
+type Step =
+  | "splash"
+  | "welcome"
+  | "role"
+  | "register"
+  | "verification"
+  | "payment"
+  | "success"
+  | "app";
 
 function Index() {
   const [step, setStep] = useState<Step>("splash");
@@ -58,9 +68,25 @@ function Index() {
       );
     case "register":
       return role === "coach" ? (
-        <CoachRegister onBack={() => setStep("role")} onSubmit={() => setStep("success")} />
+        <CoachRegister onBack={() => setStep("role")} onSubmit={() => setStep("verification")} />
       ) : (
-        <ClientRegister onBack={() => setStep("role")} onSubmit={() => setStep("success")} />
+        <ClientRegister onBack={() => setStep("role")} onSubmit={() => setStep("verification")} />
+      );
+    case "verification":
+      return (
+        <Verification
+          role={role ?? "klant"}
+          onSkip={() => setStep("payment")}
+          onDone={() => setStep("payment")}
+        />
+      );
+    case "payment":
+      return (
+        <Payment
+          role={role ?? "klant"}
+          onSkip={() => setStep("success")}
+          onDone={() => setStep("success")}
+        />
       );
     case "success":
       return <Success role={role ?? "klant"} onOpen={() => setStep("app")} />;
