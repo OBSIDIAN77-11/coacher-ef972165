@@ -72,10 +72,10 @@ export function Welcome({ onStart, onDemo }: { onStart: () => void; onDemo: () =
 
         {/* CTAs */}
         <div className="mt-9 flex flex-col gap-3">
-          <Button size="lg" fullWidth onClick={onStart}>
+          <Button size="lg" fullWidth onClick={onStart} style={{ borderRadius: 50 }}>
             Gratis beginnen
           </Button>
-          <Button size="lg" variant="outline" fullWidth onClick={onDemo}>
+          <Button size="lg" variant="outline" fullWidth onClick={onDemo} style={{ borderRadius: 50 }}>
             Demo bekijken
           </Button>
         </div>
