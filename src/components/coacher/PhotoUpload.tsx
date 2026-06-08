@@ -1,7 +1,7 @@
 import { Camera } from "lucide-react";
 import { useRef, useState } from "react";
 
-export function PhotoUpload({ size = 80 }: { size?: number }) {
+export function PhotoUpload({ size = 84 }: { size?: number }) {
   const [src, setSrc] = useState<string | null>(null);
   const ref = useRef<HTMLInputElement>(null);
 
