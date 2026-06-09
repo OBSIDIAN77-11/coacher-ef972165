@@ -15,6 +15,9 @@ import type { Role } from "../screens/RoleSelect";
 import { Button } from "../Button";
 import { CoachHome } from "./CoachHome";
 import { CoachClients } from "./CoachClients";
+import { CoachAlerts } from "./CoachAlerts";
+import { ChatScreen } from "./ChatScreen";
+import { KlantHome } from "./KlantHome";
 
 type Mode = "coach" | "klant";
 
@@ -386,6 +389,15 @@ function TabContent({
   }
   if (mode === "coach" && tab === "clients") {
     return <CoachClients />;
+  }
+  if (mode === "coach" && tab === "alerts") {
+    return <CoachAlerts />;
+  }
+  if (tab === "messages") {
+    return <ChatScreen mode={mode} />;
+  }
+  if (mode === "klant" && tab === "home") {
+    return <KlantHome />;
   }
   if (tab === "settings") {
     return (
