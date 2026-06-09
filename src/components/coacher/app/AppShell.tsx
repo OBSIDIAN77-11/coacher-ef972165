@@ -185,7 +185,7 @@ export function AppShell({
         className="relative z-0"
         style={{ paddingBottom: 110, minHeight: "calc(100vh - 60px)" }}
       >
-        <TabContent tab={tab} mode={mode} name={name} onLogout={() => setLogoutOpen(true)} />
+        <TabContent tab={tab} mode={mode} name={name} onLogout={() => setLogoutOpen(true)} onTab={setTab} />
       </main>
 
       {/* Bottom nav */}
