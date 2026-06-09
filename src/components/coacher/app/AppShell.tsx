@@ -13,6 +13,8 @@ import {
 import { type ReactNode, useState } from "react";
 import type { Role } from "../screens/RoleSelect";
 import { Button } from "../Button";
+import { CoachHome } from "./CoachHome";
+import { CoachClients } from "./CoachClients";
 
 type Mode = "coach" | "klant";
 
