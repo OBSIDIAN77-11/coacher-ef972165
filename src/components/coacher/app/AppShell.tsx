@@ -13,6 +13,8 @@ import {
 import { type ReactNode, useState } from "react";
 import type { Role } from "../screens/RoleSelect";
 import { Button } from "../Button";
+import { CoachHome } from "./CoachHome";
+import { CoachClients } from "./CoachClients";
 
 type Mode = "coach" | "klant";
 
@@ -183,7 +185,7 @@ export function AppShell({
         className="relative z-0"
         style={{ paddingBottom: 110, minHeight: "calc(100vh - 60px)" }}
       >
-        <TabContent tab={tab} mode={mode} name={name} onLogout={() => setLogoutOpen(true)} />
+        <TabContent tab={tab} mode={mode} name={name} onLogout={() => setLogoutOpen(true)} onTab={setTab} />
       </main>
 
       {/* Bottom nav */}
@@ -371,12 +373,20 @@ function TabContent({
   mode,
   name,
   onLogout,
+  onTab,
 }: {
   tab: string;
   mode: Mode;
   name: string;
   onLogout: () => void;
+  onTab: (t: string) => void;
 }) {
+  if (mode === "coach" && tab === "home") {
+    return <CoachHome onOpenClient={() => onTab("clients")} />;
+  }
+  if (mode === "coach" && tab === "clients") {
+    return <CoachClients />;
+  }
   if (tab === "settings") {
     return (
       <div className="fade px-5 py-6">
