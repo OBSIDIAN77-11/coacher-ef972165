@@ -18,6 +18,8 @@ import { CoachClients } from "./CoachClients";
 import { CoachAlerts } from "./CoachAlerts";
 import { ChatScreen } from "./ChatScreen";
 import { KlantHome } from "./KlantHome";
+import { KlantCoaches } from "./KlantCoaches";
+import { KlantCoaching } from "./KlantCoaching";
 
 type Mode = "coach" | "klant";
 
@@ -398,6 +400,12 @@ function TabContent({
   }
   if (mode === "klant" && tab === "home") {
     return <KlantHome />;
+  }
+  if (mode === "klant" && tab === "coaches") {
+    return <KlantCoaches />;
+  }
+  if (mode === "klant" && tab === "coaching") {
+    return <KlantCoaching />;
   }
   if (tab === "settings") {
     return (
