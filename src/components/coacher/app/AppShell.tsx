@@ -20,6 +20,7 @@ import { ChatScreen } from "./ChatScreen";
 import { KlantHome } from "./KlantHome";
 import { KlantCoaches } from "./KlantCoaches";
 import { KlantCoaching } from "./KlantCoaching";
+import { Settings as SettingsScreen } from "./Settings";
 
 type Mode = "coach" | "klant";
 
