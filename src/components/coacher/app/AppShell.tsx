@@ -20,6 +20,7 @@ import { ChatScreen } from "./ChatScreen";
 import { KlantHome } from "./KlantHome";
 import { KlantCoaches } from "./KlantCoaches";
 import { KlantCoaching } from "./KlantCoaching";
+import { Settings as SettingsScreen } from "./Settings";
 
 type Mode = "coach" | "klant";
 
@@ -409,83 +410,12 @@ function TabContent({
   }
   if (tab === "settings") {
     return (
-      <div className="fade px-5 py-6">
-        <div
-          className="mb-5 flex items-center gap-3"
-          style={{
-            padding: 18,
-            borderRadius: 20,
-            background: "linear-gradient(135deg,#00C896,#3D8EF0)",
-            boxShadow: "0 4px 20px rgba(0,200,150,0.30)",
-          }}
-        >
-          <div
-            className="flex items-center justify-center"
-            style={{
-              width: 52,
-              height: 52,
-              borderRadius: "50%",
-              background: "rgba(255,255,255,0.18)",
-              color: "white",
-              fontSize: 18,
-              fontWeight: 800,
-            }}
-          >
-            {mode === "coach" ? "YK" : "SB"}
-          </div>
-          <div>
-            <div style={{ fontSize: 17, fontWeight: 800, color: "white" }}>{name}</div>
-            <div style={{ fontSize: 12, color: "rgba(255,255,255,0.8)", fontWeight: 600 }}>
-              {mode === "coach" ? "Coach · Maastricht" : "Klant · Week 8"}
-            </div>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-2">
-          {[
-            "Betaling instellen",
-            "Notificaties",
-            "Wachtwoord wijzigen",
-            "Privacy & AVG",
-            "Algemene voorwaarden",
-            "Help & support",
-          ].map((item) => (
-            <button
-              key={item}
-              className="flex items-center justify-between"
-              style={{
-                padding: "14px 16px",
-                borderRadius: 14,
-                background: "#162019",
-                border: "1px solid #1E2E28",
-                color: "#F0FAF6",
-                fontSize: 14,
-                fontWeight: 600,
-                textAlign: "left",
-              }}
-            >
-              <span>{item}</span>
-              <span style={{ color: "#4A6358" }}>›</span>
-            </button>
-          ))}
-        </div>
-
-        <button
-          onClick={onLogout}
-          className="mt-5 w-full"
-          style={{
-            padding: "14px",
-            borderRadius: 14,
-            background: "rgba(255,77,106,0.10)",
-            color: "#FF4D6A",
-            fontSize: 14,
-            fontWeight: 800,
-            border: "1px solid rgba(255,77,106,0.25)",
-          }}
-        >
-          Uitloggen
-        </button>
-      </div>
+      <SettingsScreen
+        mode={mode}
+        name={name}
+        initials={mode === "coach" ? "YK" : "SB"}
+        onLogout={onLogout}
+      />
     );
   }
 
