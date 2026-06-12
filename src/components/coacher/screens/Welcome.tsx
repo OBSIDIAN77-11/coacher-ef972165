@@ -4,7 +4,7 @@ import { Button } from "../Button";
 
 const trustItems = ["VOG-geverifieerd", "AVG-proof", "iDEAL betaling"];
 
-export function Welcome({ onStart, onDemo }: { onStart: () => void; onDemo: () => void }) {
+export function Welcome({ onStart, onDemo, onLogin }: { onStart: () => void; onDemo: () => void; onLogin: () => void }) {
   return (
     <Shell>
       <div className="flex flex-1 flex-col justify-end pb-8 fade">
@@ -78,6 +78,13 @@ export function Welcome({ onStart, onDemo }: { onStart: () => void; onDemo: () =
           <Button size="lg" variant="outline" fullWidth onClick={onDemo} style={{ borderRadius: 50 }}>
             Demo bekijken
           </Button>
+          <button
+            onClick={onLogin}
+            className="mt-2 w-full text-center"
+            style={{ fontSize: 13, color: "#8BA89D", fontWeight: 700 }}
+          >
+            Heb je al een account? <span style={{ color: "#00C896" }}>Inloggen</span>
+          </button>
         </div>
       </div>
     </Shell>
