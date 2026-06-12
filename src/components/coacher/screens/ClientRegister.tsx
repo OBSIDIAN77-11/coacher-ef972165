@@ -6,12 +6,14 @@ import { FieldError, Input, Label } from "../Field";
 
 const GOALS = ["Afvallen", "Spieropbouw", "Conditie", "Kracht", "Voeding", "Mindset"];
 
+export type ClientRegisterData = { name: string; email: string; password: string; goals: string[] };
+
 export function ClientRegister({
   onBack,
   onSubmit,
 }: {
   onBack: () => void;
-  onSubmit: () => void;
+  onSubmit: (data: ClientRegisterData) => Promise<void> | void;
 }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -20,6 +22,7 @@ export function ClientRegister({
   const [touched, setTouched] = useState({ pw: false, pw2: false });
   const [goals, setGoals] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
+  const [err, setErr] = useState("");
 
   const pwError = touched.pw && pw.length > 0 && pw.length < 8 ? "Minimaal 8 tekens" : "";
   const pw2Error = touched.pw2 && pw2 !== pw ? "Wachtwoorden komen niet overeen" : "";
@@ -32,11 +35,18 @@ export function ClientRegister({
     [name, email, pw, pw2, goals],
   );
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!valid) return;
+    setErr("");
     setLoading(true);
-    setTimeout(onSubmit, 700);
+    try {
+      await onSubmit({ name, email, password: pw, goals });
+    } catch (ex: any) {
+      setErr(ex?.message ?? "Er ging iets mis");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -148,6 +158,7 @@ export function ClientRegister({
             </div>
           </div>
 
+          {err && <FieldError>{err}</FieldError>}
           <div className="mt-5 flex items-center gap-2.5">
             <Button type="button" variant="muted" onClick={onBack}>
               Terug
