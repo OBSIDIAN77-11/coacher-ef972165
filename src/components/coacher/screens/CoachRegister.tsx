@@ -198,6 +198,7 @@ export function CoachRegister({
             </div>
           </div>
 
+          {err && <FieldError>{err}</FieldError>}
           <div className="mt-5 flex items-center gap-2.5">
             <Button type="button" variant="muted" onClick={onBack}>
               Terug
