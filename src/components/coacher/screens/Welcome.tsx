@@ -72,19 +72,12 @@ export function Welcome({ onStart, onDemo, onLogin }: { onStart: () => void; onD
 
         {/* CTAs */}
         <div className="mt-9 flex flex-col gap-3">
-          <Button size="lg" fullWidth onClick={onStart} style={{ borderRadius: 50 }}>
-            Gratis beginnen
+          <Button size="lg" fullWidth onClick={onLogin} style={{ borderRadius: 50 }}>
+            Inloggen
           </Button>
           <Button size="lg" variant="outline" fullWidth onClick={onDemo} style={{ borderRadius: 50 }}>
             Demo bekijken
           </Button>
-          <button
-            onClick={onLogin}
-            className="mt-2 w-full text-center"
-            style={{ fontSize: 13, color: "#8BA89D", fontWeight: 700 }}
-          >
-            Heb je al een account? <span style={{ color: "#00C896" }}>Inloggen</span>
-          </button>
         </div>
       </div>
     </Shell>
