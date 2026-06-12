@@ -14,12 +14,22 @@ const SPECIALIZATIONS = [
   "Hardlopen",
 ];
 
+export type CoachRegisterData = {
+  name: string;
+  email: string;
+  password: string;
+  specialization: string;
+  hourly_rate: string;
+  location: string;
+  online_coaching: boolean;
+};
+
 export function CoachRegister({
   onBack,
   onSubmit,
 }: {
   onBack: () => void;
-  onSubmit: () => void;
+  onSubmit: (data: CoachRegisterData) => Promise<void> | void;
 }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -31,6 +41,7 @@ export function CoachRegister({
   const [loc, setLoc] = useState("");
   const [online, setOnline] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [err, setErr] = useState("");
 
   const pwError = touched.pw && pw.length > 0 && pw.length < 8 ? "Minimaal 8 tekens" : "";
   const pw2Error = touched.pw2 && pw2 !== pw ? "Wachtwoorden komen niet overeen" : "";
@@ -40,11 +51,26 @@ export function CoachRegister({
     [name, email, pw, pw2, rate, loc],
   );
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!valid) return;
+    setErr("");
     setLoading(true);
-    setTimeout(onSubmit, 700);
+    try {
+      await onSubmit({
+        name,
+        email,
+        password: pw,
+        specialization: spec,
+        hourly_rate: rate,
+        location: loc,
+        online_coaching: online,
+      });
+    } catch (ex: any) {
+      setErr(ex?.message ?? "Er ging iets mis");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
