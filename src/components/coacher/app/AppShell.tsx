@@ -5,7 +5,7 @@ import {
   MessageSquare,
   Settings,
   AlertTriangle,
-  Search,
+  
   Dumbbell,
   X,
   LogOut,
