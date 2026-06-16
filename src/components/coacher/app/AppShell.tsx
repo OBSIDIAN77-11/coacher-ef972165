@@ -18,7 +18,7 @@ import { CoachClients } from "./CoachClients";
 import { CoachAlerts } from "./CoachAlerts";
 import { ChatScreen } from "./ChatScreen";
 import { KlantHome } from "./KlantHome";
-import { KlantCoaches } from "./KlantCoaches";
+
 import { KlantCoaching } from "./KlantCoaching";
 import { Settings as SettingsScreen } from "./Settings";
 
@@ -41,7 +41,6 @@ const COACH_TABS: Tab[] = [
 
 const KLANT_TABS: Tab[] = [
   { key: "home", label: "Home", Icon: Home },
-  { key: "coaches", label: "Coaches", Icon: Search },
   { key: "coaching", label: "Coaching", Icon: Dumbbell },
   { key: "messages", label: "Berichten", Icon: MessageSquare },
   { key: "settings", label: "Instellingen", Icon: Settings },
@@ -402,9 +401,6 @@ function TabContent({
   if (mode === "klant" && tab === "home") {
     return <KlantHome />;
   }
-  if (mode === "klant" && tab === "coaches") {
-    return <KlantCoaches />;
-  }
   if (mode === "klant" && tab === "coaching") {
     return <KlantCoaching />;
   }
@@ -426,7 +422,7 @@ function Placeholder({ tab, mode }: { tab: string; mode: Mode }) {
   const titles: Record<string, string> = {
     home: "Home",
     clients: "Cliënten",
-    coaches: "Coaches",
+    
     coaching: "Coaching",
     messages: "Berichten",
     alerts: "Meldingen",
