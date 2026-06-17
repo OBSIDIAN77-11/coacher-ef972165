@@ -188,10 +188,11 @@ function ActionSheet({
     <>
       <div className="fixed inset-0 z-[60]" style={{ background: "rgba(0,0,0,0.6)" }} onClick={onClose} />
       <div
-        className="slide-up fixed bottom-0 left-1/2 z-[70] w-full"
+        className="slide-up fixed bottom-0 left-0 right-0 z-[70] w-full"
         style={{
           maxWidth: 430,
-          transform: "translateX(-50%)",
+          marginLeft: "auto",
+          marginRight: "auto",
           background: "#111815",
           borderTopLeftRadius: 28,
           borderTopRightRadius: 28,
