@@ -2,7 +2,7 @@ import { Check } from "lucide-react";
 import { Shell } from "../Shell";
 import { Button } from "../Button";
 
-const trustItems = ["VOG-geverifieerd", "AVG-proof", "iDEAL betaling"];
+const trustItems = ["AVG-proof", "iDEAL betaling"];
 
 export function Welcome({ onStart, onDemo, onLogin }: { onStart: () => void; onDemo: () => void; onLogin: () => void }) {
   return (
