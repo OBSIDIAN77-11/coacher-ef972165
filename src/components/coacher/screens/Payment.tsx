@@ -131,8 +131,88 @@ export function Payment({
           Betaling instellen
         </h1>
         <p style={{ fontSize: 13, color: "#8BA89D", fontWeight: 600, marginTop: 6 }}>
-          Kies hoe je wilt betalen — eerste maand is gratis.
+          {isCoach ? "Kies je plan en betaalmethode — eerste maand gratis." : "Kies hoe je wilt betalen — eerste maand is gratis."}
         </p>
+
+        {isCoach && (
+          <div className="mt-5 flex flex-col gap-2.5">
+            {COACH_PLANS.map((p) => {
+              const active = plan === p.key;
+              return (
+                <button
+                  key={p.key}
+                  onClick={() => setPlan(p.key)}
+                  className="flex items-center justify-between text-left"
+                  style={{
+                    padding: "14px 16px",
+                    borderRadius: 16,
+                    background: active ? "var(--grad-soft)" : "#162019",
+                    border: `1.5px solid ${active ? "#00C896" : "#1E2E28"}`,
+                  }}
+                >
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span style={{ fontSize: 14, fontWeight: 800, color: "#F0FAF6" }}>{p.name}</span>
+                      {p.highlight && (
+                        <span
+                          style={{
+                            fontSize: 9,
+                            fontWeight: 800,
+                            color: "#00C896",
+                            background: "rgba(0,200,150,0.15)",
+                            padding: "2px 6px",
+                            borderRadius: 999,
+                            letterSpacing: "0.5px",
+                          }}
+                        >
+                          POPULAIR
+                        </span>
+                      )}
+                    </div>
+                    <div style={{ fontSize: 11, color: "#8BA89D", fontWeight: 600, marginTop: 2 }}>
+                      👥 {p.clients}
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div style={{ fontSize: 16, fontWeight: 900, color: active ? "#00C896" : "#F0FAF6" }}>
+                      €{p.price}
+                    </div>
+                    <div style={{ fontSize: 10, color: "#8BA89D", fontWeight: 700 }}>per maand</div>
+                  </div>
+                </button>
+              );
+            })}
+            <div
+              style={{
+                padding: "10px 14px",
+                borderRadius: 12,
+                background: "#111815",
+                border: "1px solid #1E2E28",
+                marginTop: 4,
+              }}
+            >
+              <div
+                style={{
+                  fontSize: 10,
+                  fontWeight: 800,
+                  color: "#4A6358",
+                  letterSpacing: "0.6px",
+                  marginBottom: 6,
+                }}
+                className="uppercase"
+              >
+                Inbegrepen in elk plan
+              </div>
+              <div className="flex flex-wrap gap-x-3 gap-y-1">
+                {COACH_FEATURES.map((f) => (
+                  <span key={f} style={{ fontSize: 11, fontWeight: 600, color: "#8BA89D" }}>
+                    ✅ {f}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Methods */}
         <div className="mt-5 grid grid-cols-3 gap-2.5">
