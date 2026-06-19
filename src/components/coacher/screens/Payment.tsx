@@ -309,7 +309,7 @@ export function Payment({
             <div className="text-right">
               <div style={{ fontSize: 18, fontWeight: 900, color: "#00C896" }}>€0,00</div>
               <div style={{ fontSize: 10, color: "#8BA89D", fontWeight: 700 }}>
-                eerste maand gratis
+                {isCoach ? `daarna €${selectedPlan.price}/mnd` : "eerste maand gratis"}
               </div>
             </div>
           </div>
