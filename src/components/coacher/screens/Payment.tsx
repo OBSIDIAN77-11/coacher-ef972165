@@ -14,6 +14,22 @@ const METHODS: { key: Method; label: string; Icon: typeof CreditCard }[] = [
 
 const BANKS = ["ABN AMRO", "ING", "Rabobank", "SNS", "Bunq", "Revolut"];
 
+type PlanKey = "starter" | "pro" | "unlimited";
+const COACH_PLANS: { key: PlanKey; name: string; price: number; clients: string; highlight?: boolean }[] = [
+  { key: "starter", name: "Starter", price: 29, clients: "Tot 15 cliënten" },
+  { key: "pro", name: "Pro", price: 59, clients: "Tot 75 cliënten", highlight: true },
+  { key: "unlimited", name: "Unlimited", price: 99, clients: "Onbeperkt cliënten" },
+];
+const COACH_FEATURES = [
+  "Alle functies",
+  "Onbeperkt schema's",
+  "Chat",
+  "Progress tracking",
+  "Foto uploads",
+  "Check-ins",
+  "Analytics",
+];
+
 export function Payment({
   role,
   onSkip,
@@ -23,11 +39,14 @@ export function Payment({
   onSkip: () => void;
   onDone: () => void;
 }) {
+  const [plan, setPlan] = useState<PlanKey>("pro");
   const [method, setMethod] = useState<Method | null>(null);
   const [bank, setBank] = useState<string | null>(null);
   const [phase, setPhase] = useState<"select" | "success">("select");
 
-  const planName = role === "coach" ? "Coach — Pro" : "Klant — Begeleiding";
+  const isCoach = role === "coach";
+  const selectedPlan = COACH_PLANS.find((p) => p.key === plan)!;
+  const planName = isCoach ? `Coach — ${selectedPlan.name}` : "Klant — Begeleiding";
 
   const canPay = method === "ideal" ? !!bank : !!method;
 
