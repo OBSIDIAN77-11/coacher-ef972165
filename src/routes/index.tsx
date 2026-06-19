@@ -24,7 +24,7 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "Coacher — Jouw coach. Jouw resultaat." },
       {
         property: "og:description",
-        content: "Coaches en klanten samen in één veilig platform. VOG-geverifieerd, AVG-proof, iDEAL.",
+        content: "Coaches en klanten samen in één veilig platform. AVG-proof, iDEAL.",
       },
     ],
   }),

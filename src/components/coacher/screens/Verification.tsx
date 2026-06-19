@@ -1,13 +1,13 @@
-import { Camera, Check, FileText, Shield, User } from "lucide-react";
+import { Camera, Check, Shield, User } from "lucide-react";
 import { useRef, useState } from "react";
 import { Shell } from "../Shell";
 import { Button } from "../Button";
 import type { Role } from "./RoleSelect";
 
-type Stage = "intro" | "id" | "selfie" | "vog" | "done";
+type Stage = "intro" | "id" | "selfie" | "done";
 
 export function Verification({
-  role,
+  role: _role,
   onSkip,
   onDone,
 }: {
@@ -16,24 +16,21 @@ export function Verification({
   onDone: () => void;
 }) {
   const [stage, setStage] = useState<Stage>("intro");
-  const needsVog = role === "coach";
 
   const next = () => {
     if (stage === "intro") setStage("id");
     else if (stage === "id") setStage("selfie");
-    else if (stage === "selfie") setStage(needsVog ? "vog" : "done");
-    else if (stage === "vog") setStage("done");
+    else if (stage === "selfie") setStage("done");
     else onDone();
   };
 
   return (
     <Shell>
       <div className="flex flex-1 flex-col fade pt-4 pb-6">
-        {stage === "intro" && <Intro needsVog={needsVog} onStart={next} onSkip={onSkip} />}
+        {stage === "intro" && <Intro onStart={next} onSkip={onSkip} />}
         {stage === "id" && <IdScan onNext={next} />}
         {stage === "selfie" && <Selfie onNext={next} />}
-        {stage === "vog" && <VogUpload onNext={next} />}
-        {stage === "done" && <Done needsVog={needsVog} onNext={onDone} />}
+        {stage === "done" && <Done onNext={onDone} />}
       </div>
     </Shell>
   );
@@ -52,20 +49,8 @@ function StepHeader({ title, sub }: { title: string; sub?: string }) {
   );
 }
 
-function Intro({
-  needsVog,
-  onStart,
-  onSkip,
-}: {
-  needsVog: boolean;
-  onStart: () => void;
-  onSkip: () => void;
-}) {
-  const steps = [
-    "ID-bewijs scannen",
-    "Selfie maken — gezichtsherkenning",
-    ...(needsVog ? ["VOG uploaden (justis.nl)"] : []),
-  ];
+function Intro({ onStart, onSkip }: { onStart: () => void; onSkip: () => void }) {
+  const steps = ["ID-bewijs scannen", "Selfie maken — gezichtsherkenning"];
   return (
     <>
       <div className="flex flex-col items-center pt-4">
@@ -91,7 +76,7 @@ function Intro({
           className="mt-2 text-center"
           style={{ fontSize: 13, color: "#8BA89D", fontWeight: 600, maxWidth: 280 }}
         >
-          Veilig voor jou en je {needsVog ? "cliënten" : "coach"} — duurt 2 minuten.
+          Veilig en snel — duurt 2 minuten.
         </p>
       </div>
 
@@ -155,7 +140,7 @@ function IdScan({ onNext }: { onNext: () => void }) {
   };
   return (
     <>
-      <StepHeader title="ID scannen" sub="Stap 1 van 3 — paspoort of rijbewijs" />
+      <StepHeader title="ID scannen" sub="Stap 1 van 2 — paspoort of rijbewijs" />
       <button
         type="button"
         onClick={() => ref.current?.click()}
@@ -255,7 +240,7 @@ function Selfie({ onNext }: { onNext: () => void }) {
   };
   return (
     <>
-      <StepHeader title="Selfie maken" sub="Stap 2 van 3 — gezichtsherkenning" />
+      <StepHeader title="Selfie maken" sub="Stap 2 van 2 — gezichtsherkenning" />
       <div className="flex justify-center">
         <button
           type="button"
@@ -309,9 +294,7 @@ function Selfie({ onNext }: { onNext: () => void }) {
       {phase === "done" && (
         <div className="mt-5">
           <div className="mb-2 flex items-center justify-between">
-            <span style={{ fontSize: 12, fontWeight: 700, color: "#F0FAF6" }}>
-              Overeenkomst
-            </span>
+            <span style={{ fontSize: 12, fontWeight: 700, color: "#F0FAF6" }}>Overeenkomst</span>
             <span style={{ fontSize: 12, fontWeight: 800, color: "#00C896" }}>97%</span>
           </div>
           <div
@@ -348,87 +331,10 @@ function Selfie({ onNext }: { onNext: () => void }) {
   );
 }
 
-function VogUpload({ onNext }: { onNext: () => void }) {
-  const [file, setFile] = useState<string | null>(null);
-  const ref = useRef<HTMLInputElement>(null);
-  const pick = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const f = e.target.files?.[0];
-    if (!f) return;
-    setFile(f.name);
-  };
-  return (
-    <>
-      <StepHeader title="VOG uploaden" sub="Stap 3 van 3 — Verklaring Omtrent Gedrag" />
-
-      <div
-        className="mb-4"
-        style={{
-          padding: "12px 14px",
-          borderRadius: 12,
-          background: "rgba(255,140,66,0.10)",
-          border: "1px solid rgba(255,140,66,0.30)",
-        }}
-      >
-        <p style={{ fontSize: 12, color: "#FF8C42", fontWeight: 700, lineHeight: 1.5 }}>
-          Geen VOG? Gratis aanvragen via justis.nl — kost ongeveer 1 week.
-        </p>
-      </div>
-
-      <button
-        type="button"
-        onClick={() => ref.current?.click()}
-        className="flex w-full items-center gap-3"
-        style={{
-          padding: 16,
-          borderRadius: 16,
-          border: `2px dashed ${file ? "#00C896" : "#2A4038"}`,
-          background: "#111815",
-          textAlign: "left",
-        }}
-      >
-        <div
-          className="flex items-center justify-center"
-          style={{
-            width: 44,
-            height: 44,
-            borderRadius: 12,
-            background: "linear-gradient(135deg,#00C896,#3D8EF0)",
-            flexShrink: 0,
-          }}
-        >
-          <FileText color="white" size={22} />
-        </div>
-        <div className="flex-1">
-          <div style={{ fontSize: 13, fontWeight: 800, color: "#F0FAF6" }}>
-            {file ?? "Tik om VOG te uploaden"}
-          </div>
-          <div style={{ fontSize: 11, color: "#8BA89D", fontWeight: 600, marginTop: 2 }}>
-            PDF of foto · max 10 MB
-          </div>
-        </div>
-      </button>
-      <input
-        ref={ref}
-        type="file"
-        accept="image/*,.pdf"
-        className="hidden"
-        onChange={pick}
-      />
-
-      <div className="mt-auto pt-8">
-        <Button size="lg" fullWidth disabled={!file} onClick={onNext}>
-          Indienen voor verificatie
-        </Button>
-      </div>
-    </>
-  );
-}
-
-function Done({ needsVog, onNext }: { needsVog: boolean; onNext: () => void }) {
+function Done({ onNext }: { onNext: () => void }) {
   const items = [
     { label: "ID", state: "ok" as const },
     { label: "Gezicht", state: "ok" as const },
-    ...(needsVog ? [{ label: "VOG", state: "pending" as const }] : []),
   ];
   return (
     <div className="flex flex-1 flex-col items-center justify-center text-center fade">
@@ -466,12 +372,12 @@ function Done({ needsVog, onNext }: { needsVog: boolean; onNext: () => void }) {
               borderRadius: 999,
               fontSize: 12,
               fontWeight: 800,
-              background: i.state === "ok" ? "rgba(0,200,150,0.12)" : "rgba(255,209,102,0.12)",
-              color: i.state === "ok" ? "#00C896" : "#FFD166",
-              border: `1px solid ${i.state === "ok" ? "rgba(0,200,150,0.30)" : "rgba(255,209,102,0.30)"}`,
+              background: "rgba(0,200,150,0.12)",
+              color: "#00C896",
+              border: "1px solid rgba(0,200,150,0.30)",
             }}
           >
-            {i.label} {i.state === "ok" ? "✓" : "⏳"}
+            {i.label} ✓
           </span>
         ))}
       </div>

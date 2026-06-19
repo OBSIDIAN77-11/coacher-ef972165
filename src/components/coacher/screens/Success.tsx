@@ -6,7 +6,7 @@ import type { Role } from "./RoleSelect";
 export function Success({ role, onOpen }: { role: Role; onOpen: () => void }) {
   const sub =
     role === "coach"
-      ? "We verifiëren je VOG binnen 2 werkdagen"
+      ? "We verifiëren je diploma binnen 2 werkdagen"
       : "Je account is actief. Vind nu je eerste coach!";
 
   return (

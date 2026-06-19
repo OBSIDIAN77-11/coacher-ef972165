@@ -193,7 +193,7 @@ export function CoachRegister({
               }}
             >
               <p style={{ fontSize: 12, color: "#00C896", lineHeight: 1.55, fontWeight: 600 }}>
-                Na registratie verifiëren we je diploma en VOG — 1-2 werkdagen.
+                Na registratie verifiëren we je diploma — 1-2 werkdagen.
               </p>
             </div>
           </div>
