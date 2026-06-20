@@ -5,7 +5,7 @@ import {
   MessageSquare,
   Settings,
   AlertTriangle,
-  
+  TrendingUp,
   Dumbbell,
   X,
   LogOut,
@@ -18,6 +18,7 @@ import { CoachClients } from "./CoachClients";
 import { CoachAlerts } from "./CoachAlerts";
 import { ChatScreen } from "./ChatScreen";
 import { KlantHome } from "./KlantHome";
+import { KlantVoortgang } from "./KlantVoortgang";
 
 import { KlantCoaching } from "./KlantCoaching";
 import { Settings as SettingsScreen } from "./Settings";
@@ -43,6 +44,7 @@ const KLANT_TABS: Tab[] = [
   { key: "home", label: "Home", Icon: Home },
   { key: "coaching", label: "Coaching", Icon: Dumbbell },
   { key: "messages", label: "Berichten", Icon: MessageSquare },
+  { key: "voortgang", label: "Voortgang", Icon: TrendingUp },
   { key: "settings", label: "Instellingen", Icon: Settings },
 ];
 
@@ -404,6 +406,9 @@ function TabContent({
   }
   if (mode === "klant" && tab === "coaching") {
     return <KlantCoaching />;
+  }
+  if (mode === "klant" && tab === "voortgang") {
+    return <KlantVoortgang />;
   }
   if (tab === "settings") {
     return (
