@@ -454,8 +454,8 @@ function FotosTab({
   onAdd,
   onCompare,
 }: {
-  photos: Record<PhotoKey, string[]>;
-  onAdd: (k: PhotoKey, d: string) => void;
+  photos: Record<PhotoKey, PhotoItem[]>;
+  onAdd: (k: PhotoKey, file: File) => void;
   onCompare: () => void;
 }) {
   return (
@@ -469,21 +469,20 @@ function FotosTab({
 
       <div className="flex flex-col gap-4 mt-2">
         {PHOTO_LABELS.map((p) => (
-          <PhotoRow key={p.key} label={p.label} list={photos[p.key]} onPick={(d) => onAdd(p.key, d)} />
+          <PhotoRow key={p.key} label={p.label} list={photos[p.key]} onPick={(f) => onAdd(p.key, f)} />
         ))}
       </div>
     </div>
   );
 }
 
-function PhotoRow({ label, list, onPick }: { label: string; list: string[]; onPick: (d: string) => void }) {
+function PhotoRow({ label, list, onPick }: { label: string; list: PhotoItem[]; onPick: (f: File) => void }) {
   const ref = useRef<HTMLInputElement>(null);
   const handle = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
     if (!f) return;
-    const r = new FileReader();
-    r.onload = () => onPick(r.result as string);
-    r.readAsDataURL(f);
+    onPick(f);
+    e.target.value = "";
   };
   return (
     <div>
@@ -507,8 +506,8 @@ function PhotoRow({ label, list, onPick }: { label: string; list: string[]; onPi
         </p>
       ) : (
         <div className="flex gap-2 overflow-x-auto mt-3" style={{ scrollbarWidth: "none" }}>
-          {list.map((src, i) => (
-            <img key={i} src={src} alt="" style={{ width: 110, height: 150, objectFit: "cover", borderRadius: 12, flexShrink: 0 }} />
+          {list.map((it) => (
+            <img key={it.id} src={it.url} alt="" style={{ width: 110, height: 150, objectFit: "cover", borderRadius: 12, flexShrink: 0 }} />
           ))}
         </div>
       )}
@@ -518,10 +517,12 @@ function PhotoRow({ label, list, onPick }: { label: string; list: string[]; onPi
 
 /* ------------------------ Vergelijk ------------------------ */
 
-function VergelijkTab({ photos }: { photos: Record<PhotoKey, string[]> }) {
+function VergelijkTab({ photos }: { photos: Record<PhotoKey, PhotoItem[]> }) {
   const all = useMemo(() => {
-    return ([...PHOTO_LABELS].flatMap((p) => photos[p.key].map((src, i) => ({ src, label: `${p.label} #${i + 1}` }))));
+    return ([...PHOTO_LABELS].flatMap((p) => photos[p.key].map((it, i) => ({ src: it.url, label: `${p.label} #${i + 1}` }))));
   }, [photos]);
+
+
 
   const [left, setLeft] = useState<string | null>(null);
   const [right, setRight] = useState<string | null>(null);
