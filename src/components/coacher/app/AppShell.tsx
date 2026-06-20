@@ -5,7 +5,7 @@ import {
   MessageSquare,
   Settings,
   AlertTriangle,
-  
+  TrendingUp,
   Dumbbell,
   X,
   LogOut,
@@ -18,6 +18,7 @@ import { CoachClients } from "./CoachClients";
 import { CoachAlerts } from "./CoachAlerts";
 import { ChatScreen } from "./ChatScreen";
 import { KlantHome } from "./KlantHome";
+import { KlantVoortgang } from "./KlantVoortgang";
 
 import { KlantCoaching } from "./KlantCoaching";
 import { Settings as SettingsScreen } from "./Settings";
