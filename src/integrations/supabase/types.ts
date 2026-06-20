@@ -56,6 +56,57 @@ export type Database = {
         }
         Relationships: []
       }
+      progress_measurements: {
+        Row: {
+          created_at: string
+          id: string
+          measure_key: string
+          measured_at: string
+          user_id: string
+          value: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          measure_key: string
+          measured_at?: string
+          user_id: string
+          value: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          measure_key?: string
+          measured_at?: string
+          user_id?: string
+          value?: number
+        }
+        Relationships: []
+      }
+      progress_photos: {
+        Row: {
+          created_at: string
+          id: string
+          photo_key: string
+          storage_path: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          photo_key: string
+          storage_path: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          photo_key?: string
+          storage_path?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string

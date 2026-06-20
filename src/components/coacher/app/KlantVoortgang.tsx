@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Plus, ChevronRight, Calendar, ImagePlus, TrendingDown, TrendingUp, Minus, X, Pencil } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 type Tab = "gewicht" | "metingen" | "fotos" | "vergelijk";
 
-type WeightEntry = { date: string; kg: number };
 type MeasureKey =
   | "gewicht" | "bmi" | "vetpercentage" | "vetvrije_massa" | "spiermassa"
   | "botmassa" | "visceraal_vet" | "schouder" | "borst" | "taille"
@@ -40,6 +40,8 @@ const PHOTO_LABELS: { key: PhotoKey; label: string }[] = [
   { key: "extra", label: "Extra foto's" },
 ];
 
+const PHOTO_BUCKET = "progress-photos";
+
 const C = {
   bg: "#0A0F0D",
   surface: "#111815",
@@ -52,46 +54,108 @@ const C = {
   amber: "#FFD166",
 };
 
-function lsGet<T>(k: string, fb: T): T {
-  if (typeof window === "undefined") return fb;
-  try { const v = localStorage.getItem(k); return v ? JSON.parse(v) as T : fb; } catch { return fb; }
-}
-function lsSet(k: string, v: unknown) {
-  try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* noop */ }
-}
+type MeasurePoint = { date: string; value: number };
+type PhotoItem = { id: string; path: string; url: string };
 
 export function KlantVoortgang() {
   const [tab, setTab] = useState<Tab>("gewicht");
-  const [entries, setEntries] = useState<Record<MeasureKey, { date: string; value: number }[]>>(
-    () => lsGet("kv_measures", {} as Record<MeasureKey, { date: string; value: number }[]>)
+  const [entries, setEntries] = useState<Record<MeasureKey, MeasurePoint[]>>(
+    () => ({} as Record<MeasureKey, MeasurePoint[]>),
   );
-  const [photos, setPhotos] = useState<Record<PhotoKey, string[]>>(
-    () => lsGet("kv_photos", { voor: [], zij: [], achter: [], extra: [] })
-  );
+  const [photos, setPhotos] = useState<Record<PhotoKey, PhotoItem[]>>({
+    voor: [], zij: [], achter: [], extra: [],
+  });
   const [addOpen, setAddOpen] = useState(false);
   const [detailKey, setDetailKey] = useState<MeasureKey | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
 
-  useEffect(() => { lsSet("kv_measures", entries); }, [entries]);
-  useEffect(() => { lsSet("kv_photos", photos); }, [photos]);
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (cancelled || !user) return;
+      setUserId(user.id);
 
-  const addMeasurement = (vals: Partial<Record<MeasureKey, number>>) => {
-    const date = new Date().toISOString();
+      const { data: meas } = await supabase
+        .from("progress_measurements")
+        .select("measure_key, value, measured_at")
+        .order("measured_at", { ascending: true });
+      if (meas && !cancelled) {
+        const grouped = {} as Record<MeasureKey, MeasurePoint[]>;
+        for (const row of meas) {
+          const k = row.measure_key as MeasureKey;
+          (grouped[k] ||= []).push({ date: row.measured_at, value: Number(row.value) });
+        }
+        setEntries(grouped);
+      }
+
+      const { data: pics } = await supabase
+        .from("progress_photos")
+        .select("id, photo_key, storage_path, created_at")
+        .order("created_at", { ascending: true });
+      if (pics && !cancelled) {
+        const paths = pics.map((p) => p.storage_path);
+        const { data: signed } = paths.length
+          ? await supabase.storage.from(PHOTO_BUCKET).createSignedUrls(paths, 60 * 60)
+          : { data: [] as { path: string | null; signedUrl: string }[] };
+        const urlByPath = new Map((signed ?? []).map((s) => [s.path ?? "", s.signedUrl]));
+        const next: Record<PhotoKey, PhotoItem[]> = { voor: [], zij: [], achter: [], extra: [] };
+        for (const p of pics) {
+          const key = p.photo_key as PhotoKey;
+          if (!next[key]) continue;
+          next[key].push({ id: p.id, path: p.storage_path, url: urlByPath.get(p.storage_path) ?? "" });
+        }
+        setPhotos(next);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, []);
+
+  const addMeasurement = useCallback(async (vals: Partial<Record<MeasureKey, number>>) => {
+    if (!userId) return;
+    const measured_at = new Date().toISOString();
+    const rows = (Object.entries(vals) as [MeasureKey, number][])
+      .filter(([, v]) => Number.isFinite(v))
+      .map(([k, v]) => ({ user_id: userId, measure_key: k, value: v, measured_at }));
+    if (!rows.length) return;
+    const { error } = await supabase.from("progress_measurements").insert(rows);
+    if (error) { console.error(error); return; }
     setEntries((prev) => {
       const next = { ...prev };
-      (Object.entries(vals) as [MeasureKey, number][]).forEach(([k, v]) => {
-        if (Number.isFinite(v)) {
-          next[k] = [...(next[k] ?? []), { date, value: v }];
-        }
-      });
+      for (const r of rows) {
+        const k = r.measure_key as MeasureKey;
+        next[k] = [...(next[k] ?? []), { date: measured_at, value: r.value }];
+      }
       return next;
     });
-  };
+  }, [userId]);
 
-  const addPhoto = (key: PhotoKey, dataUrl: string) => {
-    setPhotos((p) => ({ ...p, [key]: [...p[key], dataUrl] }));
-  };
+  const addPhoto = useCallback(async (key: PhotoKey, file: File) => {
+    if (!userId) return;
+    const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
+    const path = `${userId}/${key}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+    const { error: upErr } = await supabase.storage.from(PHOTO_BUCKET).upload(path, file, {
+      contentType: file.type || "image/jpeg",
+      upsert: false,
+    });
+    if (upErr) { console.error(upErr); return; }
+    const { data: row, error: insErr } = await supabase
+      .from("progress_photos")
+      .insert({ user_id: userId, photo_key: key, storage_path: path })
+      .select("id")
+      .single();
+    if (insErr || !row) { console.error(insErr); return; }
+    const { data: signed } = await supabase.storage
+      .from(PHOTO_BUCKET)
+      .createSignedUrl(path, 60 * 60);
+    setPhotos((p) => ({
+      ...p,
+      [key]: [...p[key], { id: row.id, path, url: signed?.signedUrl ?? "" }],
+    }));
+  }, [userId]);
 
   const weightData = entries.gewicht ?? [];
+
 
   return (
     <div className="fade" style={{ paddingBottom: 8 }}>
@@ -390,8 +454,8 @@ function FotosTab({
   onAdd,
   onCompare,
 }: {
-  photos: Record<PhotoKey, string[]>;
-  onAdd: (k: PhotoKey, d: string) => void;
+  photos: Record<PhotoKey, PhotoItem[]>;
+  onAdd: (k: PhotoKey, file: File) => void;
   onCompare: () => void;
 }) {
   return (
@@ -405,21 +469,20 @@ function FotosTab({
 
       <div className="flex flex-col gap-4 mt-2">
         {PHOTO_LABELS.map((p) => (
-          <PhotoRow key={p.key} label={p.label} list={photos[p.key]} onPick={(d) => onAdd(p.key, d)} />
+          <PhotoRow key={p.key} label={p.label} list={photos[p.key]} onPick={(f) => onAdd(p.key, f)} />
         ))}
       </div>
     </div>
   );
 }
 
-function PhotoRow({ label, list, onPick }: { label: string; list: string[]; onPick: (d: string) => void }) {
+function PhotoRow({ label, list, onPick }: { label: string; list: PhotoItem[]; onPick: (f: File) => void }) {
   const ref = useRef<HTMLInputElement>(null);
   const handle = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
     if (!f) return;
-    const r = new FileReader();
-    r.onload = () => onPick(r.result as string);
-    r.readAsDataURL(f);
+    onPick(f);
+    e.target.value = "";
   };
   return (
     <div>
@@ -443,8 +506,8 @@ function PhotoRow({ label, list, onPick }: { label: string; list: string[]; onPi
         </p>
       ) : (
         <div className="flex gap-2 overflow-x-auto mt-3" style={{ scrollbarWidth: "none" }}>
-          {list.map((src, i) => (
-            <img key={i} src={src} alt="" style={{ width: 110, height: 150, objectFit: "cover", borderRadius: 12, flexShrink: 0 }} />
+          {list.map((it) => (
+            <img key={it.id} src={it.url} alt="" style={{ width: 110, height: 150, objectFit: "cover", borderRadius: 12, flexShrink: 0 }} />
           ))}
         </div>
       )}
@@ -454,10 +517,12 @@ function PhotoRow({ label, list, onPick }: { label: string; list: string[]; onPi
 
 /* ------------------------ Vergelijk ------------------------ */
 
-function VergelijkTab({ photos }: { photos: Record<PhotoKey, string[]> }) {
+function VergelijkTab({ photos }: { photos: Record<PhotoKey, PhotoItem[]> }) {
   const all = useMemo(() => {
-    return ([...PHOTO_LABELS].flatMap((p) => photos[p.key].map((src, i) => ({ src, label: `${p.label} #${i + 1}` }))));
+    return ([...PHOTO_LABELS].flatMap((p) => photos[p.key].map((it, i) => ({ src: it.url, label: `${p.label} #${i + 1}` }))));
   }, [photos]);
+
+
 
   const [left, setLeft] = useState<string | null>(null);
   const [right, setRight] = useState<string | null>(null);
