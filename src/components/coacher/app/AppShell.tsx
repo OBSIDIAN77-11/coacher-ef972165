@@ -44,6 +44,7 @@ const KLANT_TABS: Tab[] = [
   { key: "home", label: "Home", Icon: Home },
   { key: "coaching", label: "Coaching", Icon: Dumbbell },
   { key: "messages", label: "Berichten", Icon: MessageSquare },
+  { key: "voortgang", label: "Voortgang", Icon: TrendingUp },
   { key: "settings", label: "Instellingen", Icon: Settings },
 ];
 
