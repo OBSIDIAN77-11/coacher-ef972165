@@ -407,6 +407,9 @@ function TabContent({
   if (mode === "klant" && tab === "coaching") {
     return <KlantCoaching />;
   }
+  if (mode === "klant" && tab === "voortgang") {
+    return <KlantVoortgang />;
+  }
   if (tab === "settings") {
     return (
       <SettingsScreen
