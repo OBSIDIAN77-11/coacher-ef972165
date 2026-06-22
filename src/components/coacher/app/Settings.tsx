@@ -44,7 +44,7 @@ export function Settings({ mode, name, initials, onLogout }: Props) {
   const [confirmLogout, setConfirmLogout] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">(() => {
     if (typeof window === "undefined") return "light";
-    return (localStorage.getItem("coacher-theme") as "light" | "dark") ?? "light";
+    return (localStorage.getItem("coacher-theme") as "light" | "dark") ?? "dark";
   });
 
   useEffect(() => {
