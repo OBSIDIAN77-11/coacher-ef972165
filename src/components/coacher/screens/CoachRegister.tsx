@@ -79,13 +79,13 @@ export function CoachRegister({
         <form onSubmit={submit} className="w-full">
           <h2
             className="text-center"
-            style={{ fontSize: 22, fontWeight: 900, color: "#F0FAF6", letterSpacing: "-0.5px" }}
+            style={{ fontSize: 22, fontWeight: 900, color: "#0F172A", letterSpacing: "-0.5px" }}
           >
             Coach registratie
           </h2>
           <p
             className="text-center"
-            style={{ fontSize: 12, color: "#8BA89D", fontWeight: 600, marginBottom: 18 }}
+            style={{ fontSize: 12, color: "#64748B", fontWeight: 600, marginBottom: 18 }}
           >
             Eerste maand gratis
           </p>
@@ -169,16 +169,16 @@ export function CoachRegister({
               style={{
                 padding: "12px 14px",
                 borderRadius: 13,
-                background: "#111815",
-                border: "1px solid #1E2E28",
+                background: "#F8FAFC",
+                border: "1px solid #E2E8F0",
               }}
             >
               <Toggle on={online} onChange={setOnline} />
               <div className="flex-1">
-                <div style={{ fontSize: 13, fontWeight: 700, color: "#F0FAF6" }}>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "#0F172A" }}>
                   Online coaching aanbieden
                 </div>
-                <div style={{ fontSize: 11, color: "#8BA89D", fontWeight: 600 }}>
+                <div style={{ fontSize: 11, color: "#64748B", fontWeight: 600 }}>
                   Bereik klanten door heel NL
                 </div>
               </div>
@@ -188,11 +188,11 @@ export function CoachRegister({
               style={{
                 padding: "12px 14px",
                 borderRadius: 13,
-                background: "rgba(0,200,150,0.08)",
-                border: "1px solid rgba(0,200,150,0.25)",
+                background: "rgba(37,99,235,0.08)",
+                border: "1px solid rgba(37,99,235,0.25)",
               }}
             >
-              <p style={{ fontSize: 12, color: "#00C896", lineHeight: 1.55, fontWeight: 600 }}>
+              <p style={{ fontSize: 12, color: "#2563EB", lineHeight: 1.55, fontWeight: 600 }}>
                 Na registratie verifiëren we je diploma — 1-2 werkdagen.
               </p>
             </div>

@@ -14,14 +14,14 @@ type Contact = {
 };
 
 const COACH_CONTACTS: Contact[] = [
-  { id: "sophie", name: "Sophie B.", last: "Top, gisteren ging het super!", time: "14:02", unread: 2, online: true, grad: "linear-gradient(135deg,#00C896,#3D8EF0)" },
-  { id: "tim", name: "Tim R.", last: "Kunnen we vrijdag schuiven?", time: "11:48", unread: 0, online: false, grad: "linear-gradient(135deg,#3D8EF0,#8B5CF6)" },
+  { id: "sophie", name: "Sophie B.", last: "Top, gisteren ging het super!", time: "14:02", unread: 2, online: true, grad: "linear-gradient(135deg,#2563EB,#60A5FA)" },
+  { id: "tim", name: "Tim R.", last: "Kunnen we vrijdag schuiven?", time: "11:48", unread: 0, online: false, grad: "linear-gradient(135deg,#60A5FA,#8B5CF6)" },
   { id: "nora", name: "Nora K.", last: "Dankjewel voor het schema 🙌", time: "gisteren", unread: 1, online: true, grad: "linear-gradient(135deg,#FF8C42,#FFD166)" },
-  { id: "bas", name: "Bas H.", last: "Geen probleem, tot maandag.", time: "ma", unread: 0, online: false, grad: "linear-gradient(135deg,#3D8EF0,#00C896)" },
+  { id: "bas", name: "Bas H.", last: "Geen probleem, tot maandag.", time: "ma", unread: 0, online: false, grad: "linear-gradient(135deg,#60A5FA,#2563EB)" },
 ];
 
 const KLANT_CONTACTS: Contact[] = [
-  { id: "yasmine", name: "Yasmine El Karimi", last: "Goed bezig deze week!", time: "10:21", unread: 1, online: true, grad: "linear-gradient(135deg,#00C896,#3D8EF0)" },
+  { id: "yasmine", name: "Yasmine El Karimi", last: "Goed bezig deze week!", time: "10:21", unread: 1, online: true, grad: "linear-gradient(135deg,#2563EB,#60A5FA)" },
 ];
 
 type Msg = { id: string; from: "me" | "them"; text: string; time: string };
@@ -50,8 +50,8 @@ export function ChatScreen({ mode }: { mode: Mode }) {
 
   return (
     <div className="fade px-5 py-6">
-      <h1 style={{ fontSize: 28, fontWeight: 900, color: "#F0FAF6", letterSpacing: "-0.5px" }}>Berichten</h1>
-      <p style={{ fontSize: 13, color: "#8BA89D", fontWeight: 600, marginTop: 4 }}>
+      <h1 style={{ fontSize: 28, fontWeight: 900, color: "#0F172A", letterSpacing: "-0.5px" }}>Berichten</h1>
+      <p style={{ fontSize: 13, color: "#64748B", fontWeight: 600, marginTop: 4 }}>
         {contacts.length} {contacts.length === 1 ? "gesprek" : "gesprekken"}
       </p>
 
@@ -64,8 +64,8 @@ export function ChatScreen({ mode }: { mode: Mode }) {
             style={{
               padding: 14,
               borderRadius: 16,
-              background: "#162019",
-              border: "1px solid #1E2E28",
+              background: "#FFFFFF",
+              border: "1px solid #E2E8F0",
             }}
           >
             <div className="relative flex-shrink-0">
@@ -92,22 +92,22 @@ export function ChatScreen({ mode }: { mode: Mode }) {
                     width: 12,
                     height: 12,
                     borderRadius: "50%",
-                    background: "#00C896",
-                    border: "2px solid #162019",
+                    background: "#2563EB",
+                    border: "2px solid #FFFFFF",
                   }}
                 />
               )}
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center justify-between gap-2">
-                <div style={{ fontSize: 14, fontWeight: 800, color: "#F0FAF6" }}>{c.name}</div>
-                <div style={{ fontSize: 10, color: "#8BA89D", fontWeight: 700, flexShrink: 0 }}>{c.time}</div>
+                <div style={{ fontSize: 14, fontWeight: 800, color: "#0F172A" }}>{c.name}</div>
+                <div style={{ fontSize: 10, color: "#64748B", fontWeight: 700, flexShrink: 0 }}>{c.time}</div>
               </div>
               <div className="flex items-center justify-between gap-2 mt-1">
                 <div
                   style={{
                     fontSize: 12,
-                    color: c.unread > 0 ? "#F0FAF6" : "#8BA89D",
+                    color: c.unread > 0 ? "#0F172A" : "#64748B",
                     fontWeight: c.unread > 0 ? 700 : 500,
                     overflow: "hidden",
                     textOverflow: "ellipsis",
@@ -124,7 +124,7 @@ export function ChatScreen({ mode }: { mode: Mode }) {
                       height: 20,
                       padding: "0 6px",
                       borderRadius: 999,
-                      background: "linear-gradient(135deg,#00C896,#3D8EF0)",
+                      background: "linear-gradient(135deg,#2563EB,#60A5FA)",
                       color: "white",
                       fontSize: 10,
                       fontWeight: 800,
@@ -173,11 +173,11 @@ function ChatThread({ contact, onBack }: { contact: Contact; onBack: () => void 
           background: "rgba(10,15,13,0.93)",
           backdropFilter: "blur(18px)",
           WebkitBackdropFilter: "blur(18px)",
-          borderBottom: "1px solid #1E2E28",
+          borderBottom: "1px solid #E2E8F0",
         }}
       >
         <button onClick={onBack} className="flex items-center justify-center" style={{ width: 32, height: 32 }}>
-          <ChevronLeft size={20} color="#F0FAF6" />
+          <ChevronLeft size={20} color="#0F172A" />
         </button>
         <div className="flex items-center gap-2 flex-1 ml-1">
           <div className="relative">
@@ -204,15 +204,15 @@ function ChatThread({ contact, onBack }: { contact: Contact; onBack: () => void 
                   width: 10,
                   height: 10,
                   borderRadius: "50%",
-                  background: "#00C896",
-                  border: "2px solid #0A0F0D",
+                  background: "#2563EB",
+                  border: "2px solid #FFFFFF",
                 }}
               />
             )}
           </div>
           <div>
-            <div style={{ fontSize: 14, fontWeight: 800, color: "#F0FAF6" }}>{contact.name}</div>
-            <div style={{ fontSize: 10, color: contact.online ? "#00C896" : "#8BA89D", fontWeight: 700 }}>
+            <div style={{ fontSize: 14, fontWeight: 800, color: "#0F172A" }}>{contact.name}</div>
+            <div style={{ fontSize: 10, color: contact.online ? "#2563EB" : "#64748B", fontWeight: 700 }}>
               {contact.online ? "online" : "offline"}
             </div>
           </div>
@@ -261,9 +261,9 @@ function ChatThread({ contact, onBack }: { contact: Contact; onBack: () => void 
                   style={{
                     padding: "10px 14px",
                     borderRadius: 18,
-                    background: mine ? "linear-gradient(135deg,#00C896,#3D8EF0)" : "#162019",
-                    border: mine ? "none" : "1px solid #1E2E28",
-                    color: mine ? "white" : "#F0FAF6",
+                    background: mine ? "linear-gradient(135deg,#2563EB,#60A5FA)" : "#FFFFFF",
+                    border: mine ? "none" : "1px solid #E2E8F0",
+                    color: mine ? "white" : "#0F172A",
                     fontSize: 13,
                     fontWeight: 500,
                     lineHeight: 1.45,
@@ -276,7 +276,7 @@ function ChatThread({ contact, onBack }: { contact: Contact; onBack: () => void 
                 <div
                   style={{
                     fontSize: 9,
-                    color: "#4A6358",
+                    color: "#94A3B8",
                     fontWeight: 700,
                     marginTop: 4,
                     textAlign: mine ? "right" : "left",
@@ -301,7 +301,7 @@ function ChatThread({ contact, onBack }: { contact: Contact; onBack: () => void 
           background: "rgba(10,15,13,0.95)",
           backdropFilter: "blur(18px)",
           WebkitBackdropFilter: "blur(18px)",
-          borderTop: "1px solid #1E2E28",
+          borderTop: "1px solid #E2E8F0",
         }}
       >
         <div
@@ -309,8 +309,8 @@ function ChatThread({ contact, onBack }: { contact: Contact; onBack: () => void 
           style={{
             padding: 6,
             borderRadius: 999,
-            background: "#162019",
-            border: "1px solid #1E2E28",
+            background: "#FFFFFF",
+            border: "1px solid #E2E8F0",
           }}
         >
           <input
@@ -327,7 +327,7 @@ function ChatThread({ contact, onBack }: { contact: Contact; onBack: () => void 
             style={{
               padding: "8px 12px",
               fontSize: 13,
-              color: "#F0FAF6",
+              color: "#0F172A",
               fontWeight: 500,
               border: "none",
             }}
@@ -339,10 +339,10 @@ function ChatThread({ contact, onBack }: { contact: Contact; onBack: () => void 
               width: 36,
               height: 36,
               borderRadius: "50%",
-              background: "linear-gradient(135deg,#00C896,#3D8EF0)",
+              background: "linear-gradient(135deg,#2563EB,#60A5FA)",
               color: "white",
               border: "none",
-              boxShadow: "0 4px 12px rgba(0,200,150,0.30)",
+              boxShadow: "0 4px 12px rgba(37,99,235,0.30)",
             }}
           >
             <Send size={15} strokeWidth={2.5} />

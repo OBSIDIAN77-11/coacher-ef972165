@@ -23,8 +23,8 @@ export function PhotoUpload({ size = 84 }: { size?: number }) {
           width: size,
           height: size,
           borderRadius: "50%",
-          border: `2px dashed ${src ? "#00C896" : "#2A4038"}`,
-          background: src ? "transparent" : "#111815",
+          border: `2px dashed ${src ? "#2563EB" : "#CBD5E1"}`,
+          background: src ? "transparent" : "#F8FAFC",
           cursor: "pointer",
         }}
       >
@@ -32,10 +32,10 @@ export function PhotoUpload({ size = 84 }: { size?: number }) {
           <img src={src} alt="" className="h-full w-full object-cover" />
         ) : (
           <div className="flex flex-col items-center gap-1">
-            <Camera color="#00C896" size={22} />
+            <Camera color="#2563EB" size={22} />
             <span
               className="uppercase"
-              style={{ color: "#00C896", fontSize: 9, fontWeight: 800, letterSpacing: "0.6px" }}
+              style={{ color: "#2563EB", fontSize: 9, fontWeight: 800, letterSpacing: "0.6px" }}
             >
               Foto
             </span>

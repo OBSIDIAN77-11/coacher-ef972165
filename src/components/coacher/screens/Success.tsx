@@ -18,8 +18,8 @@ export function Success({ role, onOpen }: { role: Role; onOpen: () => void }) {
             width: 80,
             height: 80,
             borderRadius: 24,
-            background: "linear-gradient(135deg,#00C896,#3D8EF0)",
-            boxShadow: "0 0 50px rgba(0,200,150,0.45)",
+            background: "linear-gradient(135deg,#2563EB,#60A5FA)",
+            boxShadow: "0 0 50px rgba(37,99,235,0.45)",
             marginBottom: 24,
           }}
         >
@@ -29,7 +29,7 @@ export function Success({ role, onOpen }: { role: Role; onOpen: () => void }) {
           style={{
             fontSize: 30,
             fontWeight: 900,
-            color: "#F0FAF6",
+            color: "#0F172A",
             letterSpacing: "-0.5px",
             marginBottom: 12,
           }}
@@ -39,7 +39,7 @@ export function Success({ role, onOpen }: { role: Role; onOpen: () => void }) {
         <p
           style={{
             fontSize: 14,
-            color: "#8BA89D",
+            color: "#64748B",
             lineHeight: 1.7,
             marginBottom: 32,
             maxWidth: 320,

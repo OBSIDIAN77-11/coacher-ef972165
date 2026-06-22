@@ -39,11 +39,11 @@ export function Verification({
 function StepHeader({ title, sub }: { title: string; sub?: string }) {
   return (
     <div className="mb-5 text-center">
-      <h1 style={{ fontSize: 26, fontWeight: 900, color: "#F0FAF6", letterSpacing: "-0.5px" }}>
+      <h1 style={{ fontSize: 26, fontWeight: 900, color: "#0F172A", letterSpacing: "-0.5px" }}>
         {title}
       </h1>
       {sub && (
-        <p style={{ fontSize: 13, color: "#8BA89D", fontWeight: 600, marginTop: 6 }}>{sub}</p>
+        <p style={{ fontSize: 13, color: "#64748B", fontWeight: 600, marginTop: 6 }}>{sub}</p>
       )}
     </div>
   );
@@ -60,21 +60,21 @@ function Intro({ onStart, onSkip }: { onStart: () => void; onSkip: () => void })
             width: 74,
             height: 74,
             borderRadius: 22,
-            background: "linear-gradient(135deg,#00C896,#3D8EF0)",
-            boxShadow: "0 0 40px rgba(0,200,150,0.42)",
+            background: "linear-gradient(135deg,#2563EB,#60A5FA)",
+            boxShadow: "0 0 40px rgba(37,99,235,0.42)",
           }}
         >
           <Shield color="white" size={32} strokeWidth={2.4} />
         </div>
         <h1
           className="mt-5"
-          style={{ fontSize: 28, fontWeight: 900, color: "#F0FAF6", letterSpacing: "-0.5px" }}
+          style={{ fontSize: 28, fontWeight: 900, color: "#0F172A", letterSpacing: "-0.5px" }}
         >
           Verificatie
         </h1>
         <p
           className="mt-2 text-center"
-          style={{ fontSize: 13, color: "#8BA89D", fontWeight: 600, maxWidth: 280 }}
+          style={{ fontSize: 13, color: "#64748B", fontWeight: 600, maxWidth: 280 }}
         >
           Veilig en snel — duurt 2 minuten.
         </p>
@@ -88,8 +88,8 @@ function Intro({ onStart, onSkip }: { onStart: () => void; onSkip: () => void })
             style={{
               padding: "14px 16px",
               borderRadius: 16,
-              background: "#162019",
-              border: "1px solid #1E2E28",
+              background: "#FFFFFF",
+              border: "1px solid #E2E8F0",
             }}
           >
             <div
@@ -98,7 +98,7 @@ function Intro({ onStart, onSkip }: { onStart: () => void; onSkip: () => void })
                 width: 32,
                 height: 32,
                 borderRadius: 10,
-                background: "linear-gradient(135deg,#00C896,#3D8EF0)",
+                background: "linear-gradient(135deg,#2563EB,#60A5FA)",
                 color: "white",
                 fontSize: 13,
                 fontWeight: 800,
@@ -107,7 +107,7 @@ function Intro({ onStart, onSkip }: { onStart: () => void; onSkip: () => void })
             >
               {i + 1}
             </div>
-            <span style={{ fontSize: 14, fontWeight: 700, color: "#F0FAF6" }}>{s}</span>
+            <span style={{ fontSize: 14, fontWeight: 700, color: "#0F172A" }}>{s}</span>
           </div>
         ))}
       </div>
@@ -119,7 +119,7 @@ function Intro({ onStart, onSkip }: { onStart: () => void; onSkip: () => void })
         <button
           onClick={onSkip}
           className="mt-3 w-full text-center"
-          style={{ fontSize: 13, color: "#8BA89D", fontWeight: 700 }}
+          style={{ fontSize: 13, color: "#64748B", fontWeight: 700 }}
         >
           Later doen
         </button>
@@ -148,8 +148,8 @@ function IdScan({ onNext }: { onNext: () => void }) {
         style={{
           aspectRatio: "1.6 / 1",
           borderRadius: 18,
-          border: `2px dashed ${img ? "#00C896" : "#2A4038"}`,
-          background: img ? "transparent" : "#111815",
+          border: `2px dashed ${img ? "#2563EB" : "#CBD5E1"}`,
+          background: img ? "transparent" : "#F8FAFC",
         }}
       >
         {img ? (
@@ -157,7 +157,7 @@ function IdScan({ onNext }: { onNext: () => void }) {
             <img src={img} alt="" className="h-full w-full object-cover" />
             <div
               className="absolute inset-0 flex items-center justify-center"
-              style={{ background: "rgba(0,200,150,0.18)" }}
+              style={{ background: "rgba(37,99,235,0.18)" }}
             >
               <span
                 style={{
@@ -175,11 +175,11 @@ function IdScan({ onNext }: { onNext: () => void }) {
           </>
         ) : (
           <div className="flex h-full flex-col items-center justify-center gap-2">
-            <Camera color="#00C896" size={36} />
-            <span style={{ fontSize: 13, fontWeight: 700, color: "#F0FAF6" }}>
+            <Camera color="#2563EB" size={36} />
+            <span style={{ fontSize: 13, fontWeight: 700, color: "#0F172A" }}>
               Tik om ID te fotograferen
             </span>
-            <span style={{ fontSize: 11, color: "#8BA89D", fontWeight: 600 }}>
+            <span style={{ fontSize: 11, color: "#64748B", fontWeight: 600 }}>
               Achtercamera · zorg voor goed licht
             </span>
           </div>
@@ -200,12 +200,12 @@ function IdScan({ onNext }: { onNext: () => void }) {
           style={{
             padding: "10px 14px",
             borderRadius: 12,
-            background: "rgba(0,200,150,0.10)",
-            border: "1px solid rgba(0,200,150,0.30)",
+            background: "rgba(37,99,235,0.10)",
+            border: "1px solid rgba(37,99,235,0.30)",
           }}
         >
-          <Check color="#00C896" size={14} strokeWidth={3} />
-          <span style={{ fontSize: 12, fontWeight: 700, color: "#00C896" }}>
+          <Check color="#2563EB" size={14} strokeWidth={3} />
+          <span style={{ fontSize: 12, fontWeight: 700, color: "#2563EB" }}>
             ID gescand en gevalideerd
           </span>
         </div>
@@ -250,16 +250,16 @@ function Selfie({ onNext }: { onNext: () => void }) {
             width: 180,
             height: 180,
             borderRadius: "50%",
-            border: `2px dashed ${img ? "#00C896" : "#2A4038"}`,
-            background: img ? "transparent" : "#111815",
+            border: `2px dashed ${img ? "#2563EB" : "#CBD5E1"}`,
+            background: img ? "transparent" : "#F8FAFC",
           }}
         >
           {img ? (
             <img src={img} alt="" className="h-full w-full object-cover" />
           ) : (
             <div className="flex flex-col items-center gap-2">
-              <User color="#00C896" size={38} />
-              <span style={{ fontSize: 11, fontWeight: 800, color: "#00C896" }}>SELFIE</span>
+              <User color="#2563EB" size={38} />
+              <span style={{ fontSize: 11, fontWeight: 800, color: "#2563EB" }}>SELFIE</span>
             </div>
           )}
         </button>
@@ -281,11 +281,11 @@ function Selfie({ onNext }: { onNext: () => void }) {
               width: 14,
               height: 14,
               borderRadius: "50%",
-              border: "2.5px solid rgba(0,200,150,0.25)",
-              borderTopColor: "#00C896",
+              border: "2.5px solid rgba(37,99,235,0.25)",
+              borderTopColor: "#2563EB",
             }}
           />
-          <span style={{ fontSize: 12, fontWeight: 700, color: "#8BA89D" }}>
+          <span style={{ fontSize: 12, fontWeight: 700, color: "#64748B" }}>
             Gezichtsherkenning actief…
           </span>
         </div>
@@ -294,14 +294,14 @@ function Selfie({ onNext }: { onNext: () => void }) {
       {phase === "done" && (
         <div className="mt-5">
           <div className="mb-2 flex items-center justify-between">
-            <span style={{ fontSize: 12, fontWeight: 700, color: "#F0FAF6" }}>Overeenkomst</span>
-            <span style={{ fontSize: 12, fontWeight: 800, color: "#00C896" }}>97%</span>
+            <span style={{ fontSize: 12, fontWeight: 700, color: "#0F172A" }}>Overeenkomst</span>
+            <span style={{ fontSize: 12, fontWeight: 800, color: "#2563EB" }}>97%</span>
           </div>
           <div
             style={{
               height: 8,
               borderRadius: 4,
-              background: "#1E2E28",
+              background: "#E2E8F0",
               overflow: "hidden",
             }}
           >
@@ -309,7 +309,7 @@ function Selfie({ onNext }: { onNext: () => void }) {
               style={{
                 width: "97%",
                 height: "100%",
-                background: "linear-gradient(135deg,#00C896,#3D8EF0)",
+                background: "linear-gradient(135deg,#2563EB,#60A5FA)",
               }}
             />
           </div>
@@ -344,8 +344,8 @@ function Done({ onNext }: { onNext: () => void }) {
           width: 80,
           height: 80,
           borderRadius: 24,
-          background: "linear-gradient(135deg,#00C896,#3D8EF0)",
-          boxShadow: "0 0 50px rgba(0,200,150,0.45)",
+          background: "linear-gradient(135deg,#2563EB,#60A5FA)",
+          boxShadow: "0 0 50px rgba(37,99,235,0.45)",
           marginBottom: 24,
         }}
       >
@@ -355,7 +355,7 @@ function Done({ onNext }: { onNext: () => void }) {
         style={{
           fontSize: 28,
           fontWeight: 900,
-          color: "#F0FAF6",
+          color: "#0F172A",
           letterSpacing: "-0.5px",
           marginBottom: 18,
         }}
@@ -372,9 +372,9 @@ function Done({ onNext }: { onNext: () => void }) {
               borderRadius: 999,
               fontSize: 12,
               fontWeight: 800,
-              background: "rgba(0,200,150,0.12)",
-              color: "#00C896",
-              border: "1px solid rgba(0,200,150,0.30)",
+              background: "rgba(37,99,235,0.12)",
+              color: "#2563EB",
+              border: "1px solid rgba(37,99,235,0.30)",
             }}
           >
             {i.label} ✓
