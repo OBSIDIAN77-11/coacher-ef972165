@@ -55,13 +55,13 @@ export function ClientRegister({
         <form onSubmit={submit} className="w-full">
           <h2
             className="text-center"
-            style={{ fontSize: 22, fontWeight: 900, color: "#F0FAF6", letterSpacing: "-0.5px" }}
+            style={{ fontSize: 22, fontWeight: 900, color: "#0F172A", letterSpacing: "-0.5px" }}
           >
             Klant registratie
           </h2>
           <p
             className="text-center"
-            style={{ fontSize: 12, color: "#8BA89D", fontWeight: 600, marginBottom: 20 }}
+            style={{ fontSize: 12, color: "#64748B", fontWeight: 600, marginBottom: 20 }}
           >
             €10/maand — altijd opzegbaar
           </p>
@@ -112,7 +112,7 @@ export function ClientRegister({
             <div className="mt-1">
               <div className="mb-2 flex items-baseline gap-2">
                 <Label>Mijn doelen</Label>
-                <span style={{ fontSize: 10, color: "#4A6358", fontWeight: 600 }}>
+                <span style={{ fontSize: 10, color: "#94A3B8", fontWeight: 600 }}>
                   (meerdere mogelijk)
                 </span>
               </div>
@@ -130,9 +130,9 @@ export function ClientRegister({
                         borderRadius: 13,
                         fontSize: 13,
                         fontWeight: 700,
-                        border: `1.5px solid ${active ? "#00C896" : "#1E2E28"}`,
-                        background: active ? "rgba(0,200,150,0.10)" : "#162019",
-                        color: active ? "#00C896" : "#8BA89D",
+                        border: `1.5px solid ${active ? "#2563EB" : "#E2E8F0"}`,
+                        background: active ? "rgba(37,99,235,0.10)" : "#FFFFFF",
+                        color: active ? "#2563EB" : "#64748B",
                       }}
                     >
                       {g}
@@ -145,7 +145,7 @@ export function ClientRegister({
                             width: 16,
                             height: 16,
                             borderRadius: "50%",
-                            background: "#00C896",
+                            background: "#2563EB",
                           }}
                         >
                           <Check color="white" size={10} strokeWidth={3.5} />

@@ -22,8 +22,8 @@ export function CoachClients() {
 
   return (
     <div className="fade px-5 py-6">
-      <h1 style={{ fontSize: 28, fontWeight: 900, color: "#F0FAF6", letterSpacing: "-0.5px" }}>Cliënten</h1>
-      <p style={{ fontSize: 13, color: "#8BA89D", fontWeight: 600, marginTop: 4 }}>
+      <h1 style={{ fontSize: 28, fontWeight: 900, color: "#0F172A", letterSpacing: "-0.5px" }}>Cliënten</h1>
+      <p style={{ fontSize: 13, color: "#64748B", fontWeight: 600, marginTop: 4 }}>
         {COACH_CLIENTS.length} actieve cliënten
       </p>
       <div className="flex flex-col gap-2 mt-5">
@@ -35,8 +35,8 @@ export function CoachClients() {
             style={{
               padding: 14,
               borderRadius: 16,
-              background: "#162019",
-              border: "1px solid #1E2E28",
+              background: "#FFFFFF",
+              border: "1px solid #E2E8F0",
             }}
           >
             <div className="flex items-center justify-between">
@@ -56,15 +56,15 @@ export function CoachClients() {
                   {c.name.split(" ").map((p) => p[0]).join("")}
                 </div>
                 <div>
-                  <div style={{ fontSize: 14, fontWeight: 800, color: "#F0FAF6" }}>{c.name}</div>
-                  <div style={{ fontSize: 11, color: "#8BA89D", fontWeight: 600, marginTop: 2 }}>
+                  <div style={{ fontSize: 14, fontWeight: 800, color: "#0F172A" }}>{c.name}</div>
+                  <div style={{ fontSize: 11, color: "#64748B", fontWeight: 600, marginTop: 2 }}>
                     {c.goal} · {c.week}
                   </div>
                 </div>
               </div>
-              <div style={{ fontSize: 13, fontWeight: 800, color: "#00C896" }}>{c.delta}</div>
+              <div style={{ fontSize: 13, fontWeight: 800, color: "#2563EB" }}>{c.delta}</div>
             </div>
-            <div className="mt-3" style={{ height: 6, borderRadius: 999, background: "#0A0F0D", overflow: "hidden" }}>
+            <div className="mt-3" style={{ height: 6, borderRadius: 999, background: "#FFFFFF", overflow: "hidden" }}>
               <div style={{ height: "100%", width: `${c.pct}%`, background: c.grad, borderRadius: 999 }} />
             </div>
           </button>
@@ -89,7 +89,7 @@ function ClientDetail({
       <button
         onClick={onBack}
         className="flex items-center gap-1 mx-5 mt-5"
-        style={{ fontSize: 12, fontWeight: 700, color: "#8BA89D" }}
+        style={{ fontSize: 12, fontWeight: 700, color: "#64748B" }}
       >
         <ChevronLeft size={16} /> Terug
       </button>
@@ -131,9 +131,9 @@ function ClientDetail({
                 style={{
                   padding: "8px 14px",
                   borderRadius: 999,
-                  background: active ? "linear-gradient(135deg,#00C896,#3D8EF0)" : "#162019",
-                  border: active ? "none" : "1px solid #1E2E28",
-                  color: active ? "white" : "#8BA89D",
+                  background: active ? "linear-gradient(135deg,#2563EB,#60A5FA)" : "#FFFFFF",
+                  border: active ? "none" : "1px solid #E2E8F0",
+                  color: active ? "white" : "#64748B",
                   fontSize: 12,
                   fontWeight: 800,
                   whiteSpace: "nowrap",
@@ -163,8 +163,8 @@ function Card({ children, style }: { children: React.ReactNode; style?: React.CS
       style={{
         padding: 16,
         borderRadius: 18,
-        background: "#162019",
-        border: "1px solid #1E2E28",
+        background: "#FFFFFF",
+        border: "1px solid #E2E8F0",
         ...style,
       }}
     >
@@ -184,12 +184,12 @@ function TabSchema() {
       {days.map((d) => (
         <Card key={d.day}>
           <div className="flex items-center justify-between mb-2">
-            <div style={{ fontSize: 14, fontWeight: 800, color: "#F0FAF6" }}>{d.day}</div>
-            <div style={{ fontSize: 10, fontWeight: 800, color: "#00C896" }}>{d.focus}</div>
+            <div style={{ fontSize: 14, fontWeight: 800, color: "#0F172A" }}>{d.day}</div>
+            <div style={{ fontSize: 10, fontWeight: 800, color: "#2563EB" }}>{d.focus}</div>
           </div>
           <div className="flex flex-col gap-1">
             {d.items.map((it) => (
-              <div key={it} style={{ fontSize: 12, color: "#8BA89D", fontWeight: 600 }}>
+              <div key={it} style={{ fontSize: 12, color: "#64748B", fontWeight: 600 }}>
                 · {it}
               </div>
             ))}
@@ -212,15 +212,15 @@ function TabVoeding() {
         <Card key={m.name}>
           <div className="flex items-center justify-between">
             <div>
-              <div style={{ fontSize: 14, fontWeight: 800, color: "#F0FAF6" }}>{m.name}</div>
-              <div style={{ fontSize: 12, color: "#8BA89D", fontWeight: 600, marginTop: 2 }}>{m.desc}</div>
+              <div style={{ fontSize: 14, fontWeight: 800, color: "#0F172A" }}>{m.name}</div>
+              <div style={{ fontSize: 12, color: "#64748B", fontWeight: 600, marginTop: 2 }}>{m.desc}</div>
             </div>
             <div
               style={{
                 padding: "5px 10px",
                 borderRadius: 999,
-                background: "rgba(0,200,150,0.12)",
-                color: "#00C896",
+                background: "rgba(37,99,235,0.12)",
+                color: "#2563EB",
                 fontSize: 11,
                 fontWeight: 800,
               }}
@@ -245,16 +245,16 @@ function TabVoortgang() {
   return (
     <div className="flex flex-col gap-3 fade">
       <Card>
-        <div style={{ fontSize: 13, fontWeight: 800, color: "#F0FAF6", marginBottom: 10 }}>Gewichtsverloop</div>
+        <div style={{ fontSize: 13, fontWeight: 800, color: "#0F172A", marginBottom: 10 }}>Gewichtsverloop</div>
         {rows.map((r, i) => (
           <div
             key={r.wk}
             className="flex items-center justify-between"
-            style={{ padding: "10px 0", borderTop: i === 0 ? "none" : "1px solid #1E2E28" }}
+            style={{ padding: "10px 0", borderTop: i === 0 ? "none" : "1px solid #E2E8F0" }}
           >
-            <div style={{ fontSize: 12, fontWeight: 700, color: "#8BA89D" }}>{r.wk}</div>
-            <div style={{ fontSize: 13, fontWeight: 800, color: "#F0FAF6" }}>{r.w}</div>
-            <div style={{ fontSize: 12, fontWeight: 800, color: "#00C896" }}>{r.d}</div>
+            <div style={{ fontSize: 12, fontWeight: 700, color: "#64748B" }}>{r.wk}</div>
+            <div style={{ fontSize: 13, fontWeight: 800, color: "#0F172A" }}>{r.w}</div>
+            <div style={{ fontSize: 12, fontWeight: 800, color: "#2563EB" }}>{r.d}</div>
           </div>
         ))}
       </Card>
@@ -262,7 +262,7 @@ function TabVoortgang() {
         style={{
           padding: 18,
           borderRadius: 18,
-          background: "linear-gradient(135deg,#00C896,#3D8EF0)",
+          background: "linear-gradient(135deg,#2563EB,#60A5FA)",
           color: "white",
         }}
       >
@@ -285,10 +285,10 @@ function TabCheckin() {
     <div className="flex flex-col gap-2 fade">
       {qa.map((x, i) => (
         <Card key={i}>
-          <div style={{ fontSize: 11, fontWeight: 800, color: "#00C896", textTransform: "uppercase", letterSpacing: 0.5 }}>
+          <div style={{ fontSize: 11, fontWeight: 800, color: "#2563EB", textTransform: "uppercase", letterSpacing: 0.5 }}>
             {x.q}
           </div>
-          <div style={{ fontSize: 13, color: "#F0FAF6", fontWeight: 600, marginTop: 6, lineHeight: 1.5 }}>{x.a}</div>
+          <div style={{ fontSize: 13, color: "#0F172A", fontWeight: 600, marginTop: 6, lineHeight: 1.5 }}>{x.a}</div>
         </Card>
       ))}
       <button
@@ -296,12 +296,12 @@ function TabCheckin() {
         style={{
           padding: "14px",
           borderRadius: 14,
-          background: "linear-gradient(135deg,#00C896,#3D8EF0)",
+          background: "linear-gradient(135deg,#2563EB,#60A5FA)",
           color: "white",
           fontSize: 14,
           fontWeight: 800,
           border: "none",
-          boxShadow: "0 8px 20px rgba(0,200,150,0.30)",
+          boxShadow: "0 8px 20px rgba(37,99,235,0.30)",
         }}
       >
         Schema aanpassen
@@ -312,16 +312,16 @@ function TabCheckin() {
 
 function TabGezondheid() {
   const bio = [
-    { label: "Herstel", value: "78%", color: "#00C896" },
-    { label: "HRV", value: "52 ms", color: "#3D8EF0" },
+    { label: "Herstel", value: "78%", color: "#2563EB" },
+    { label: "HRV", value: "52 ms", color: "#60A5FA" },
     { label: "Hartslag", value: "58 bpm", color: "#FF4D6A" },
     { label: "VO2Max", value: "44.5", color: "#FFD166" },
   ];
   const phases = [
-    { name: "Diep", pct: 24, color: "#3D8EF0" },
-    { name: "REM", pct: 22, color: "#00C896" },
+    { name: "Diep", pct: 24, color: "#60A5FA" },
+    { name: "REM", pct: 22, color: "#2563EB" },
     { name: "Licht", pct: 48, color: "#8B5CF6" },
-    { name: "Wakker", pct: 6, color: "#4A6358" },
+    { name: "Wakker", pct: 6, color: "#94A3B8" },
   ];
   const week = [4.8, 6.5, 7.8, 7.2, 8.1, 6.9, 7.4];
   const days = ["Ma", "Di", "Wo", "Do", "Vr", "Za", "Zo"];
@@ -329,7 +329,7 @@ function TabGezondheid() {
   return (
     <div className="flex flex-col gap-3 fade">
       <div className="flex items-center justify-between">
-        <div style={{ fontSize: 16, fontWeight: 800, color: "#F0FAF6" }}>Biometrics</div>
+        <div style={{ fontSize: 16, fontWeight: 800, color: "#0F172A" }}>Biometrics</div>
         <div
           className="flex items-center gap-1.5"
           style={{
@@ -348,7 +348,7 @@ function TabGezondheid() {
       <div className="grid grid-cols-2 gap-2">
         {bio.map((b) => (
           <Card key={b.label}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: "#8BA89D" }}>{b.label}</div>
+            <div style={{ fontSize: 11, fontWeight: 700, color: "#64748B" }}>{b.label}</div>
             <div style={{ fontSize: 22, fontWeight: 900, color: b.color, marginTop: 4, letterSpacing: "-0.5px" }}>
               {b.value}
             </div>
@@ -359,12 +359,12 @@ function TabGezondheid() {
       <Card>
         <div className="flex items-center justify-between mb-3">
           <div>
-            <div style={{ fontSize: 11, fontWeight: 700, color: "#8BA89D" }}>Slaap</div>
-            <div style={{ fontSize: 22, fontWeight: 900, color: "#F0FAF6", marginTop: 2 }}>7.2u</div>
+            <div style={{ fontSize: 11, fontWeight: 700, color: "#64748B" }}>Slaap</div>
+            <div style={{ fontSize: 22, fontWeight: 900, color: "#0F172A", marginTop: 2 }}>7.2u</div>
           </div>
           <div style={{ textAlign: "right" }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: "#8BA89D" }}>Score</div>
-            <div style={{ fontSize: 22, fontWeight: 900, color: "#00C896", marginTop: 2 }}>84/100</div>
+            <div style={{ fontSize: 11, fontWeight: 700, color: "#64748B" }}>Score</div>
+            <div style={{ fontSize: 22, fontWeight: 900, color: "#2563EB", marginTop: 2 }}>84/100</div>
           </div>
         </div>
         <div className="flex overflow-hidden" style={{ height: 10, borderRadius: 999 }}>
@@ -380,14 +380,14 @@ function TabGezondheid() {
           {phases.map((p) => (
             <div key={p.name} className="flex items-center gap-1">
               <span style={{ width: 8, height: 8, borderRadius: 2, background: p.color }} />
-              <span style={{ fontSize: 10, color: "#8BA89D", fontWeight: 700 }}>{p.name}</span>
+              <span style={{ fontSize: 10, color: "#64748B", fontWeight: 700 }}>{p.name}</span>
             </div>
           ))}
         </div>
       </Card>
 
       <Card>
-        <div style={{ fontSize: 13, fontWeight: 800, color: "#F0FAF6", marginBottom: 12 }}>Slaap deze week</div>
+        <div style={{ fontSize: 13, fontWeight: 800, color: "#0F172A", marginBottom: 12 }}>Slaap deze week</div>
         <div className="flex items-end justify-between gap-2" style={{ height: 100 }}>
           {week.map((h, i) => (
             <div key={i} className="flex flex-col items-center gap-1.5 flex-1">
@@ -395,12 +395,12 @@ function TabGezondheid() {
                 style={{
                   width: "100%",
                   height: `${(h / 10) * 100}%`,
-                  background: "linear-gradient(to top,#00C896,#3D8EF0)",
+                  background: "linear-gradient(to top,#2563EB,#60A5FA)",
                   borderRadius: 6,
                   minHeight: 4,
                 }}
               />
-              <div style={{ fontSize: 10, color: "#8BA89D", fontWeight: 700 }}>{days[i]}</div>
+              <div style={{ fontSize: 10, color: "#64748B", fontWeight: 700 }}>{days[i]}</div>
             </div>
           ))}
         </div>
@@ -411,8 +411,8 @@ function TabGezondheid() {
         style={{
           padding: 14,
           borderRadius: 16,
-          background: "rgba(0,200,150,0.10)",
-          border: "1px solid rgba(0,200,150,0.30)",
+          background: "rgba(37,99,235,0.10)",
+          border: "1px solid rgba(37,99,235,0.30)",
         }}
       >
         <div
@@ -421,17 +421,17 @@ function TabGezondheid() {
             width: 32,
             height: 32,
             borderRadius: 10,
-            background: "rgba(0,200,150,0.18)",
-            color: "#00C896",
+            background: "rgba(37,99,235,0.18)",
+            color: "#2563EB",
           }}
         >
           <Lightbulb size={16} />
         </div>
         <div>
-          <div style={{ fontSize: 11, fontWeight: 800, color: "#00C896", textTransform: "uppercase", letterSpacing: 0.5 }}>
+          <div style={{ fontSize: 11, fontWeight: 800, color: "#2563EB", textTransform: "uppercase", letterSpacing: 0.5 }}>
             Coach advies
           </div>
-          <div style={{ fontSize: 13, color: "#F0FAF6", fontWeight: 600, marginTop: 4, lineHeight: 1.5 }}>
+          <div style={{ fontSize: 13, color: "#0F172A", fontWeight: 600, marginTop: 4, lineHeight: 1.5 }}>
             Sophie heeft goed geslapen, schema iets zwaarder.
           </div>
         </div>

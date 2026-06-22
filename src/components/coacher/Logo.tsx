@@ -9,8 +9,8 @@ export function Logo({ float = false, withTagline = true }: { float?: boolean; w
           width: 72,
           height: 72,
           borderRadius: 22,
-          background: "linear-gradient(135deg,#00C896,#3D8EF0)",
-          boxShadow: "0 0 40px rgba(0,200,150,0.4)",
+          background: "linear-gradient(135deg,#2563EB,#60A5FA)",
+          boxShadow: "0 0 40px rgba(37,99,235,0.4)",
         }}
       >
         <Activity color="white" size={32} strokeWidth={2.5} />
@@ -20,7 +20,7 @@ export function Logo({ float = false, withTagline = true }: { float?: boolean; w
         style={{
           fontSize: 38,
           fontWeight: 900,
-          color: "#F0FAF6",
+          color: "#0F172A",
           letterSpacing: "-1.5px",
           lineHeight: 1,
         }}
@@ -32,7 +32,7 @@ export function Logo({ float = false, withTagline = true }: { float?: boolean; w
           className="mt-2 uppercase"
           style={{
             fontSize: 13,
-            color: "#4A6358",
+            color: "#94A3B8",
             letterSpacing: "2px",
             fontWeight: 700,
           }}

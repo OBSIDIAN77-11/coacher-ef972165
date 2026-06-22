@@ -8,23 +8,23 @@ const SESSIONS = [
 ];
 
 const CLIENTS = [
-  { name: "Sophie B.", goal: "Afvallen", week: "Week 8", delta: "-4.2 kg", pct: 72, grad: "linear-gradient(135deg,#00C896,#3D8EF0)" },
-  { name: "Tim R.", goal: "Spieropbouw", week: "Week 6", delta: "+3.1 kg", pct: 55, grad: "linear-gradient(135deg,#3D8EF0,#8B5CF6)" },
+  { name: "Sophie B.", goal: "Afvallen", week: "Week 8", delta: "-4.2 kg", pct: 72, grad: "linear-gradient(135deg,#2563EB,#60A5FA)" },
+  { name: "Tim R.", goal: "Spieropbouw", week: "Week 6", delta: "+3.1 kg", pct: 55, grad: "linear-gradient(135deg,#60A5FA,#8B5CF6)" },
   { name: "Nora K.", goal: "Conditie", week: "Week 8", delta: "Wk 8/10", pct: 88, grad: "linear-gradient(135deg,#FF8C42,#FFD166)" },
-  { name: "Bas H.", goal: "Kracht", week: "Week 4", delta: "+15 kg", pct: 40, grad: "linear-gradient(135deg,#3D8EF0,#00C896)" },
+  { name: "Bas H.", goal: "Kracht", week: "Week 4", delta: "+15 kg", pct: 40, grad: "linear-gradient(135deg,#60A5FA,#2563EB)" },
 ];
 
 export function CoachHome({ onOpenClient }: { onOpenClient: (name: string) => void }) {
   return (
     <div className="fade px-5 py-6">
       {/* Header */}
-      <div style={{ fontSize: 10, fontWeight: 800, color: "#8BA89D", letterSpacing: 1.2, textTransform: "uppercase" }}>
+      <div style={{ fontSize: 10, fontWeight: 800, color: "#64748B", letterSpacing: 1.2, textTransform: "uppercase" }}>
         Vrijdag, 6 juni
       </div>
       <h1 className="text-grad" style={{ fontSize: 26, fontWeight: 900, letterSpacing: "-0.5px", marginTop: 4 }}>
         Goedemorgen, Yasmine
       </h1>
-      <p style={{ fontSize: 13, color: "#8BA89D", fontWeight: 600, marginTop: 4 }}>
+      <p style={{ fontSize: 13, color: "#64748B", fontWeight: 600, marginTop: 4 }}>
         4 sessies vandaag · 24 actieve cliënten
       </p>
 
@@ -34,8 +34,8 @@ export function CoachHome({ onOpenClient }: { onOpenClient: (name: string) => vo
         style={{
           padding: 22,
           borderRadius: 24,
-          background: "linear-gradient(135deg,#00C896,#3D8EF0)",
-          boxShadow: "0 10px 30px rgba(0,200,150,0.30)",
+          background: "linear-gradient(135deg,#2563EB,#60A5FA)",
+          boxShadow: "0 10px 30px rgba(37,99,235,0.30)",
         }}
       >
         <div
@@ -73,7 +73,7 @@ export function CoachHome({ onOpenClient }: { onOpenClient: (name: string) => vo
               color: "white",
             }}
           >
-            <span className="dot-pulse" style={{ width: 6, height: 6, borderRadius: "50%", background: "#7CFFC4" }} />
+            <span className="dot-pulse" style={{ width: 6, height: 6, borderRadius: "50%", background: "#93C5FD" }} />
             Actief
           </div>
         </div>
@@ -95,15 +95,15 @@ export function CoachHome({ onOpenClient }: { onOpenClient: (name: string) => vo
       </div>
 
       {/* Agenda */}
-      <Section title="Agenda vandaag" badge="4 sessies" badgeColor="#3D8EF0">
-        <div style={{ borderRadius: 18, background: "#162019", border: "1px solid #1E2E28", overflow: "hidden" }}>
+      <Section title="Agenda vandaag" badge="4 sessies" badgeColor="#60A5FA">
+        <div style={{ borderRadius: 18, background: "#FFFFFF", border: "1px solid #E2E8F0", overflow: "hidden" }}>
           {SESSIONS.map((s, i) => (
             <div
               key={i}
               className="flex items-center gap-3"
               style={{
                 padding: 12,
-                borderTop: i === 0 ? "none" : "1px solid #1E2E28",
+                borderTop: i === 0 ? "none" : "1px solid #E2E8F0",
               }}
             >
               <div
@@ -112,16 +112,16 @@ export function CoachHome({ onOpenClient }: { onOpenClient: (name: string) => vo
                   width: 48,
                   height: 48,
                   borderRadius: 12,
-                  background: "#0A0F0D",
-                  border: "1px solid #1E2E28",
+                  background: "#FFFFFF",
+                  border: "1px solid #E2E8F0",
                   flexShrink: 0,
                 }}
               >
-                <span style={{ fontSize: 12, fontWeight: 800, color: "#00C896" }}>{s.time}</span>
+                <span style={{ fontSize: 12, fontWeight: 800, color: "#2563EB" }}>{s.time}</span>
               </div>
               <div className="flex-1 min-w-0">
-                <div style={{ fontSize: 14, fontWeight: 800, color: "#F0FAF6" }}>{s.name}</div>
-                <div style={{ fontSize: 11, color: "#8BA89D", fontWeight: 600, marginTop: 2 }}>
+                <div style={{ fontSize: 14, fontWeight: 800, color: "#0F172A" }}>{s.name}</div>
+                <div style={{ fontSize: 11, color: "#64748B", fontWeight: 600, marginTop: 2 }}>
                   {s.type} · {s.dur}
                 </div>
               </div>
@@ -131,8 +131,8 @@ export function CoachHome({ onOpenClient }: { onOpenClient: (name: string) => vo
                   width: 26,
                   height: 26,
                   borderRadius: "50%",
-                  background: "rgba(0,200,150,0.15)",
-                  color: "#00C896",
+                  background: "rgba(37,99,235,0.15)",
+                  color: "#2563EB",
                 }}
               >
                 <Check size={14} strokeWidth={3} />
@@ -153,8 +153,8 @@ export function CoachHome({ onOpenClient }: { onOpenClient: (name: string) => vo
               style={{
                 padding: 14,
                 borderRadius: 16,
-                background: "#162019",
-                border: "1px solid #1E2E28",
+                background: "#FFFFFF",
+                border: "1px solid #E2E8F0",
               }}
             >
               <div className="flex items-center justify-between">
@@ -177,15 +177,15 @@ export function CoachHome({ onOpenClient }: { onOpenClient: (name: string) => vo
                       .join("")}
                   </div>
                   <div>
-                    <div style={{ fontSize: 14, fontWeight: 800, color: "#F0FAF6" }}>{c.name}</div>
-                    <div style={{ fontSize: 11, color: "#8BA89D", fontWeight: 600, marginTop: 2 }}>
+                    <div style={{ fontSize: 14, fontWeight: 800, color: "#0F172A" }}>{c.name}</div>
+                    <div style={{ fontSize: 11, color: "#64748B", fontWeight: 600, marginTop: 2 }}>
                       {c.goal} · {c.week}
                     </div>
                   </div>
                 </div>
-                <div style={{ fontSize: 13, fontWeight: 800, color: "#00C896" }}>{c.delta}</div>
+                <div style={{ fontSize: 13, fontWeight: 800, color: "#2563EB" }}>{c.delta}</div>
               </div>
-              <div className="mt-3" style={{ height: 6, borderRadius: 999, background: "#0A0F0D", overflow: "hidden" }}>
+              <div className="mt-3" style={{ height: 6, borderRadius: 999, background: "#FFFFFF", overflow: "hidden" }}>
                 <div style={{ height: "100%", width: `${c.pct}%`, background: c.grad, borderRadius: 999 }} />
               </div>
             </button>
@@ -212,8 +212,8 @@ function StatCard({
       style={{
         padding: 12,
         borderRadius: 16,
-        background: "#162019",
-        border: "1px solid #1E2E28",
+        background: "#FFFFFF",
+        border: "1px solid #E2E8F0",
       }}
     >
       <div
@@ -222,15 +222,15 @@ function StatCard({
           width: 28,
           height: 28,
           borderRadius: 8,
-          background: "rgba(0,200,150,0.12)",
-          color: "#00C896",
+          background: "rgba(37,99,235,0.12)",
+          color: "#2563EB",
         }}
       >
         <Icon size={14} strokeWidth={2.5} />
       </div>
-      <div style={{ fontSize: 20, fontWeight: 900, color: "#F0FAF6", letterSpacing: "-0.5px" }}>{value}</div>
-      <div style={{ fontSize: 10, color: "#8BA89D", fontWeight: 700, marginTop: 2 }}>{title}</div>
-      <div style={{ fontSize: 10, color: "#00C896", fontWeight: 700, marginTop: 2 }}>{label}</div>
+      <div style={{ fontSize: 20, fontWeight: 900, color: "#0F172A", letterSpacing: "-0.5px" }}>{value}</div>
+      <div style={{ fontSize: 10, color: "#64748B", fontWeight: 700, marginTop: 2 }}>{title}</div>
+      <div style={{ fontSize: 10, color: "#2563EB", fontWeight: 700, marginTop: 2 }}>{label}</div>
     </div>
   );
 }
@@ -238,7 +238,7 @@ function StatCard({
 function Section({
   title,
   badge,
-  badgeColor = "#00C896",
+  badgeColor = "#2563EB",
   children,
 }: {
   title: string;
@@ -249,7 +249,7 @@ function Section({
   return (
     <div className="mt-6">
       <div className="flex items-center justify-between mb-3">
-        <h2 style={{ fontSize: 16, fontWeight: 800, color: "#F0FAF6" }}>{title}</h2>
+        <h2 style={{ fontSize: 16, fontWeight: 800, color: "#0F172A" }}>{title}</h2>
         {badge && (
           <span
             style={{

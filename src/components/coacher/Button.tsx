@@ -20,20 +20,20 @@ function variantStyle(v: Variant): React.CSSProperties {
   switch (v) {
     case "primary":
       return {
-        background: "linear-gradient(135deg,#00C896,#3D8EF0)",
+        background: "linear-gradient(135deg,#2563EB,#60A5FA)",
         color: "white",
-        boxShadow: "0 4px 20px rgba(0,200,150,0.30)",
+        boxShadow: "0 4px 20px rgba(37,99,235,0.30)",
       };
     case "outline":
       return {
         background: "transparent",
-        color: "#F0FAF6",
-        border: "1.5px solid #2A4038",
+        color: "#0F172A",
+        border: "1.5px solid #CBD5E1",
       };
     case "ghost":
-      return { background: "rgba(0,200,150,0.10)", color: "#00C896" };
+      return { background: "rgba(37,99,235,0.10)", color: "#2563EB" };
     case "muted":
-      return { background: "#162019", color: "#8BA89D", border: "1px solid #1E2E28" };
+      return { background: "#FFFFFF", color: "#64748B", border: "1px solid #E2E8F0" };
     case "danger":
       return { background: "rgba(255,77,106,0.12)", color: "#FF4D6A" };
   }

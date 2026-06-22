@@ -34,13 +34,13 @@ export function RoleSelect({
       <div className="flex flex-1 flex-col fade pt-8">
         <h1
           className="text-center"
-          style={{ fontSize: 30, fontWeight: 900, color: "#F0FAF6", letterSpacing: "-0.5px" }}
+          style={{ fontSize: 30, fontWeight: 900, color: "#0F172A", letterSpacing: "-0.5px" }}
         >
           Wie ben jij?
         </h1>
         <p
           className="mt-2 text-center"
-          style={{ fontSize: 13, color: "#8BA89D", fontWeight: 600, marginBottom: 28 }}
+          style={{ fontSize: 13, color: "#64748B", fontWeight: 600, marginBottom: 28 }}
         >
           Kies je rol — later altijd te wisselen
         </p>
@@ -56,9 +56,9 @@ export function RoleSelect({
                 style={{
                   padding: 20,
                   borderRadius: 20,
-                  background: active ? "var(--grad-soft)" : "#162019",
-                  border: `1.5px solid ${active ? "#00C896" : "#1E2E28"}`,
-                  boxShadow: active ? "0 4px 20px rgba(0,200,150,0.18)" : "none",
+                  background: active ? "var(--grad-soft)" : "#FFFFFF",
+                  border: `1.5px solid ${active ? "#2563EB" : "#E2E8F0"}`,
+                  boxShadow: active ? "0 4px 20px rgba(37,99,235,0.18)" : "none",
                 }}
               >
                 <div className="flex items-start gap-3">
@@ -69,19 +69,19 @@ export function RoleSelect({
                       height: 44,
                       borderRadius: 13,
                       background: active
-                        ? "linear-gradient(135deg,#00C896,#3D8EF0)"
-                        : "#1E2E28",
+                        ? "linear-gradient(135deg,#2563EB,#60A5FA)"
+                        : "#E2E8F0",
                       flexShrink: 0,
                     }}
                   >
-                    <Icon color={active ? "white" : "#8BA89D"} size={22} />
+                    <Icon color={active ? "white" : "#64748B"} size={22} />
                   </div>
                   <div className="flex-1">
                     <div
                       style={{
                         fontSize: 16,
                         fontWeight: 800,
-                        color: "#F0FAF6",
+                        color: "#0F172A",
                         marginBottom: 4,
                       }}
                     >
@@ -90,7 +90,7 @@ export function RoleSelect({
                     <div
                       style={{
                         fontSize: 13,
-                        color: "#8BA89D",
+                        color: "#64748B",
                         lineHeight: 1.5,
                         fontWeight: 500,
                       }}
@@ -111,7 +111,7 @@ export function RoleSelect({
           <button
             onClick={onBack}
             className="mt-3 w-full text-center"
-            style={{ fontSize: 13, color: "#8BA89D", fontWeight: 600 }}
+            style={{ fontSize: 13, color: "#64748B", fontWeight: 600 }}
           >
             Terug
           </button>

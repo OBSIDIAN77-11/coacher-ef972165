@@ -14,15 +14,15 @@ export function Welcome({ onStart, onDemo, onLogin }: { onStart: () => void; onD
           style={{
             padding: "7px 14px",
             borderRadius: 999,
-            background: "rgba(0,200,150,0.10)",
-            border: "1px solid rgba(0,200,150,0.25)",
+            background: "rgba(37,99,235,0.10)",
+            border: "1px solid rgba(37,99,235,0.25)",
           }}
         >
           <span
             className="dot-pulse"
-            style={{ width: 7, height: 7, borderRadius: "50%", background: "#00C896" }}
+            style={{ width: 7, height: 7, borderRadius: "50%", background: "#2563EB" }}
           />
-          <span style={{ fontSize: 12, fontWeight: 700, color: "#00C896" }}>
+          <span style={{ fontSize: 12, fontWeight: 700, color: "#2563EB" }}>
             Nu beschikbaar in Nederland
           </span>
         </div>
@@ -32,7 +32,7 @@ export function Welcome({ onStart, onDemo, onLogin }: { onStart: () => void; onD
           style={{
             fontSize: 44,
             fontWeight: 900,
-            color: "#F0FAF6",
+            color: "#0F172A",
             letterSpacing: "-2px",
             lineHeight: 1.04,
           }}
@@ -44,7 +44,7 @@ export function Welcome({ onStart, onDemo, onLogin }: { onStart: () => void; onD
 
         <p
           className="mt-5"
-          style={{ fontSize: 15, color: "#8BA89D", lineHeight: 1.6, maxWidth: 320, fontWeight: 500 }}
+          style={{ fontSize: 15, color: "#64748B", lineHeight: 1.6, maxWidth: 320, fontWeight: 500 }}
         >
           Vind een gecertificeerde personal trainer, plan sessies en bereik je doelen — alles in
           één app.
@@ -60,12 +60,12 @@ export function Welcome({ onStart, onDemo, onLogin }: { onStart: () => void; onD
                   width: 22,
                   height: 22,
                   borderRadius: 7,
-                  background: "linear-gradient(135deg,#00C896,#3D8EF0)",
+                  background: "linear-gradient(135deg,#2563EB,#60A5FA)",
                 }}
               >
                 <Check color="white" size={13} strokeWidth={3} />
               </span>
-              <span style={{ fontSize: 12, fontWeight: 700, color: "#8BA89D" }}>{t}</span>
+              <span style={{ fontSize: 12, fontWeight: 700, color: "#64748B" }}>{t}</span>
             </div>
           ))}
         </div>
