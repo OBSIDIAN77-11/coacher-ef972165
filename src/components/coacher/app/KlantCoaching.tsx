@@ -19,7 +19,7 @@ export function KlantCoaching() {
       <h1 className="text-grad" style={{ fontSize: 26, fontWeight: 900, letterSpacing: "-0.5px" }}>
         Mijn coaching
       </h1>
-      <p style={{ fontSize: 13, color: "#64748B", fontWeight: 600, marginTop: 4 }}>
+      <p style={{ fontSize: 13, color: "#8BA89D", fontWeight: 600, marginTop: 4 }}>
         Week 8 · Yasmine El Karimi
       </p>
 
@@ -29,8 +29,8 @@ export function KlantCoaching() {
         style={{
           padding: 4,
           borderRadius: 14,
-          background: "#FFFFFF",
-          border: "1px solid #E2E8F0",
+          background: "#0A0F0D",
+          border: "1px solid #1E2E28",
         }}
       >
         {TABS.map((t) => {
@@ -46,7 +46,7 @@ export function KlantCoaching() {
                 fontSize: 11,
                 fontWeight: 800,
                 background: a ? "linear-gradient(135deg,#2563EB,#60A5FA)" : "transparent",
-                color: a ? "white" : "#64748B",
+                color: a ? "white" : "#8BA89D",
                 border: "none",
               }}
             >
@@ -86,14 +86,14 @@ function TrainingTab() {
         style={{
           padding: 18,
           borderRadius: 18,
-          background: "#FFFFFF",
-          border: "1px solid #E2E8F0",
+          background: "#0A0F0D",
+          border: "1px solid #1E2E28",
         }}
       >
-        <div style={{ fontSize: 11, color: "#64748B", fontWeight: 800, textTransform: "uppercase", letterSpacing: 0.8 }}>
+        <div style={{ fontSize: 11, color: "#8BA89D", fontWeight: 800, textTransform: "uppercase", letterSpacing: 0.8 }}>
           Vandaag
         </div>
-        <div style={{ fontSize: 17, fontWeight: 900, color: "#0F172A", marginTop: 4 }}>
+        <div style={{ fontSize: 17, fontWeight: 900, color: "#F0FAF6", marginTop: 4 }}>
           Billen & Benen
         </div>
         <div className="mt-4 flex flex-col gap-2">
@@ -107,8 +107,8 @@ function TrainingTab() {
               style={{
                 padding: "12px 14px",
                 borderRadius: 12,
-                background: "#F8FAFC",
-                border: "1px solid #E2E8F0",
+                background: "#111815",
+                border: "1px solid #1E2E28",
               }}
             >
               <div
@@ -118,7 +118,7 @@ function TrainingTab() {
                   height: 22,
                   borderRadius: 7,
                   background: e.done ? "linear-gradient(135deg,#2563EB,#60A5FA)" : "transparent",
-                  border: e.done ? "none" : "1.5px solid #CBD5E1",
+                  border: e.done ? "none" : "1.5px solid #2A4038",
                 }}
               >
                 {e.done && <Check size={13} color="white" strokeWidth={3} />}
@@ -128,14 +128,14 @@ function TrainingTab() {
                   style={{
                     fontSize: 13,
                     fontWeight: 800,
-                    color: "#0F172A",
+                    color: "#F0FAF6",
                     textDecoration: e.done ? "line-through" : "none",
                     opacity: e.done ? 0.6 : 1,
                   }}
                 >
                   {e.n}
                 </div>
-                <div style={{ fontSize: 11, color: "#64748B", fontWeight: 600 }}>{e.s}</div>
+                <div style={{ fontSize: 11, color: "#8BA89D", fontWeight: 600 }}>{e.s}</div>
               </div>
             </button>
           ))}
@@ -144,7 +144,7 @@ function TrainingTab() {
       </div>
 
       <div className="mt-4">
-        <div style={{ fontSize: 13, fontWeight: 800, color: "#0F172A", marginBottom: 10 }}>Week overzicht</div>
+        <div style={{ fontSize: 13, fontWeight: 800, color: "#F0FAF6", marginBottom: 10 }}>Week overzicht</div>
         <div className="flex flex-col gap-2">
           {week.map((w) => (
             <div
@@ -153,13 +153,13 @@ function TrainingTab() {
               style={{
                 padding: "12px 14px",
                 borderRadius: 12,
-                background: w.today ? "rgba(37,99,235,0.10)" : "#FFFFFF",
-                border: w.today ? "1px solid rgba(37,99,235,0.30)" : "1px solid #E2E8F0",
+                background: w.today ? "rgba(37,99,235,0.10)" : "#0A0F0D",
+                border: w.today ? "1px solid rgba(37,99,235,0.30)" : "1px solid #1E2E28",
               }}
             >
               <div className="flex items-center gap-3">
-                <span style={{ fontSize: 12, fontWeight: 800, color: "#64748B", width: 24 }}>{w.d}</span>
-                <span style={{ fontSize: 13, fontWeight: 700, color: "#0F172A" }}>{w.w}</span>
+                <span style={{ fontSize: 12, fontWeight: 800, color: "#8BA89D", width: 24 }}>{w.d}</span>
+                <span style={{ fontSize: 13, fontWeight: 700, color: "#F0FAF6" }}>{w.w}</span>
               </div>
               {w.done && <Check size={16} color="#2563EB" strokeWidth={3} />}
               {w.today && (
@@ -229,17 +229,17 @@ function VoedingTab() {
           <div className="flex items-start gap-2">
             <Star size={16} fill="#FFC857" color="#FFC857" />
             <div>
-              <div style={{ fontSize: 12, fontWeight: 800, color: "#0F172A" }}>
+              <div style={{ fontSize: 12, fontWeight: 800, color: "#F0FAF6" }}>
                 10 dagen bereikt! ⭐
               </div>
-              <div style={{ fontSize: 11, color: "#64748B", fontWeight: 600, marginTop: 2 }}>
+              <div style={{ fontSize: 11, color: "#8BA89D", fontWeight: 600, marginTop: 2 }}>
                 Geweldige consistentie, ga zo door!
               </div>
             </div>
           </div>
           <button
             onClick={() => setShowCompliment(false)}
-            style={{ background: "transparent", border: "none", color: "#64748B", padding: 2 }}
+            style={{ background: "transparent", border: "none", color: "#8BA89D", padding: 2 }}
           >
             <X size={14} />
           </button>
@@ -252,13 +252,13 @@ function VoedingTab() {
         style={{
           padding: 18,
           borderRadius: 18,
-          background: "#FFFFFF",
-          border: "1px solid #E2E8F0",
+          background: "#0A0F0D",
+          border: "1px solid #1E2E28",
         }}
       >
         <div className="relative" style={{ width: 130, height: 130 }}>
           <svg width="130" height="130" viewBox="0 0 130 130">
-            <circle cx="65" cy="65" r="56" fill="none" stroke="#E2E8F0" strokeWidth="10" />
+            <circle cx="65" cy="65" r="56" fill="none" stroke="#1E2E28" strokeWidth="10" />
             <circle
               cx="65"
               cy="65"
@@ -279,8 +279,8 @@ function VoedingTab() {
             </defs>
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <div style={{ fontSize: 22, fontWeight: 900, color: "#0F172A" }}>{kcalLeft}</div>
-            <div style={{ fontSize: 10, color: "#64748B", fontWeight: 700 }}>kcal over</div>
+            <div style={{ fontSize: 22, fontWeight: 900, color: "#F0FAF6" }}>{kcalLeft}</div>
+            <div style={{ fontSize: 10, color: "#8BA89D", fontWeight: 700 }}>kcal over</div>
           </div>
         </div>
         <div className="flex-1 flex flex-col gap-2.5">
@@ -317,8 +317,8 @@ function VoedingTab() {
             style={{
               padding: "13px 16px",
               borderRadius: 14,
-              background: "#FFFFFF",
-              border: "1px solid #E2E8F0",
+              background: "#0A0F0D",
+              border: "1px solid #1E2E28",
             }}
           >
             <div className="flex items-center gap-3">
@@ -329,14 +329,14 @@ function VoedingTab() {
                   height: 22,
                   borderRadius: 7,
                   background: m.done ? "linear-gradient(135deg,#2563EB,#60A5FA)" : "transparent",
-                  border: m.done ? "none" : "1.5px solid #CBD5E1",
+                  border: m.done ? "none" : "1.5px solid #2A4038",
                 }}
               >
                 {m.done && <Check size={13} color="white" strokeWidth={3} />}
               </div>
-              <span style={{ fontSize: 13, fontWeight: 800, color: "#0F172A" }}>{m.n}</span>
+              <span style={{ fontSize: 13, fontWeight: 800, color: "#F0FAF6" }}>{m.n}</span>
             </div>
-            <span style={{ fontSize: 12, color: "#64748B", fontWeight: 700 }}>{m.k} kcal</span>
+            <span style={{ fontSize: 12, color: "#8BA89D", fontWeight: 700 }}>{m.k} kcal</span>
           </button>
         ))}
       </div>
@@ -349,10 +349,10 @@ function MacroBar({ label, g, target, color }: { label: string; g: number; targe
   return (
     <div>
       <div className="flex items-center justify-between" style={{ marginBottom: 4 }}>
-        <span style={{ fontSize: 11, fontWeight: 700, color: "#0F172A" }}>{label}</span>
-        <span style={{ fontSize: 10, fontWeight: 700, color: "#64748B" }}>{g}/{target}g</span>
+        <span style={{ fontSize: 11, fontWeight: 700, color: "#F0FAF6" }}>{label}</span>
+        <span style={{ fontSize: 10, fontWeight: 700, color: "#8BA89D" }}>{g}/{target}g</span>
       </div>
-      <div style={{ height: 6, borderRadius: 999, background: "#E2E8F0", overflow: "hidden" }}>
+      <div style={{ height: 6, borderRadius: 999, background: "#1E2E28", overflow: "hidden" }}>
         <div style={{ width: `${pct}%`, height: "100%", background: color, borderRadius: 999 }} />
       </div>
     </div>
@@ -425,13 +425,13 @@ function ScannerView({ onClose }: { onClose: () => void }) {
               style={{
                 padding: 16,
                 borderRadius: 16,
-                background: "#F8FAFC",
-                border: "1px solid #E2E8F0",
+                background: "#111815",
+                border: "1px solid #1E2E28",
                 color: "white",
               }}
             >
               <div style={{ fontSize: 15, fontWeight: 900 }}>Activia Aardbei</div>
-              <div style={{ fontSize: 12, color: "#64748B", fontWeight: 600, marginTop: 4 }}>
+              <div style={{ fontSize: 12, color: "#8BA89D", fontWeight: 600, marginTop: 4 }}>
                 97 kcal · 4.3g eiwit · 14g koolh · 2.1g vet
               </div>
             </div>
@@ -464,8 +464,8 @@ function VoortgangTab() {
 
   return (
     <>
-      <div style={{ padding: 16, borderRadius: 16, background: "#FFFFFF", border: "1px solid #E2E8F0" }}>
-        <div style={{ fontSize: 12, fontWeight: 800, color: "#64748B", textTransform: "uppercase", letterSpacing: 0.8 }}>
+      <div style={{ padding: 16, borderRadius: 16, background: "#0A0F0D", border: "1px solid #1E2E28" }}>
+        <div style={{ fontSize: 12, fontWeight: 800, color: "#8BA89D", textTransform: "uppercase", letterSpacing: 0.8 }}>
           Gewicht
         </div>
         <div className="mt-3 flex flex-col gap-2">
@@ -476,19 +476,19 @@ function VoortgangTab() {
               style={{
                 padding: "10px 12px",
                 borderRadius: 10,
-                background: w.now ? "linear-gradient(135deg,rgba(37,99,235,0.18),rgba(96,165,250,0.18))" : "#F8FAFC",
-                border: w.now ? "1px solid rgba(37,99,235,0.30)" : "1px solid #E2E8F0",
+                background: w.now ? "linear-gradient(135deg,rgba(37,99,235,0.18),rgba(96,165,250,0.18))" : "#111815",
+                border: w.now ? "1px solid rgba(37,99,235,0.30)" : "1px solid #1E2E28",
               }}
             >
               <div className="flex items-center gap-2">
-                <span style={{ fontSize: 12, fontWeight: 700, color: "#0F172A" }}>{w.l}</span>
+                <span style={{ fontSize: 12, fontWeight: 700, color: "#F0FAF6" }}>{w.l}</span>
                 {w.now && (
                   <span style={{ padding: "2px 7px", borderRadius: 999, background: "#2563EB", color: "white", fontSize: 9, fontWeight: 800 }}>
                     NU
                   </span>
                 )}
               </div>
-              <span style={{ fontSize: 13, fontWeight: 800, color: "#0F172A" }}>{w.w}kg</span>
+              <span style={{ fontSize: 13, fontWeight: 800, color: "#F0FAF6" }}>{w.w}kg</span>
             </div>
           ))}
         </div>
@@ -538,8 +538,8 @@ function PhotoSlot({ label, value, onChange }: { label: string; value: string | 
       style={{
         height: 160,
         borderRadius: 14,
-        background: value ? "transparent" : "#FFFFFF",
-        border: value ? "none" : "1.5px dashed #CBD5E1",
+        background: value ? "transparent" : "#0A0F0D",
+        border: value ? "none" : "1.5px dashed #2A4038",
         cursor: "pointer",
         overflow: "hidden",
       }}
@@ -548,8 +548,8 @@ function PhotoSlot({ label, value, onChange }: { label: string; value: string | 
         <img src={value} alt={label} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
       ) : (
         <>
-          <Upload size={22} color="#64748B" />
-          <span style={{ fontSize: 11, color: "#64748B", fontWeight: 700, marginTop: 6 }}>{label}</span>
+          <Upload size={22} color="#8BA89D" />
+          <span style={{ fontSize: 11, color: "#8BA89D", fontWeight: 700, marginTop: 6 }}>{label}</span>
         </>
       )}
       <input
@@ -616,7 +616,7 @@ function CompareView({ before, now, onClose }: { before: string | null; now: str
             height: 44,
             borderRadius: "50%",
             background: "white",
-            color: "#FFFFFF",
+            color: "#0A0F0D",
             border: "none",
           }}
         >
@@ -661,10 +661,10 @@ function CheckinTab() {
         >
           <Check size={28} color="white" strokeWidth={3} />
         </div>
-        <div style={{ fontSize: 18, fontWeight: 900, color: "#0F172A", marginTop: 16 }}>
+        <div style={{ fontSize: 18, fontWeight: 900, color: "#F0FAF6", marginTop: 16 }}>
           Check-in verstuurd!
         </div>
-        <p style={{ fontSize: 12, color: "#64748B", fontWeight: 600, marginTop: 6 }}>
+        <p style={{ fontSize: 12, color: "#8BA89D", fontWeight: 600, marginTop: 6 }}>
           Yasmine reageert binnen 24 uur
         </p>
         <Button className="mt-5" onClick={() => setSent(false)}>Nieuwe check-in</Button>
@@ -682,7 +682,7 @@ function CheckinTab() {
           border: "1px solid rgba(37,99,235,0.25)",
         }}
       >
-        <div style={{ fontSize: 12, color: "#0F172A", fontWeight: 700 }}>
+        <div style={{ fontSize: 12, color: "#F0FAF6", fontWeight: 700 }}>
           Yasmine reageert binnen 24 uur
         </div>
       </div>
@@ -690,7 +690,7 @@ function CheckinTab() {
       <div className="mt-4 flex flex-col gap-4">
         {/* Energy slider */}
         <Question label="Hoe is je energie deze week?">
-          <div className="flex items-center justify-between" style={{ fontSize: 11, color: "#64748B", fontWeight: 700, marginBottom: 6 }}>
+          <div className="flex items-center justify-between" style={{ fontSize: 11, color: "#8BA89D", fontWeight: 700, marginBottom: 6 }}>
             <span>Laag</span>
             <span style={{ color: "#2563EB", fontSize: 14, fontWeight: 900 }}>{energy}/10</span>
             <span>Top</span>
@@ -721,9 +721,9 @@ function CheckinTab() {
                     borderRadius: 999,
                     fontSize: 11,
                     fontWeight: 800,
-                    background: a ? "linear-gradient(135deg,#2563EB,#60A5FA)" : "#F8FAFC",
-                    color: a ? "white" : "#64748B",
-                    border: a ? "none" : "1px solid #E2E8F0",
+                    background: a ? "linear-gradient(135deg,#2563EB,#60A5FA)" : "#111815",
+                    color: a ? "white" : "#8BA89D",
+                    border: a ? "none" : "1px solid #1E2E28",
                   }}
                 >
                   {s}
@@ -749,9 +749,9 @@ function CheckinTab() {
                   borderRadius: 999,
                   fontSize: 11,
                   fontWeight: 800,
-                  background: i === 2 ? "linear-gradient(135deg,#2563EB,#60A5FA)" : "#F8FAFC",
-                  color: i === 2 ? "white" : "#64748B",
-                  border: i === 2 ? "none" : "1px solid #E2E8F0",
+                  background: i === 2 ? "linear-gradient(135deg,#2563EB,#60A5FA)" : "#111815",
+                  color: i === 2 ? "white" : "#8BA89D",
+                  border: i === 2 ? "none" : "1px solid #1E2E28",
                 }}
               >
                 {s}
@@ -770,9 +770,9 @@ function CheckinTab() {
               width: "100%",
               padding: 12,
               borderRadius: 12,
-              background: "#F8FAFC",
-              border: "1px solid #E2E8F0",
-              color: "#0F172A",
+              background: "#111815",
+              border: "1px solid #1E2E28",
+              color: "#F0FAF6",
               fontSize: 13,
               fontWeight: 500,
               outline: "none",
@@ -795,11 +795,11 @@ function Question({ label, children }: { label: string; children: React.ReactNod
       style={{
         padding: 14,
         borderRadius: 14,
-        background: "#FFFFFF",
-        border: "1px solid #E2E8F0",
+        background: "#0A0F0D",
+        border: "1px solid #1E2E28",
       }}
     >
-      <div style={{ fontSize: 12, fontWeight: 800, color: "#0F172A", marginBottom: 10 }}>{label}</div>
+      <div style={{ fontSize: 12, fontWeight: 800, color: "#F0FAF6", marginBottom: 10 }}>{label}</div>
       {children}
     </div>
   );

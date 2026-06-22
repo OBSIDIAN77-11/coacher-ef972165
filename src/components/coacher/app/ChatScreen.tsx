@@ -50,8 +50,8 @@ export function ChatScreen({ mode }: { mode: Mode }) {
 
   return (
     <div className="fade px-5 py-6">
-      <h1 style={{ fontSize: 28, fontWeight: 900, color: "#0F172A", letterSpacing: "-0.5px" }}>Berichten</h1>
-      <p style={{ fontSize: 13, color: "#64748B", fontWeight: 600, marginTop: 4 }}>
+      <h1 style={{ fontSize: 28, fontWeight: 900, color: "#F0FAF6", letterSpacing: "-0.5px" }}>Berichten</h1>
+      <p style={{ fontSize: 13, color: "#8BA89D", fontWeight: 600, marginTop: 4 }}>
         {contacts.length} {contacts.length === 1 ? "gesprek" : "gesprekken"}
       </p>
 
@@ -64,8 +64,8 @@ export function ChatScreen({ mode }: { mode: Mode }) {
             style={{
               padding: 14,
               borderRadius: 16,
-              background: "#FFFFFF",
-              border: "1px solid #E2E8F0",
+              background: "#0A0F0D",
+              border: "1px solid #1E2E28",
             }}
           >
             <div className="relative flex-shrink-0">
@@ -93,21 +93,21 @@ export function ChatScreen({ mode }: { mode: Mode }) {
                     height: 12,
                     borderRadius: "50%",
                     background: "#2563EB",
-                    border: "2px solid #FFFFFF",
+                    border: "2px solid #0A0F0D",
                   }}
                 />
               )}
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center justify-between gap-2">
-                <div style={{ fontSize: 14, fontWeight: 800, color: "#0F172A" }}>{c.name}</div>
-                <div style={{ fontSize: 10, color: "#64748B", fontWeight: 700, flexShrink: 0 }}>{c.time}</div>
+                <div style={{ fontSize: 14, fontWeight: 800, color: "#F0FAF6" }}>{c.name}</div>
+                <div style={{ fontSize: 10, color: "#8BA89D", fontWeight: 700, flexShrink: 0 }}>{c.time}</div>
               </div>
               <div className="flex items-center justify-between gap-2 mt-1">
                 <div
                   style={{
                     fontSize: 12,
-                    color: c.unread > 0 ? "#0F172A" : "#64748B",
+                    color: c.unread > 0 ? "#F0FAF6" : "#8BA89D",
                     fontWeight: c.unread > 0 ? 700 : 500,
                     overflow: "hidden",
                     textOverflow: "ellipsis",
@@ -173,11 +173,11 @@ function ChatThread({ contact, onBack }: { contact: Contact; onBack: () => void 
           background: "rgba(10,15,13,0.93)",
           backdropFilter: "blur(18px)",
           WebkitBackdropFilter: "blur(18px)",
-          borderBottom: "1px solid #E2E8F0",
+          borderBottom: "1px solid #1E2E28",
         }}
       >
         <button onClick={onBack} className="flex items-center justify-center" style={{ width: 32, height: 32 }}>
-          <ChevronLeft size={20} color="#0F172A" />
+          <ChevronLeft size={20} color="#F0FAF6" />
         </button>
         <div className="flex items-center gap-2 flex-1 ml-1">
           <div className="relative">
@@ -205,14 +205,14 @@ function ChatThread({ contact, onBack }: { contact: Contact; onBack: () => void 
                   height: 10,
                   borderRadius: "50%",
                   background: "#2563EB",
-                  border: "2px solid #FFFFFF",
+                  border: "2px solid #0A0F0D",
                 }}
               />
             )}
           </div>
           <div>
-            <div style={{ fontSize: 14, fontWeight: 800, color: "#0F172A" }}>{contact.name}</div>
-            <div style={{ fontSize: 10, color: contact.online ? "#2563EB" : "#64748B", fontWeight: 700 }}>
+            <div style={{ fontSize: 14, fontWeight: 800, color: "#F0FAF6" }}>{contact.name}</div>
+            <div style={{ fontSize: 10, color: contact.online ? "#2563EB" : "#8BA89D", fontWeight: 700 }}>
               {contact.online ? "online" : "offline"}
             </div>
           </div>
@@ -261,9 +261,9 @@ function ChatThread({ contact, onBack }: { contact: Contact; onBack: () => void 
                   style={{
                     padding: "10px 14px",
                     borderRadius: 18,
-                    background: mine ? "linear-gradient(135deg,#2563EB,#60A5FA)" : "#FFFFFF",
-                    border: mine ? "none" : "1px solid #E2E8F0",
-                    color: mine ? "white" : "#0F172A",
+                    background: mine ? "linear-gradient(135deg,#2563EB,#60A5FA)" : "#0A0F0D",
+                    border: mine ? "none" : "1px solid #1E2E28",
+                    color: mine ? "white" : "#F0FAF6",
                     fontSize: 13,
                     fontWeight: 500,
                     lineHeight: 1.45,
@@ -276,7 +276,7 @@ function ChatThread({ contact, onBack }: { contact: Contact; onBack: () => void 
                 <div
                   style={{
                     fontSize: 9,
-                    color: "#94A3B8",
+                    color: "#4A6358",
                     fontWeight: 700,
                     marginTop: 4,
                     textAlign: mine ? "right" : "left",
@@ -301,7 +301,7 @@ function ChatThread({ contact, onBack }: { contact: Contact; onBack: () => void 
           background: "rgba(10,15,13,0.95)",
           backdropFilter: "blur(18px)",
           WebkitBackdropFilter: "blur(18px)",
-          borderTop: "1px solid #E2E8F0",
+          borderTop: "1px solid #1E2E28",
         }}
       >
         <div
@@ -309,8 +309,8 @@ function ChatThread({ contact, onBack }: { contact: Contact; onBack: () => void 
           style={{
             padding: 6,
             borderRadius: 999,
-            background: "#FFFFFF",
-            border: "1px solid #E2E8F0",
+            background: "#0A0F0D",
+            border: "1px solid #1E2E28",
           }}
         >
           <input
@@ -327,7 +327,7 @@ function ChatThread({ contact, onBack }: { contact: Contact; onBack: () => void 
             style={{
               padding: "8px 12px",
               fontSize: 13,
-              color: "#0F172A",
+              color: "#F0FAF6",
               fontWeight: 500,
               border: "none",
             }}

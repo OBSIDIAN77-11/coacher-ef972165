@@ -60,8 +60,8 @@ export function CoachAlerts() {
 
   return (
     <div className="fade px-5 py-6">
-      <h1 style={{ fontSize: 28, fontWeight: 900, color: "#0F172A", letterSpacing: "-0.5px" }}>Meldingen</h1>
-      <p style={{ fontSize: 13, color: "#64748B", fontWeight: 600, marginTop: 4 }}>
+      <h1 style={{ fontSize: 28, fontWeight: 900, color: "#F0FAF6", letterSpacing: "-0.5px" }}>Meldingen</h1>
+      <p style={{ fontSize: 13, color: "#8BA89D", fontWeight: 600, marginTop: 4 }}>
         Beheer rapportages en escalaties
       </p>
 
@@ -80,9 +80,9 @@ export function CoachAlerts() {
               style={{
                 padding: 16,
                 borderRadius: 18,
-                background: done ? "rgba(22,32,25,0.5)" : "#FFFFFF",
-                border: `1px solid ${done ? "#E2E8F0" : a.color + "55"}`,
-                borderLeft: done ? "1px solid #E2E8F0" : `4px solid ${a.color}`,
+                background: done ? "rgba(22,32,25,0.5)" : "#0A0F0D",
+                border: `1px solid ${done ? "#1E2E28" : a.color + "55"}`,
+                borderLeft: done ? "1px solid #1E2E28" : `4px solid ${a.color}`,
                 opacity: done ? 0.6 : 1,
               }}
             >
@@ -104,8 +104,8 @@ export function CoachAlerts() {
                       {done ? "Afgehandeld" : a.severity}
                     </span>
                   </div>
-                  <div style={{ fontSize: 14, fontWeight: 800, color: "#0F172A", marginTop: 8 }}>{a.title}</div>
-                  <div style={{ fontSize: 12, color: "#64748B", fontWeight: 600, marginTop: 2 }}>{a.user}</div>
+                  <div style={{ fontSize: 14, fontWeight: 800, color: "#F0FAF6", marginTop: 8 }}>{a.title}</div>
+                  <div style={{ fontSize: 12, color: "#8BA89D", fontWeight: 600, marginTop: 2 }}>{a.user}</div>
                 </div>
                 <div
                   className="flex items-center justify-center flex-shrink-0"
@@ -127,9 +127,9 @@ export function CoachAlerts() {
                   style={{
                     padding: "10px",
                     borderRadius: 12,
-                    background: "#FFFFFF",
-                    border: "1px solid #E2E8F0",
-                    color: "#0F172A",
+                    background: "#0A0F0D",
+                    border: "1px solid #1E2E28",
+                    color: "#F0FAF6",
                     fontSize: 12,
                     fontWeight: 800,
                   }}
@@ -164,12 +164,12 @@ function StatCard({ value, label, color }: { value: number; label: string; color
       style={{
         padding: 14,
         borderRadius: 16,
-        background: "#FFFFFF",
+        background: "#0A0F0D",
         border: `1px solid ${color}55`,
       }}
     >
       <div style={{ fontSize: 26, fontWeight: 900, color, letterSpacing: "-0.5px" }}>{value}</div>
-      <div style={{ fontSize: 11, color: "#64748B", fontWeight: 700, marginTop: 2 }}>{label}</div>
+      <div style={{ fontSize: 11, color: "#8BA89D", fontWeight: 700, marginTop: 2 }}>{label}</div>
     </div>
   );
 }
@@ -193,17 +193,17 @@ function ActionSheet({
           maxWidth: 430,
           marginLeft: "auto",
           marginRight: "auto",
-          background: "#F8FAFC",
+          background: "#111815",
           borderTopLeftRadius: 28,
           borderTopRightRadius: 28,
-          border: "1px solid #E2E8F0",
+          border: "1px solid #1E2E28",
           borderBottom: "none",
           padding: "12px 20px 28px",
           maxHeight: "85vh",
           overflowY: "auto",
         }}
       >
-        <div className="mx-auto mb-4" style={{ width: 44, height: 4, borderRadius: 2, background: "#CBD5E1" }} />
+        <div className="mx-auto mb-4" style={{ width: 44, height: 4, borderRadius: 2, background: "#2A4038" }} />
 
         <div className="flex items-start gap-3">
           <div
@@ -219,12 +219,12 @@ function ActionSheet({
             <ShieldAlert size={20} />
           </div>
           <div>
-            <div style={{ fontSize: 16, fontWeight: 800, color: "#0F172A" }}>{alert.title}</div>
-            <div style={{ fontSize: 12, color: "#64748B", fontWeight: 600, marginTop: 2 }}>{alert.user}</div>
+            <div style={{ fontSize: 16, fontWeight: 800, color: "#F0FAF6" }}>{alert.title}</div>
+            <div style={{ fontSize: 12, color: "#8BA89D", fontWeight: 600, marginTop: 2 }}>{alert.user}</div>
           </div>
         </div>
 
-        <p style={{ fontSize: 13, color: "#64748B", fontWeight: 500, lineHeight: 1.6, marginTop: 14 }}>
+        <p style={{ fontSize: 13, color: "#8BA89D", fontWeight: 500, lineHeight: 1.6, marginTop: 14 }}>
           {alert.detail}
         </p>
 
@@ -253,9 +253,9 @@ function ActionSheet({
                 style={{
                   padding: "12px 14px",
                   borderRadius: 12,
-                  background: active ? (opt.danger ? "rgba(255,77,106,0.10)" : "rgba(37,99,235,0.10)") : "#FFFFFF",
+                  background: active ? (opt.danger ? "rgba(255,77,106,0.10)" : "rgba(37,99,235,0.10)") : "#0A0F0D",
                   border: `1px solid ${
-                    active ? (opt.danger ? "#FF4D6A" : "#2563EB") : "#E2E8F0"
+                    active ? (opt.danger ? "#FF4D6A" : "#2563EB") : "#1E2E28"
                   }`,
                 }}
               >
@@ -265,7 +265,7 @@ function ActionSheet({
                     width: 18,
                     height: 18,
                     borderRadius: "50%",
-                    border: `2px solid ${active ? (opt.danger ? "#FF4D6A" : "#2563EB") : "#94A3B8"}`,
+                    border: `2px solid ${active ? (opt.danger ? "#FF4D6A" : "#2563EB") : "#4A6358"}`,
                   }}
                 >
                   {active && (
@@ -279,7 +279,7 @@ function ActionSheet({
                     />
                   )}
                 </span>
-                <span style={{ fontSize: 13, fontWeight: 700, color: opt.danger ? "#FF4D6A" : "#0F172A" }}>
+                <span style={{ fontSize: 13, fontWeight: 700, color: opt.danger ? "#FF4D6A" : "#F0FAF6" }}>
                   {opt.label}
                 </span>
               </button>

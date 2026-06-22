@@ -128,8 +128,8 @@ export function Settings({ mode, name, initials, onLogout }: Props) {
             style={{
               padding: "14px 14px",
               borderRadius: 16,
-              background: "#FFFFFF",
-              border: "1px solid #E2E8F0",
+              background: "#0A0F0D",
+              border: "1px solid #1E2E28",
             }}
           >
             <span
@@ -146,12 +146,12 @@ export function Settings({ mode, name, initials, onLogout }: Props) {
               <Icon size={18} color="white" />
             </span>
             <div className="flex-1 min-w-0">
-              <div style={{ fontSize: 14, fontWeight: 800, color: "#0F172A" }}>{title}</div>
-              <div style={{ fontSize: 11.5, fontWeight: 600, color: "#64748B", marginTop: 1 }}>
+              <div style={{ fontSize: 14, fontWeight: 800, color: "#F0FAF6" }}>{title}</div>
+              <div style={{ fontSize: 11.5, fontWeight: 600, color: "#8BA89D", marginTop: 1 }}>
                 {sub}
               </div>
             </div>
-            <ChevronRight size={16} color="#94A3B8" />
+            <ChevronRight size={16} color="#4A6358" />
           </button>
         ))}
       </div>
@@ -176,7 +176,7 @@ export function Settings({ mode, name, initials, onLogout }: Props) {
       <p
         style={{
           fontSize: 11,
-          color: "#94A3B8",
+          color: "#4A6358",
           fontWeight: 600,
           textAlign: "center",
           marginTop: 24,
@@ -196,7 +196,7 @@ export function Settings({ mode, name, initials, onLogout }: Props) {
 
       {confirmLogout && (
         <Sheet onClose={() => setConfirmLogout(false)} title="Uitloggen?">
-          <p style={{ fontSize: 13, color: "#64748B", lineHeight: 1.6, marginBottom: 18 }}>
+          <p style={{ fontSize: 13, color: "#8BA89D", lineHeight: 1.6, marginBottom: 18 }}>
             Je wordt uitgelogd en teruggebracht naar het welkomstscherm.
           </p>
           <div className="flex gap-3">
@@ -239,10 +239,10 @@ function Sheet({
           maxWidth: 430,
           marginLeft: "auto",
           marginRight: "auto",
-          background: "#F8FAFC",
+          background: "#111815",
           borderTopLeftRadius: 28,
           borderTopRightRadius: 28,
-          border: "1px solid #E2E8F0",
+          border: "1px solid #1E2E28",
           borderBottom: "none",
           padding: "12px 20px 32px",
           maxHeight: "85vh",
@@ -251,10 +251,10 @@ function Sheet({
       >
         <div
           className="mx-auto mb-4"
-          style={{ width: 44, height: 4, borderRadius: 2, background: "#CBD5E1" }}
+          style={{ width: 44, height: 4, borderRadius: 2, background: "#2A4038" }}
         />
         <div className="mb-4 flex items-center justify-between">
-          <h3 style={{ fontSize: 18, fontWeight: 900, color: "#0F172A", letterSpacing: "-0.3px" }}>
+          <h3 style={{ fontSize: 18, fontWeight: 900, color: "#F0FAF6", letterSpacing: "-0.3px" }}>
             {title}
           </h3>
           <button
@@ -264,11 +264,11 @@ function Sheet({
               width: 32,
               height: 32,
               borderRadius: "50%",
-              background: "#FFFFFF",
-              border: "1px solid #E2E8F0",
+              background: "#0A0F0D",
+              border: "1px solid #1E2E28",
             }}
           >
-            <X color="#64748B" size={14} />
+            <X color="#8BA89D" size={14} />
           </button>
         </div>
         {children}
@@ -292,10 +292,10 @@ function SuccessState({ title, sub }: { title: string; sub: string }) {
       >
         <Check size={38} color="white" strokeWidth={3} />
       </div>
-      <h4 style={{ fontSize: 22, fontWeight: 900, color: "#0F172A", letterSpacing: "-0.5px" }}>
+      <h4 style={{ fontSize: 22, fontWeight: 900, color: "#F0FAF6", letterSpacing: "-0.5px" }}>
         {title}
       </h4>
-      <p style={{ fontSize: 13, color: "#64748B", fontWeight: 600, marginTop: 6, maxWidth: 280, lineHeight: 1.5 }}>
+      <p style={{ fontSize: 13, color: "#8BA89D", fontWeight: 600, marginTop: 6, maxWidth: 280, lineHeight: 1.5 }}>
         {sub}
       </p>
     </div>
@@ -324,7 +324,7 @@ function PaymentModal({ onClose }: { onClose: () => void }) {
 
   return (
     <Sheet onClose={onClose} title="Betaling instellen">
-      <p style={{ fontSize: 12, color: "#64748B", fontWeight: 600, marginBottom: 10 }}>
+      <p style={{ fontSize: 12, color: "#8BA89D", fontWeight: 600, marginBottom: 10 }}>
         Methode
       </p>
       <div className="flex gap-2 mb-5">
@@ -340,9 +340,9 @@ function PaymentModal({ onClose }: { onClose: () => void }) {
                 borderRadius: 14,
                 fontSize: 12,
                 fontWeight: 800,
-                background: active ? "linear-gradient(135deg,#2563EB,#60A5FA)" : "#FFFFFF",
-                color: active ? "white" : "#64748B",
-                border: `1px solid ${active ? "transparent" : "#E2E8F0"}`,
+                background: active ? "linear-gradient(135deg,#2563EB,#60A5FA)" : "#0A0F0D",
+                color: active ? "white" : "#8BA89D",
+                border: `1px solid ${active ? "transparent" : "#1E2E28"}`,
               }}
             >
               {m}
@@ -353,7 +353,7 @@ function PaymentModal({ onClose }: { onClose: () => void }) {
 
       {method === "iDEAL" && (
         <>
-          <p style={{ fontSize: 12, color: "#64748B", fontWeight: 600, marginBottom: 10 }}>
+          <p style={{ fontSize: 12, color: "#8BA89D", fontWeight: 600, marginBottom: 10 }}>
             Kies je bank
           </p>
           <div className="grid grid-cols-2 gap-2 mb-5">
@@ -368,9 +368,9 @@ function PaymentModal({ onClose }: { onClose: () => void }) {
                     borderRadius: 14,
                     fontSize: 13,
                     fontWeight: 700,
-                    background: active ? "rgba(37,99,235,0.10)" : "#FFFFFF",
-                    color: active ? "#0F172A" : "#64748B",
-                    border: `1.5px solid ${active ? "#2563EB" : "#E2E8F0"}`,
+                    background: active ? "rgba(37,99,235,0.10)" : "#0A0F0D",
+                    color: active ? "#F0FAF6" : "#8BA89D",
+                    border: `1.5px solid ${active ? "#2563EB" : "#1E2E28"}`,
                   }}
                 >
                   {b}
@@ -427,17 +427,17 @@ function NotificationsModal({ onClose }: { onClose: () => void }) {
               style={{
                 padding: "14px 16px",
                 borderRadius: 14,
-                background: "#FFFFFF",
-                border: "1px solid #E2E8F0",
+                background: "#0A0F0D",
+                border: "1px solid #1E2E28",
               }}
             >
-              <span style={{ fontSize: 14, fontWeight: 700, color: "#0F172A" }}>{k}</span>
+              <span style={{ fontSize: 14, fontWeight: 700, color: "#F0FAF6" }}>{k}</span>
               <span
                 style={{
                   width: 42,
                   height: 24,
                   borderRadius: 999,
-                  background: on ? "linear-gradient(135deg,#2563EB,#60A5FA)" : "#CBD5E1",
+                  background: on ? "linear-gradient(135deg,#2563EB,#60A5FA)" : "#2A4038",
                   position: "relative",
                   transition: "all 0.2s",
                   flexShrink: 0,
@@ -539,7 +539,7 @@ function PayoutModal({ onClose }: { onClose: () => void }) {
       {/* Amount slider */}
       <div className="mb-5">
         <div className="flex items-center justify-between mb-2">
-          <span style={{ fontSize: 12, color: "#64748B", fontWeight: 700 }}>Bedrag opnemen</span>
+          <span style={{ fontSize: 12, color: "#8BA89D", fontWeight: 700 }}>Bedrag opnemen</span>
           <span style={{ fontSize: 16, color: "#2563EB", fontWeight: 900 }}>
             €{amount.toLocaleString("nl-NL")}
           </span>
@@ -557,7 +557,7 @@ function PayoutModal({ onClose }: { onClose: () => void }) {
       </div>
 
       {/* Schedule options */}
-      <p style={{ fontSize: 12, color: "#64748B", fontWeight: 700, marginBottom: 8 }}>
+      <p style={{ fontSize: 12, color: "#8BA89D", fontWeight: 700, marginBottom: 8 }}>
         Uitbetalingsfrequentie
       </p>
       <div className="flex flex-col gap-2 mb-5">
@@ -571,13 +571,13 @@ function PayoutModal({ onClose }: { onClose: () => void }) {
               style={{
                 padding: "14px 16px",
                 borderRadius: 14,
-                background: active ? "var(--grad-soft, rgba(37,99,235,0.10))" : "#FFFFFF",
-                border: `1.5px solid ${active ? "#2563EB" : "#E2E8F0"}`,
+                background: active ? "var(--grad-soft, rgba(37,99,235,0.10))" : "#0A0F0D",
+                border: `1.5px solid ${active ? "#2563EB" : "#1E2E28"}`,
               }}
             >
               <div>
-                <div style={{ fontSize: 14, fontWeight: 800, color: "#0F172A" }}>{s.key}</div>
-                <div style={{ fontSize: 11.5, color: "#64748B", fontWeight: 600, marginTop: 1 }}>
+                <div style={{ fontSize: 14, fontWeight: 800, color: "#F0FAF6" }}>{s.key}</div>
+                <div style={{ fontSize: 11.5, color: "#8BA89D", fontWeight: 600, marginTop: 1 }}>
                   {s.sub}
                 </div>
               </div>
@@ -600,7 +600,7 @@ function PayoutModal({ onClose }: { onClose: () => void }) {
       </div>
 
       {/* History */}
-      <p style={{ fontSize: 12, color: "#64748B", fontWeight: 700, marginBottom: 8 }}>
+      <p style={{ fontSize: 12, color: "#8BA89D", fontWeight: 700, marginBottom: 8 }}>
         Uitbetalingsgeschiedenis
       </p>
       <div className="flex flex-col gap-1 mb-5">
@@ -611,11 +611,11 @@ function PayoutModal({ onClose }: { onClose: () => void }) {
             style={{
               padding: "12px 14px",
               borderRadius: 12,
-              background: "#FFFFFF",
-              border: "1px solid #E2E8F0",
+              background: "#0A0F0D",
+              border: "1px solid #1E2E28",
             }}
           >
-            <span style={{ fontSize: 13, color: "#0F172A", fontWeight: 600 }}>{h.date}</span>
+            <span style={{ fontSize: 13, color: "#F0FAF6", fontWeight: 600 }}>{h.date}</span>
             <span style={{ fontSize: 13, color: "#2563EB", fontWeight: 800 }}>
               €{h.amount.toLocaleString("nl-NL")}
             </span>
@@ -663,9 +663,9 @@ function PasswordModal({ onClose }: { onClose: () => void }) {
     width: "100%",
     padding: "14px 16px",
     borderRadius: 14,
-    background: "#FFFFFF",
-    border: "1px solid #E2E8F0",
-    color: "#0F172A",
+    background: "#0A0F0D",
+    border: "1px solid #1E2E28",
+    color: "#F0FAF6",
     fontSize: 14,
     fontWeight: 600,
     outline: "none",
@@ -738,12 +738,12 @@ function PrivacyModal({ onClose }: { onClose: () => void }) {
             style={{
               padding: 14,
               borderRadius: 14,
-              background: "#FFFFFF",
-              border: "1px solid #E2E8F0",
+              background: "#0A0F0D",
+              border: "1px solid #1E2E28",
             }}
           >
-            <div style={{ fontSize: 13, fontWeight: 800, color: "#0F172A" }}>{c.title}</div>
-            <div style={{ fontSize: 12, fontWeight: 500, color: "#64748B", marginTop: 4, lineHeight: 1.55 }}>
+            <div style={{ fontSize: 13, fontWeight: 800, color: "#F0FAF6" }}>{c.title}</div>
+            <div style={{ fontSize: 12, fontWeight: 500, color: "#8BA89D", marginTop: 4, lineHeight: 1.55 }}>
               {c.body}
             </div>
           </div>
@@ -789,8 +789,8 @@ function TermsModal({ onClose }: { onClose: () => void }) {
             style={{
               padding: 14,
               borderRadius: 14,
-              background: "#FFFFFF",
-              border: "1px solid #E2E8F0",
+              background: "#0A0F0D",
+              border: "1px solid #1E2E28",
             }}
           >
             <span
@@ -808,8 +808,8 @@ function TermsModal({ onClose }: { onClose: () => void }) {
               {i + 1}
             </span>
             <div className="flex-1">
-              <div style={{ fontSize: 13, fontWeight: 800, color: "#0F172A" }}>{a.title}</div>
-              <div style={{ fontSize: 12, fontWeight: 500, color: "#64748B", marginTop: 3, lineHeight: 1.55 }}>
+              <div style={{ fontSize: 13, fontWeight: 800, color: "#F0FAF6" }}>{a.title}</div>
+              <div style={{ fontSize: 12, fontWeight: 500, color: "#8BA89D", marginTop: 3, lineHeight: 1.55 }}>
                 {a.body}
               </div>
             </div>
@@ -839,7 +839,7 @@ function HelpModal({ onClose }: { onClose: () => void }) {
 
   return (
     <Sheet onClose={onClose} title="Help & support">
-      <p style={{ fontSize: 12, color: "#64748B", fontWeight: 700, marginBottom: 10 }}>
+      <p style={{ fontSize: 12, color: "#8BA89D", fontWeight: 700, marginBottom: 10 }}>
         Contact
       </p>
       <div className="grid grid-cols-3 gap-2 mb-5">
@@ -850,8 +850,8 @@ function HelpModal({ onClose }: { onClose: () => void }) {
             style={{
               padding: "14px 8px",
               borderRadius: 14,
-              background: "#FFFFFF",
-              border: "1px solid #E2E8F0",
+              background: "#0A0F0D",
+              border: "1px solid #1E2E28",
             }}
           >
             <span
@@ -865,15 +865,15 @@ function HelpModal({ onClose }: { onClose: () => void }) {
             >
               <Icon size={16} color="white" />
             </span>
-            <span style={{ fontSize: 12, fontWeight: 800, color: "#0F172A" }}>{label}</span>
-            <span style={{ fontSize: 9.5, fontWeight: 600, color: "#64748B", marginTop: 2, lineHeight: 1.3 }}>
+            <span style={{ fontSize: 12, fontWeight: 800, color: "#F0FAF6" }}>{label}</span>
+            <span style={{ fontSize: 9.5, fontWeight: 600, color: "#8BA89D", marginTop: 2, lineHeight: 1.3 }}>
               {sub}
             </span>
           </button>
         ))}
       </div>
 
-      <p style={{ fontSize: 12, color: "#64748B", fontWeight: 700, marginBottom: 8 }}>
+      <p style={{ fontSize: 12, color: "#8BA89D", fontWeight: 700, marginBottom: 8 }}>
         Veelgestelde vragen
       </p>
       <div className="flex flex-col gap-2">
@@ -887,20 +887,20 @@ function HelpModal({ onClose }: { onClose: () => void }) {
               style={{
                 padding: 14,
                 borderRadius: 14,
-                background: "#FFFFFF",
-                border: `1px solid ${isOpen ? "rgba(37,99,235,0.30)" : "#E2E8F0"}`,
+                background: "#0A0F0D",
+                border: `1px solid ${isOpen ? "rgba(37,99,235,0.30)" : "#1E2E28"}`,
               }}
             >
               <div className="flex items-center justify-between gap-2">
-                <span style={{ fontSize: 13, fontWeight: 700, color: "#0F172A" }}>{f.q}</span>
+                <span style={{ fontSize: 13, fontWeight: 700, color: "#F0FAF6" }}>{f.q}</span>
                 <ChevronDown
                   size={16}
-                  color="#64748B"
+                  color="#8BA89D"
                   style={{ transform: isOpen ? "rotate(180deg)" : "none", transition: "transform 0.2s", flexShrink: 0 }}
                 />
               </div>
               {isOpen && (
-                <p style={{ fontSize: 12, color: "#64748B", fontWeight: 500, marginTop: 8, lineHeight: 1.55 }}>
+                <p style={{ fontSize: 12, color: "#8BA89D", fontWeight: 500, marginTop: 8, lineHeight: 1.55 }}>
                   {f.a}
                 </p>
               )}

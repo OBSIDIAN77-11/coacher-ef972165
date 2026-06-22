@@ -7,7 +7,7 @@ export function Toggle({ on, onChange }: { on: boolean; onChange: (v: boolean) =
         width: 44,
         height: 24,
         borderRadius: 12,
-        background: on ? "linear-gradient(135deg,#2563EB,#60A5FA)" : "#E2E8F0",
+        background: on ? "linear-gradient(135deg,#2563EB,#60A5FA)" : "#1E2E28",
         position: "relative",
         transition: "background 0.2s",
         flexShrink: 0,
