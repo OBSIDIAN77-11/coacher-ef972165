@@ -18,7 +18,7 @@ export function Splash({ onDone }: { onDone: () => void }) {
             width: 120,
             height: 2,
             borderRadius: 2,
-            background: "#E2E8F0",
+            background: "#1E2E28",
           }}
         >
           <div className="shimmer h-full w-full" />

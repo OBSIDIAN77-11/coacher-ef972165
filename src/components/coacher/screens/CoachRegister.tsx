@@ -79,13 +79,13 @@ export function CoachRegister({
         <form onSubmit={submit} className="w-full">
           <h2
             className="text-center"
-            style={{ fontSize: 22, fontWeight: 900, color: "#0F172A", letterSpacing: "-0.5px" }}
+            style={{ fontSize: 22, fontWeight: 900, color: "#F0FAF6", letterSpacing: "-0.5px" }}
           >
             Coach registratie
           </h2>
           <p
             className="text-center"
-            style={{ fontSize: 12, color: "#64748B", fontWeight: 600, marginBottom: 18 }}
+            style={{ fontSize: 12, color: "#8BA89D", fontWeight: 600, marginBottom: 18 }}
           >
             Eerste maand gratis
           </p>
@@ -169,16 +169,16 @@ export function CoachRegister({
               style={{
                 padding: "12px 14px",
                 borderRadius: 13,
-                background: "#F8FAFC",
-                border: "1px solid #E2E8F0",
+                background: "#111815",
+                border: "1px solid #1E2E28",
               }}
             >
               <Toggle on={online} onChange={setOnline} />
               <div className="flex-1">
-                <div style={{ fontSize: 13, fontWeight: 700, color: "#0F172A" }}>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "#F0FAF6" }}>
                   Online coaching aanbieden
                 </div>
-                <div style={{ fontSize: 11, color: "#64748B", fontWeight: 600 }}>
+                <div style={{ fontSize: 11, color: "#8BA89D", fontWeight: 600 }}>
                   Bereik klanten door heel NL
                 </div>
               </div>

@@ -20,7 +20,7 @@ export function Logo({ float = false, withTagline = true }: { float?: boolean; w
         style={{
           fontSize: 38,
           fontWeight: 900,
-          color: "#0F172A",
+          color: "#F0FAF6",
           letterSpacing: "-1.5px",
           lineHeight: 1,
         }}
@@ -32,7 +32,7 @@ export function Logo({ float = false, withTagline = true }: { float?: boolean; w
           className="mt-2 uppercase"
           style={{
             fontSize: 13,
-            color: "#94A3B8",
+            color: "#4A6358",
             letterSpacing: "2px",
             fontWeight: 700,
           }}

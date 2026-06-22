@@ -5,13 +5,13 @@ export function KlantHome() {
   return (
     <div className="fade px-5 py-6">
       {/* Header */}
-      <div style={{ fontSize: 10, fontWeight: 800, color: "#64748B", letterSpacing: 1.2, textTransform: "uppercase" }}>
+      <div style={{ fontSize: 10, fontWeight: 800, color: "#8BA89D", letterSpacing: 1.2, textTransform: "uppercase" }}>
         Vrijdag, 6 juni
       </div>
       <h1 className="text-grad" style={{ fontSize: 26, fontWeight: 900, letterSpacing: "-0.5px", marginTop: 4 }}>
         Hallo, Sophie
       </h1>
-      <p style={{ fontSize: 13, color: "#64748B", fontWeight: 600, marginTop: 4 }}>
+      <p style={{ fontSize: 13, color: "#8BA89D", fontWeight: 600, marginTop: 4 }}>
         Coach: Yasmine · Week 8 van 12
       </p>
 
@@ -90,7 +90,7 @@ export function KlantHome() {
 function SectionHead({ title, children }: { title: string; children?: React.ReactNode }) {
   return (
     <div className="flex items-center justify-between mt-6 mb-3">
-      <h2 style={{ fontSize: 16, fontWeight: 800, color: "#0F172A" }}>{title}</h2>
+      <h2 style={{ fontSize: 16, fontWeight: 800, color: "#F0FAF6" }}>{title}</h2>
       {children}
     </div>
   );
@@ -108,18 +108,18 @@ function RecoveryCard() {
     { label: "VO2Max", value: "44.5", color: "#FFD166" },
   ];
   return (
-    <div style={{ padding: 18, borderRadius: 20, background: "#FFFFFF", border: "1px solid #E2E8F0" }}>
+    <div style={{ padding: 18, borderRadius: 20, background: "#0A0F0D", border: "1px solid #1E2E28" }}>
       <div className="flex items-center gap-4">
         <div className="flex-1">
-          <div style={{ fontSize: 11, fontWeight: 700, color: "#64748B" }}>Herstel</div>
+          <div style={{ fontSize: 11, fontWeight: 700, color: "#8BA89D" }}>Herstel</div>
           <div style={{ fontSize: 42, fontWeight: 900, color: "#2563EB", letterSpacing: "-1px", lineHeight: 1, marginTop: 4 }}>
             {pct}%
           </div>
-          <div style={{ fontSize: 12, color: "#0F172A", fontWeight: 700, marginTop: 6 }}>Klaar voor training</div>
+          <div style={{ fontSize: 12, color: "#F0FAF6", fontWeight: 700, marginTop: 6 }}>Klaar voor training</div>
         </div>
         <div className="relative flex items-center justify-center flex-shrink-0" style={{ width: 96, height: 96 }}>
           <svg width={96} height={96} style={{ transform: "rotate(-90deg)" }}>
-            <circle cx={48} cy={48} r={r} stroke="#FFFFFF" strokeWidth={8} fill="none" />
+            <circle cx={48} cy={48} r={r} stroke="#0A0F0D" strokeWidth={8} fill="none" />
             <circle
               cx={48}
               cy={48}
@@ -139,16 +139,16 @@ function RecoveryCard() {
             </defs>
           </svg>
           <div className="absolute text-center">
-            <div style={{ fontSize: 9, fontWeight: 800, color: "#64748B", letterSpacing: 0.5 }}>HRV</div>
-            <div style={{ fontSize: 18, fontWeight: 900, color: "#0F172A", lineHeight: 1 }}>52</div>
+            <div style={{ fontSize: 9, fontWeight: 800, color: "#8BA89D", letterSpacing: 0.5 }}>HRV</div>
+            <div style={{ fontSize: 18, fontWeight: 900, color: "#F0FAF6", lineHeight: 1 }}>52</div>
           </div>
         </div>
       </div>
       <div className="grid grid-cols-4 gap-2 mt-4">
         {bio.map((b) => (
-          <div key={b.label} style={{ padding: 8, borderRadius: 10, background: "#FFFFFF", textAlign: "center" }}>
+          <div key={b.label} style={{ padding: 8, borderRadius: 10, background: "#0A0F0D", textAlign: "center" }}>
             <div style={{ fontSize: 13, fontWeight: 900, color: b.color, letterSpacing: "-0.3px" }}>{b.value}</div>
-            <div style={{ fontSize: 9, color: "#64748B", fontWeight: 700, marginTop: 2 }}>{b.label}</div>
+            <div style={{ fontSize: 9, color: "#8BA89D", fontWeight: 700, marginTop: 2 }}>{b.label}</div>
           </div>
         ))}
       </div>
@@ -161,20 +161,20 @@ function SleepCard() {
     { name: "Diep", pct: 24, color: "#60A5FA" },
     { name: "REM", pct: 22, color: "#2563EB" },
     { name: "Licht", pct: 48, color: "#8B5CF6" },
-    { name: "Wakker", pct: 6, color: "#94A3B8" },
+    { name: "Wakker", pct: 6, color: "#4A6358" },
   ];
   return (
-    <div className="mt-3" style={{ padding: 18, borderRadius: 20, background: "#FFFFFF", border: "1px solid #E2E8F0" }}>
+    <div className="mt-3" style={{ padding: 18, borderRadius: 20, background: "#0A0F0D", border: "1px solid #1E2E28" }}>
       <div className="flex items-center justify-between">
         <div>
-          <div style={{ fontSize: 11, fontWeight: 700, color: "#64748B" }}>Slaapscore</div>
-          <div style={{ fontSize: 28, fontWeight: 900, color: "#0F172A", marginTop: 2, letterSpacing: "-0.5px" }}>
-            84<span style={{ fontSize: 14, color: "#64748B", fontWeight: 700 }}>/100</span>
+          <div style={{ fontSize: 11, fontWeight: 700, color: "#8BA89D" }}>Slaapscore</div>
+          <div style={{ fontSize: 28, fontWeight: 900, color: "#F0FAF6", marginTop: 2, letterSpacing: "-0.5px" }}>
+            84<span style={{ fontSize: 14, color: "#8BA89D", fontWeight: 700 }}>/100</span>
           </div>
         </div>
-        <div style={{ fontSize: 11, fontWeight: 700, color: "#64748B", textAlign: "right" }}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: "#8BA89D", textAlign: "right" }}>
           23:14 → 06:26
-          <div style={{ fontSize: 13, color: "#0F172A", fontWeight: 800, marginTop: 2 }}>7.2u</div>
+          <div style={{ fontSize: 13, color: "#F0FAF6", fontWeight: 800, marginTop: 2 }}>7.2u</div>
         </div>
       </div>
       <div className="flex overflow-hidden mt-3" style={{ height: 12, borderRadius: 999 }}>
@@ -186,7 +186,7 @@ function SleepCard() {
         {phases.map((p) => (
           <div key={p.name} className="flex items-center gap-1">
             <span style={{ width: 8, height: 8, borderRadius: 2, background: p.color }} />
-            <span style={{ fontSize: 10, color: "#64748B", fontWeight: 700 }}>
+            <span style={{ fontSize: 10, color: "#8BA89D", fontWeight: 700 }}>
               {p.name} {p.pct}%
             </span>
           </div>
@@ -231,7 +231,7 @@ function AITip() {
         >
           AI tip
         </div>
-        <div style={{ fontSize: 13, color: "#0F172A", fontWeight: 600, marginTop: 4, lineHeight: 1.5 }}>
+        <div style={{ fontSize: 13, color: "#F0FAF6", fontWeight: 600, marginTop: 4, lineHeight: 1.5 }}>
           Je herstel is 78%, ideaal voor een zware training.
         </div>
       </div>
@@ -241,12 +241,12 @@ function AITip() {
 
 function Stat({ value, label, color, icon }: { value: string; label: string; color: string; icon?: React.ReactNode }) {
   return (
-    <div style={{ padding: 12, borderRadius: 16, background: "#FFFFFF", border: "1px solid #E2E8F0" }}>
+    <div style={{ padding: 12, borderRadius: 16, background: "#0A0F0D", border: "1px solid #1E2E28" }}>
       <div className="flex items-center gap-1" style={{ color }}>
         {icon}
         <span style={{ fontSize: 20, fontWeight: 900, letterSpacing: "-0.5px" }}>{value}</span>
       </div>
-      <div style={{ fontSize: 11, color: "#64748B", fontWeight: 700, marginTop: 2 }}>{label}</div>
+      <div style={{ fontSize: 11, color: "#8BA89D", fontWeight: 700, marginTop: 2 }}>{label}</div>
     </div>
   );
 }
@@ -265,16 +265,16 @@ function TrainingCard() {
       return n;
     });
   return (
-    <div className="mt-6" style={{ padding: 18, borderRadius: 20, background: "#FFFFFF", border: "1px solid #E2E8F0" }}>
+    <div className="mt-6" style={{ padding: 18, borderRadius: 20, background: "#0A0F0D", border: "1px solid #1E2E28" }}>
       <div className="flex items-center justify-between mb-1">
         <div style={{ fontSize: 10, fontWeight: 800, color: "#2563EB", letterSpacing: 0.5, textTransform: "uppercase" }}>
           Training vandaag
         </div>
-        <div style={{ fontSize: 10, color: "#64748B", fontWeight: 700 }}>
+        <div style={{ fontSize: 10, color: "#8BA89D", fontWeight: 700 }}>
           {done.size}/{ex.length}
         </div>
       </div>
-      <div style={{ fontSize: 16, fontWeight: 800, color: "#0F172A" }}>Vrijdag: Billen & Benen</div>
+      <div style={{ fontSize: 16, fontWeight: 800, color: "#F0FAF6" }}>Vrijdag: Billen & Benen</div>
 
       <div className="flex flex-col gap-2 mt-3">
         {ex.map((e) => {
@@ -287,8 +287,8 @@ function TrainingCard() {
               style={{
                 padding: 12,
                 borderRadius: 12,
-                background: "#FFFFFF",
-                border: "1px solid #E2E8F0",
+                background: "#0A0F0D",
+                border: "1px solid #1E2E28",
               }}
             >
               <span
@@ -298,7 +298,7 @@ function TrainingCard() {
                   height: 22,
                   borderRadius: 6,
                   background: isDone ? "linear-gradient(135deg,#2563EB,#60A5FA)" : "transparent",
-                  border: isDone ? "none" : "2px solid #94A3B8",
+                  border: isDone ? "none" : "2px solid #4A6358",
                 }}
               >
                 {isDone && <Check size={13} strokeWidth={3.5} color="white" />}
@@ -308,13 +308,13 @@ function TrainingCard() {
                   style={{
                     fontSize: 13,
                     fontWeight: 800,
-                    color: isDone ? "#64748B" : "#0F172A",
+                    color: isDone ? "#8BA89D" : "#F0FAF6",
                     textDecoration: isDone ? "line-through" : "none",
                   }}
                 >
                   {e.name}
                 </div>
-                <div style={{ fontSize: 11, color: "#64748B", fontWeight: 600, marginTop: 1 }}>{e.spec}</div>
+                <div style={{ fontSize: 11, color: "#8BA89D", fontWeight: 600, marginTop: 1 }}>{e.spec}</div>
               </div>
             </button>
           );

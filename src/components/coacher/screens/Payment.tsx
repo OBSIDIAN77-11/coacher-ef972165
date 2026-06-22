@@ -76,7 +76,7 @@ export function Payment({
             style={{
               fontSize: 28,
               fontWeight: 900,
-              color: "#0F172A",
+              color: "#F0FAF6",
               letterSpacing: "-0.5px",
               marginBottom: 10,
             }}
@@ -86,7 +86,7 @@ export function Payment({
           <p
             style={{
               fontSize: 13,
-              color: "#64748B",
+              color: "#8BA89D",
               fontWeight: 600,
               maxWidth: 300,
               marginBottom: 28,
@@ -113,7 +113,7 @@ export function Payment({
           style={{
             fontSize: 11,
             fontWeight: 800,
-            color: "#94A3B8",
+            color: "#4A6358",
             letterSpacing: "0.6px",
             marginBottom: 6,
           }}
@@ -124,13 +124,13 @@ export function Payment({
           style={{
             fontSize: 26,
             fontWeight: 900,
-            color: "#0F172A",
+            color: "#F0FAF6",
             letterSpacing: "-0.5px",
           }}
         >
           Betaling instellen
         </h1>
-        <p style={{ fontSize: 13, color: "#64748B", fontWeight: 600, marginTop: 6 }}>
+        <p style={{ fontSize: 13, color: "#8BA89D", fontWeight: 600, marginTop: 6 }}>
           {isCoach ? "Kies je plan en betaalmethode — eerste maand gratis." : "Kies hoe je wilt betalen — eerste maand is gratis."}
         </p>
 
@@ -146,13 +146,13 @@ export function Payment({
                   style={{
                     padding: "14px 16px",
                     borderRadius: 16,
-                    background: active ? "var(--grad-soft)" : "#FFFFFF",
-                    border: `1.5px solid ${active ? "#2563EB" : "#E2E8F0"}`,
+                    background: active ? "var(--grad-soft)" : "#0A0F0D",
+                    border: `1.5px solid ${active ? "#2563EB" : "#1E2E28"}`,
                   }}
                 >
                   <div>
                     <div className="flex items-center gap-2">
-                      <span style={{ fontSize: 14, fontWeight: 800, color: "#0F172A" }}>{p.name}</span>
+                      <span style={{ fontSize: 14, fontWeight: 800, color: "#F0FAF6" }}>{p.name}</span>
                       {p.highlight && (
                         <span
                           style={{
@@ -169,15 +169,15 @@ export function Payment({
                         </span>
                       )}
                     </div>
-                    <div style={{ fontSize: 11, color: "#64748B", fontWeight: 600, marginTop: 2 }}>
+                    <div style={{ fontSize: 11, color: "#8BA89D", fontWeight: 600, marginTop: 2 }}>
                       👥 {p.clients}
                     </div>
                   </div>
                   <div className="text-right">
-                    <div style={{ fontSize: 16, fontWeight: 900, color: active ? "#2563EB" : "#0F172A" }}>
+                    <div style={{ fontSize: 16, fontWeight: 900, color: active ? "#2563EB" : "#F0FAF6" }}>
                       €{p.price}
                     </div>
-                    <div style={{ fontSize: 10, color: "#64748B", fontWeight: 700 }}>per maand</div>
+                    <div style={{ fontSize: 10, color: "#8BA89D", fontWeight: 700 }}>per maand</div>
                   </div>
                 </button>
               );
@@ -186,8 +186,8 @@ export function Payment({
               style={{
                 padding: "10px 14px",
                 borderRadius: 12,
-                background: "#F8FAFC",
-                border: "1px solid #E2E8F0",
+                background: "#111815",
+                border: "1px solid #1E2E28",
                 marginTop: 4,
               }}
             >
@@ -195,7 +195,7 @@ export function Payment({
                 style={{
                   fontSize: 10,
                   fontWeight: 800,
-                  color: "#94A3B8",
+                  color: "#4A6358",
                   letterSpacing: "0.6px",
                   marginBottom: 6,
                 }}
@@ -205,7 +205,7 @@ export function Payment({
               </div>
               <div className="flex flex-wrap gap-x-3 gap-y-1">
                 {COACH_FEATURES.map((f) => (
-                  <span key={f} style={{ fontSize: 11, fontWeight: 600, color: "#64748B" }}>
+                  <span key={f} style={{ fontSize: 11, fontWeight: 600, color: "#8BA89D" }}>
                     ✅ {f}
                   </span>
                 ))}
@@ -229,16 +229,16 @@ export function Payment({
                 style={{
                   padding: "16px 8px",
                   borderRadius: 16,
-                  background: active ? "var(--grad-soft)" : "#FFFFFF",
-                  border: `1.5px solid ${active ? "#2563EB" : "#E2E8F0"}`,
+                  background: active ? "var(--grad-soft)" : "#0A0F0D",
+                  border: `1.5px solid ${active ? "#2563EB" : "#1E2E28"}`,
                 }}
               >
-                <Icon color={active ? "#2563EB" : "#64748B"} size={22} />
+                <Icon color={active ? "#2563EB" : "#8BA89D"} size={22} />
                 <span
                   style={{
                     fontSize: 12,
                     fontWeight: 800,
-                    color: active ? "#2563EB" : "#0F172A",
+                    color: active ? "#2563EB" : "#F0FAF6",
                   }}
                 >
                   {label}
@@ -256,7 +256,7 @@ export function Payment({
               style={{
                 fontSize: 11,
                 fontWeight: 800,
-                color: "#64748B",
+                color: "#8BA89D",
                 letterSpacing: "0.6px",
                 marginBottom: 8,
               }}
@@ -275,9 +275,9 @@ export function Payment({
                       borderRadius: 13,
                       fontSize: 13,
                       fontWeight: 700,
-                      background: active ? "var(--grad-soft)" : "#FFFFFF",
-                      border: `1.5px solid ${active ? "#2563EB" : "#E2E8F0"}`,
-                      color: active ? "#2563EB" : "#0F172A",
+                      background: active ? "var(--grad-soft)" : "#0A0F0D",
+                      border: `1.5px solid ${active ? "#2563EB" : "#1E2E28"}`,
+                      color: active ? "#2563EB" : "#F0FAF6",
                       textAlign: "left",
                     }}
                   >
@@ -301,14 +301,14 @@ export function Payment({
         >
           <div className="flex items-start justify-between gap-3">
             <div>
-              <div style={{ fontSize: 14, fontWeight: 800, color: "#0F172A" }}>{planName}</div>
-              <div style={{ fontSize: 11, color: "#64748B", fontWeight: 600, marginTop: 2 }}>
+              <div style={{ fontSize: 14, fontWeight: 800, color: "#F0FAF6" }}>{planName}</div>
+              <div style={{ fontSize: 11, color: "#8BA89D", fontWeight: 600, marginTop: 2 }}>
                 Maandelijks opzegbaar
               </div>
             </div>
             <div className="text-right">
               <div style={{ fontSize: 18, fontWeight: 900, color: "#2563EB" }}>€0,00</div>
-              <div style={{ fontSize: 10, color: "#64748B", fontWeight: 700 }}>
+              <div style={{ fontSize: 10, color: "#8BA89D", fontWeight: 700 }}>
                 {isCoach ? `daarna €${selectedPlan.price}/mnd` : "eerste maand gratis"}
               </div>
             </div>
@@ -321,14 +321,14 @@ export function Payment({
           </Button>
           <p
             className="mt-3 text-center"
-            style={{ fontSize: 10, color: "#94A3B8", fontWeight: 600 }}
+            style={{ fontSize: 10, color: "#4A6358", fontWeight: 600 }}
           >
             Betalingen verwerkt door Mollie · SSL beveiligd
           </p>
           <button
             onClick={onSkip}
             className="mt-2 w-full text-center"
-            style={{ fontSize: 13, color: "#64748B", fontWeight: 700 }}
+            style={{ fontSize: 13, color: "#8BA89D", fontWeight: 700 }}
           >
             Later instellen
           </button>
