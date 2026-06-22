@@ -1,4 +1,4 @@
-import { useState, type ReactNode, type ComponentType } from "react";
+import { useState, useEffect, type ReactNode, type ComponentType } from "react";
 import {
   CreditCard,
   Bell,
@@ -15,6 +15,8 @@ import {
   Mail,
   Phone,
   ChevronDown,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { Button } from "../Button";
 
