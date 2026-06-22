@@ -43,11 +43,11 @@ const PHOTO_LABELS: { key: PhotoKey; label: string }[] = [
 const PHOTO_BUCKET = "progress-photos";
 
 const C = {
-  bg: "#F4F7FB",
-  surface: "#FFFFFF",
-  border: "#E6ECF4",
-  text: "#1E3A8A",
-  muted: "#6B7A99",
+  bg: "#000000",
+  surface: "#0F1525",
+  border: "#1E2A44",
+  text: "#FFFFFF",
+  muted: "#8B98B0",
   accent: "#60A5FA",
   green: "#2563EB",
   red: "#FF4D6A",
@@ -165,7 +165,7 @@ export function KlantVoortgang() {
           padding: "18px 20px 12px",
           position: "sticky",
           top: 60,
-          background: "rgba(255,255,255,0.93)",
+          background: "rgba(15,21,37,0.93)",
           backdropFilter: "blur(18px)",
           zIndex: 5,
           borderBottom: `1px solid ${C.border}`,
@@ -769,7 +769,7 @@ function Sheet({ title, onClose, children }: { title: string; onClose: () => voi
           padding: "12px 20px 24px", maxHeight: "85vh", overflowY: "auto",
         }}
       >
-        <div className="mx-auto mb-3" style={{ width: 44, height: 4, borderRadius: 2, background: "#CBD5E1" }} />
+        <div className="mx-auto mb-3" style={{ width: 44, height: 4, borderRadius: 2, background: "#2A3B5C" }} />
         <div className="flex items-center justify-between mb-4">
           <h3 style={{ fontSize: 18, fontWeight: 900, color: C.text }}>{title}</h3>
           <button onClick={onClose} className="flex items-center justify-center"
