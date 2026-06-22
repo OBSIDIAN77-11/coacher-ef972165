@@ -170,7 +170,7 @@ function ChatThread({ contact, onBack }: { contact: Contact; onBack: () => void 
         className="sticky top-[60px] z-30 flex items-center justify-between"
         style={{
           padding: "12px 16px",
-          background: "rgba(10,15,13,0.93)",
+          background: "rgba(255,255,255,0.93)",
           backdropFilter: "blur(18px)",
           WebkitBackdropFilter: "blur(18px)",
           borderBottom: "1px solid #E6ECF4",
@@ -298,7 +298,7 @@ function ChatThread({ contact, onBack }: { contact: Contact; onBack: () => void 
           maxWidth: 430,
           transform: "translateX(-50%)",
           padding: "10px 12px 14px",
-          background: "rgba(10,15,13,0.95)",
+          background: "rgba(255,255,255,0.93)",
           backdropFilter: "blur(18px)",
           WebkitBackdropFilter: "blur(18px)",
           borderTop: "1px solid #E6ECF4",

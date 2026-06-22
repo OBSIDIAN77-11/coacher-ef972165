@@ -80,7 +80,7 @@ export function CoachAlerts() {
               style={{
                 padding: 16,
                 borderRadius: 18,
-                background: done ? "rgba(22,32,25,0.5)" : "#F4F7FB",
+                background: done ? "#FFFFFF" : "#F4F7FB",
                 border: `1px solid ${done ? "#E6ECF4" : a.color + "55"}`,
                 borderLeft: done ? "1px solid #E6ECF4" : `4px solid ${a.color}`,
                 opacity: done ? 0.6 : 1,

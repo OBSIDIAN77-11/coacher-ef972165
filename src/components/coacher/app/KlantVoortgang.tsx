@@ -165,7 +165,7 @@ export function KlantVoortgang() {
           padding: "18px 20px 12px",
           position: "sticky",
           top: 60,
-          background: "rgba(10,15,13,0.95)",
+          background: "rgba(255,255,255,0.93)",
           backdropFilter: "blur(18px)",
           zIndex: 5,
           borderBottom: `1px solid ${C.border}`,
