@@ -95,7 +95,7 @@ export function AppShell({
         className="sticky top-0 z-50 flex items-center justify-between"
         style={{
           padding: "12px 16px",
-          background: "rgba(10,15,13,0.93)",
+          background: "rgba(255,255,255,0.93)",
           backdropFilter: "blur(18px)",
           WebkitBackdropFilter: "blur(18px)",
           borderBottom: "1px solid #E6ECF4",
@@ -203,7 +203,7 @@ export function AppShell({
           transform: "translateX(-50%)",
           padding: "8px 12px 16px",
           background:
-            "linear-gradient(to top, #F4F7FB 0%, rgba(10,15,13,0.85) 70%, transparent 100%)",
+            "linear-gradient(to top, #F4F7FB 60%, rgba(244,247,251,0) 100%)",
         }}
       >
         <div
@@ -211,11 +211,11 @@ export function AppShell({
           style={{
             padding: 6,
             borderRadius: 28,
-            background: "rgba(22,32,25,0.95)",
+            background: "#FFFFFF",
             backdropFilter: "blur(24px)",
             WebkitBackdropFilter: "blur(24px)",
             border: "1px solid #E6ECF4",
-            boxShadow: "0 8px 32px rgba(0,0,0,0.5)",
+            boxShadow: "0 8px 24px rgba(30,58,138,0.08)",
           }}
         >
           {tabs.map(({ key, label, Icon, dot }) => {
