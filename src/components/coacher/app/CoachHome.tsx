@@ -18,13 +18,13 @@ export function CoachHome({ onOpenClient }: { onOpenClient: (name: string) => vo
   return (
     <div className="fade px-5 py-6">
       {/* Header */}
-      <div style={{ fontSize: 10, fontWeight: 800, color: "#8BA89D", letterSpacing: 1.2, textTransform: "uppercase" }}>
+      <div style={{ fontSize: 10, fontWeight: 800, color: "#6B7A99", letterSpacing: 1.2, textTransform: "uppercase" }}>
         Vrijdag, 6 juni
       </div>
       <h1 className="text-grad" style={{ fontSize: 26, fontWeight: 900, letterSpacing: "-0.5px", marginTop: 4 }}>
         Goedemorgen, Yasmine
       </h1>
-      <p style={{ fontSize: 13, color: "#8BA89D", fontWeight: 600, marginTop: 4 }}>
+      <p style={{ fontSize: 13, color: "#6B7A99", fontWeight: 600, marginTop: 4 }}>
         4 sessies vandaag · 24 actieve cliënten
       </p>
 
@@ -96,14 +96,14 @@ export function CoachHome({ onOpenClient }: { onOpenClient: (name: string) => vo
 
       {/* Agenda */}
       <Section title="Agenda vandaag" badge="4 sessies" badgeColor="#60A5FA">
-        <div style={{ borderRadius: 18, background: "#0A0F0D", border: "1px solid #1E2E28", overflow: "hidden" }}>
+        <div style={{ borderRadius: 18, background: "#F4F7FB", border: "1px solid #E6ECF4", overflow: "hidden" }}>
           {SESSIONS.map((s, i) => (
             <div
               key={i}
               className="flex items-center gap-3"
               style={{
                 padding: 12,
-                borderTop: i === 0 ? "none" : "1px solid #1E2E28",
+                borderTop: i === 0 ? "none" : "1px solid #E6ECF4",
               }}
             >
               <div
@@ -112,16 +112,16 @@ export function CoachHome({ onOpenClient }: { onOpenClient: (name: string) => vo
                   width: 48,
                   height: 48,
                   borderRadius: 12,
-                  background: "#0A0F0D",
-                  border: "1px solid #1E2E28",
+                  background: "#F4F7FB",
+                  border: "1px solid #E6ECF4",
                   flexShrink: 0,
                 }}
               >
                 <span style={{ fontSize: 12, fontWeight: 800, color: "#2563EB" }}>{s.time}</span>
               </div>
               <div className="flex-1 min-w-0">
-                <div style={{ fontSize: 14, fontWeight: 800, color: "#F0FAF6" }}>{s.name}</div>
-                <div style={{ fontSize: 11, color: "#8BA89D", fontWeight: 600, marginTop: 2 }}>
+                <div style={{ fontSize: 14, fontWeight: 800, color: "#1E3A8A" }}>{s.name}</div>
+                <div style={{ fontSize: 11, color: "#6B7A99", fontWeight: 600, marginTop: 2 }}>
                   {s.type} · {s.dur}
                 </div>
               </div>
@@ -153,8 +153,8 @@ export function CoachHome({ onOpenClient }: { onOpenClient: (name: string) => vo
               style={{
                 padding: 14,
                 borderRadius: 16,
-                background: "#0A0F0D",
-                border: "1px solid #1E2E28",
+                background: "#F4F7FB",
+                border: "1px solid #E6ECF4",
               }}
             >
               <div className="flex items-center justify-between">
@@ -177,15 +177,15 @@ export function CoachHome({ onOpenClient }: { onOpenClient: (name: string) => vo
                       .join("")}
                   </div>
                   <div>
-                    <div style={{ fontSize: 14, fontWeight: 800, color: "#F0FAF6" }}>{c.name}</div>
-                    <div style={{ fontSize: 11, color: "#8BA89D", fontWeight: 600, marginTop: 2 }}>
+                    <div style={{ fontSize: 14, fontWeight: 800, color: "#1E3A8A" }}>{c.name}</div>
+                    <div style={{ fontSize: 11, color: "#6B7A99", fontWeight: 600, marginTop: 2 }}>
                       {c.goal} · {c.week}
                     </div>
                   </div>
                 </div>
                 <div style={{ fontSize: 13, fontWeight: 800, color: "#2563EB" }}>{c.delta}</div>
               </div>
-              <div className="mt-3" style={{ height: 6, borderRadius: 999, background: "#0A0F0D", overflow: "hidden" }}>
+              <div className="mt-3" style={{ height: 6, borderRadius: 999, background: "#F4F7FB", overflow: "hidden" }}>
                 <div style={{ height: "100%", width: `${c.pct}%`, background: c.grad, borderRadius: 999 }} />
               </div>
             </button>
@@ -212,8 +212,8 @@ function StatCard({
       style={{
         padding: 12,
         borderRadius: 16,
-        background: "#0A0F0D",
-        border: "1px solid #1E2E28",
+        background: "#F4F7FB",
+        border: "1px solid #E6ECF4",
       }}
     >
       <div
@@ -228,8 +228,8 @@ function StatCard({
       >
         <Icon size={14} strokeWidth={2.5} />
       </div>
-      <div style={{ fontSize: 20, fontWeight: 900, color: "#F0FAF6", letterSpacing: "-0.5px" }}>{value}</div>
-      <div style={{ fontSize: 10, color: "#8BA89D", fontWeight: 700, marginTop: 2 }}>{title}</div>
+      <div style={{ fontSize: 20, fontWeight: 900, color: "#1E3A8A", letterSpacing: "-0.5px" }}>{value}</div>
+      <div style={{ fontSize: 10, color: "#6B7A99", fontWeight: 700, marginTop: 2 }}>{title}</div>
       <div style={{ fontSize: 10, color: "#2563EB", fontWeight: 700, marginTop: 2 }}>{label}</div>
     </div>
   );
@@ -249,7 +249,7 @@ function Section({
   return (
     <div className="mt-6">
       <div className="flex items-center justify-between mb-3">
-        <h2 style={{ fontSize: 16, fontWeight: 800, color: "#F0FAF6" }}>{title}</h2>
+        <h2 style={{ fontSize: 16, fontWeight: 800, color: "#1E3A8A" }}>{title}</h2>
         {badge && (
           <span
             style={{

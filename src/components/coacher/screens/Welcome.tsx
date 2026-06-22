@@ -32,7 +32,7 @@ export function Welcome({ onStart, onDemo, onLogin }: { onStart: () => void; onD
           style={{
             fontSize: 44,
             fontWeight: 900,
-            color: "#F0FAF6",
+            color: "#1E3A8A",
             letterSpacing: "-2px",
             lineHeight: 1.04,
           }}
@@ -44,7 +44,7 @@ export function Welcome({ onStart, onDemo, onLogin }: { onStart: () => void; onD
 
         <p
           className="mt-5"
-          style={{ fontSize: 15, color: "#8BA89D", lineHeight: 1.6, maxWidth: 320, fontWeight: 500 }}
+          style={{ fontSize: 15, color: "#6B7A99", lineHeight: 1.6, maxWidth: 320, fontWeight: 500 }}
         >
           Vind een gecertificeerde personal trainer, plan sessies en bereik je doelen — alles in
           één app.
@@ -65,7 +65,7 @@ export function Welcome({ onStart, onDemo, onLogin }: { onStart: () => void; onD
               >
                 <Check color="white" size={13} strokeWidth={3} />
               </span>
-              <span style={{ fontSize: 12, fontWeight: 700, color: "#8BA89D" }}>{t}</span>
+              <span style={{ fontSize: 12, fontWeight: 700, color: "#6B7A99" }}>{t}</span>
             </div>
           ))}
         </div>

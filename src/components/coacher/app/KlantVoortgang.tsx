@@ -43,11 +43,11 @@ const PHOTO_LABELS: { key: PhotoKey; label: string }[] = [
 const PHOTO_BUCKET = "progress-photos";
 
 const C = {
-  bg: "#0A0F0D",
-  surface: "#111815",
-  border: "#1E2E28",
-  text: "#F0FAF6",
-  muted: "#8BA89D",
+  bg: "#F4F7FB",
+  surface: "#FFFFFF",
+  border: "#E6ECF4",
+  text: "#1E3A8A",
+  muted: "#6B7A99",
   accent: "#60A5FA",
   green: "#2563EB",
   red: "#FF4D6A",
@@ -769,7 +769,7 @@ function Sheet({ title, onClose, children }: { title: string; onClose: () => voi
           padding: "12px 20px 24px", maxHeight: "85vh", overflowY: "auto",
         }}
       >
-        <div className="mx-auto mb-3" style={{ width: 44, height: 4, borderRadius: 2, background: "#2A4038" }} />
+        <div className="mx-auto mb-3" style={{ width: 44, height: 4, borderRadius: 2, background: "#CBD5E1" }} />
         <div className="flex items-center justify-between mb-4">
           <h3 style={{ fontSize: 18, fontWeight: 900, color: C.text }}>{title}</h3>
           <button onClick={onClose} className="flex items-center justify-center"

@@ -39,11 +39,11 @@ export function Verification({
 function StepHeader({ title, sub }: { title: string; sub?: string }) {
   return (
     <div className="mb-5 text-center">
-      <h1 style={{ fontSize: 26, fontWeight: 900, color: "#F0FAF6", letterSpacing: "-0.5px" }}>
+      <h1 style={{ fontSize: 26, fontWeight: 900, color: "#1E3A8A", letterSpacing: "-0.5px" }}>
         {title}
       </h1>
       {sub && (
-        <p style={{ fontSize: 13, color: "#8BA89D", fontWeight: 600, marginTop: 6 }}>{sub}</p>
+        <p style={{ fontSize: 13, color: "#6B7A99", fontWeight: 600, marginTop: 6 }}>{sub}</p>
       )}
     </div>
   );
@@ -68,13 +68,13 @@ function Intro({ onStart, onSkip }: { onStart: () => void; onSkip: () => void })
         </div>
         <h1
           className="mt-5"
-          style={{ fontSize: 28, fontWeight: 900, color: "#F0FAF6", letterSpacing: "-0.5px" }}
+          style={{ fontSize: 28, fontWeight: 900, color: "#1E3A8A", letterSpacing: "-0.5px" }}
         >
           Verificatie
         </h1>
         <p
           className="mt-2 text-center"
-          style={{ fontSize: 13, color: "#8BA89D", fontWeight: 600, maxWidth: 280 }}
+          style={{ fontSize: 13, color: "#6B7A99", fontWeight: 600, maxWidth: 280 }}
         >
           Veilig en snel — duurt 2 minuten.
         </p>
@@ -88,8 +88,8 @@ function Intro({ onStart, onSkip }: { onStart: () => void; onSkip: () => void })
             style={{
               padding: "14px 16px",
               borderRadius: 16,
-              background: "#0A0F0D",
-              border: "1px solid #1E2E28",
+              background: "#F4F7FB",
+              border: "1px solid #E6ECF4",
             }}
           >
             <div
@@ -107,7 +107,7 @@ function Intro({ onStart, onSkip }: { onStart: () => void; onSkip: () => void })
             >
               {i + 1}
             </div>
-            <span style={{ fontSize: 14, fontWeight: 700, color: "#F0FAF6" }}>{s}</span>
+            <span style={{ fontSize: 14, fontWeight: 700, color: "#1E3A8A" }}>{s}</span>
           </div>
         ))}
       </div>
@@ -119,7 +119,7 @@ function Intro({ onStart, onSkip }: { onStart: () => void; onSkip: () => void })
         <button
           onClick={onSkip}
           className="mt-3 w-full text-center"
-          style={{ fontSize: 13, color: "#8BA89D", fontWeight: 700 }}
+          style={{ fontSize: 13, color: "#6B7A99", fontWeight: 700 }}
         >
           Later doen
         </button>
@@ -148,8 +148,8 @@ function IdScan({ onNext }: { onNext: () => void }) {
         style={{
           aspectRatio: "1.6 / 1",
           borderRadius: 18,
-          border: `2px dashed ${img ? "#2563EB" : "#2A4038"}`,
-          background: img ? "transparent" : "#111815",
+          border: `2px dashed ${img ? "#2563EB" : "#CBD5E1"}`,
+          background: img ? "transparent" : "#FFFFFF",
         }}
       >
         {img ? (
@@ -176,10 +176,10 @@ function IdScan({ onNext }: { onNext: () => void }) {
         ) : (
           <div className="flex h-full flex-col items-center justify-center gap-2">
             <Camera color="#2563EB" size={36} />
-            <span style={{ fontSize: 13, fontWeight: 700, color: "#F0FAF6" }}>
+            <span style={{ fontSize: 13, fontWeight: 700, color: "#1E3A8A" }}>
               Tik om ID te fotograferen
             </span>
-            <span style={{ fontSize: 11, color: "#8BA89D", fontWeight: 600 }}>
+            <span style={{ fontSize: 11, color: "#6B7A99", fontWeight: 600 }}>
               Achtercamera · zorg voor goed licht
             </span>
           </div>
@@ -250,8 +250,8 @@ function Selfie({ onNext }: { onNext: () => void }) {
             width: 180,
             height: 180,
             borderRadius: "50%",
-            border: `2px dashed ${img ? "#2563EB" : "#2A4038"}`,
-            background: img ? "transparent" : "#111815",
+            border: `2px dashed ${img ? "#2563EB" : "#CBD5E1"}`,
+            background: img ? "transparent" : "#FFFFFF",
           }}
         >
           {img ? (
@@ -285,7 +285,7 @@ function Selfie({ onNext }: { onNext: () => void }) {
               borderTopColor: "#2563EB",
             }}
           />
-          <span style={{ fontSize: 12, fontWeight: 700, color: "#8BA89D" }}>
+          <span style={{ fontSize: 12, fontWeight: 700, color: "#6B7A99" }}>
             Gezichtsherkenning actief…
           </span>
         </div>
@@ -294,14 +294,14 @@ function Selfie({ onNext }: { onNext: () => void }) {
       {phase === "done" && (
         <div className="mt-5">
           <div className="mb-2 flex items-center justify-between">
-            <span style={{ fontSize: 12, fontWeight: 700, color: "#F0FAF6" }}>Overeenkomst</span>
+            <span style={{ fontSize: 12, fontWeight: 700, color: "#1E3A8A" }}>Overeenkomst</span>
             <span style={{ fontSize: 12, fontWeight: 800, color: "#2563EB" }}>97%</span>
           </div>
           <div
             style={{
               height: 8,
               borderRadius: 4,
-              background: "#1E2E28",
+              background: "#E6ECF4",
               overflow: "hidden",
             }}
           >
@@ -355,7 +355,7 @@ function Done({ onNext }: { onNext: () => void }) {
         style={{
           fontSize: 28,
           fontWeight: 900,
-          color: "#F0FAF6",
+          color: "#1E3A8A",
           letterSpacing: "-0.5px",
           marginBottom: 18,
         }}
