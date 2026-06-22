@@ -27,13 +27,13 @@ function variantStyle(v: Variant): React.CSSProperties {
     case "outline":
       return {
         background: "transparent",
-        color: "#F0FAF6",
-        border: "1.5px solid #2A4038",
+        color: "#1E3A8A",
+        border: "1.5px solid #CBD5E1",
       };
     case "ghost":
       return { background: "rgba(37,99,235,0.10)", color: "#2563EB" };
     case "muted":
-      return { background: "#0A0F0D", color: "#8BA89D", border: "1px solid #1E2E28" };
+      return { background: "#F4F7FB", color: "#6B7A99", border: "1px solid #E6ECF4" };
     case "danger":
       return { background: "rgba(255,77,106,0.12)", color: "#FF4D6A" };
   }
