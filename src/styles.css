@@ -195,10 +195,6 @@ html[data-theme="dark"] .app-shell svg image,
 html[data-theme="dark"] .app-shell [data-no-invert] {
   filter: invert(1) hue-rotate(180deg);
 }
-/* Sheets & overlays render outside .app-shell — flip those too */
-html[data-theme="dark"] body > div[class*="fixed"] {
-  filter: invert(1) hue-rotate(180deg);
-}
 .ambient-glow {
   position: absolute;
   top: -120px;
