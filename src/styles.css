@@ -179,18 +179,17 @@ body {
 
 /* Light theme — applied via filter so the native dark UI flips to light
    while blue accents (hue-rotated twice) stay intact. */
-html[data-theme="light"] body,
-html[data-theme="light"] {
+html[data-theme="light"],
+html[data-theme="light"] body {
   background: #F4F7FB;
 }
 html[data-theme="light"] .app-shell {
-  background: #F4F7FB;
   filter: invert(1) hue-rotate(180deg);
 }
+/* Re-invert media so real photos/videos display normally */
 html[data-theme="light"] .app-shell img,
 html[data-theme="light"] .app-shell video,
 html[data-theme="light"] .app-shell canvas,
-html[data-theme="light"] .app-shell svg image,
 html[data-theme="light"] .app-shell [data-no-invert] {
   filter: invert(1) hue-rotate(180deg);
 }
