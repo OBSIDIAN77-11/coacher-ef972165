@@ -1,4 +1,4 @@
-import { useState, type ReactNode, type ComponentType } from "react";
+import { useState, useEffect, type ReactNode, type ComponentType } from "react";
 import {
   CreditCard,
   Bell,
@@ -15,6 +15,8 @@ import {
   Mail,
   Phone,
   ChevronDown,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { Button } from "../Button";
 
@@ -40,6 +42,16 @@ type ModalKey =
 export function Settings({ mode, name, initials, onLogout }: Props) {
   const [modal, setModal] = useState<ModalKey>(null);
   const [confirmLogout, setConfirmLogout] = useState(false);
+  const [theme, setTheme] = useState<"light" | "dark">(() => {
+    if (typeof window === "undefined") return "light";
+    return (localStorage.getItem("coacher-theme") as "light" | "dark") ?? "light";
+  });
+
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("coacher-theme", theme);
+  }, [theme]);
 
   const items: {
     key: ModalKey;
@@ -118,8 +130,46 @@ export function Settings({ mode, name, initials, onLogout }: Props) {
         </div>
       </div>
 
+      {/* Theme toggle */}
+      <div
+        className="mb-3 flex items-center gap-2"
+        style={{
+          padding: 6,
+          borderRadius: 16,
+          background: "#F4F7FB",
+          border: "1px solid #E6ECF4",
+        }}
+      >
+        {([
+          { key: "light", label: "Licht", Icon: Sun },
+          { key: "dark", label: "Donker", Icon: Moon },
+        ] as const).map(({ key, label, Icon }) => {
+          const active = theme === key;
+          return (
+            <button
+              key={key}
+              onClick={() => setTheme(key)}
+              className="flex-1 inline-flex items-center justify-center gap-2"
+              style={{
+                padding: "10px 12px",
+                borderRadius: 12,
+                fontSize: 13,
+                fontWeight: 800,
+                background: active ? "linear-gradient(135deg,#2563EB,#60A5FA)" : "transparent",
+                color: active ? "white" : "#6B7A99",
+                border: "none",
+                transition: "all 0.2s",
+              }}
+            >
+              <Icon size={15} /> {label}
+            </button>
+          );
+        })}
+      </div>
+
       {/* Menu items */}
       <div className="flex flex-col gap-2">
+
         {visibleItems.map(({ key, title, sub, Icon }) => (
           <button
             key={title}
