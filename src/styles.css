@@ -176,6 +176,29 @@ body {
   position: relative;
   overflow: hidden;
 }
+
+/* Dark theme — applied via filter so hardcoded inline colors flip
+   while blue accents (hue-rotated twice) stay intact. */
+html[data-theme="dark"] body,
+html[data-theme="dark"] {
+  background: #0b1220;
+}
+html[data-theme="dark"] .app-shell {
+  background: #0b1220;
+  filter: invert(1) hue-rotate(180deg);
+}
+/* Undo inversion on media so photos/avatars stay correct */
+html[data-theme="dark"] .app-shell img,
+html[data-theme="dark"] .app-shell video,
+html[data-theme="dark"] .app-shell canvas,
+html[data-theme="dark"] .app-shell svg image,
+html[data-theme="dark"] .app-shell [data-no-invert] {
+  filter: invert(1) hue-rotate(180deg);
+}
+/* Sheets & overlays render outside .app-shell — flip those too */
+html[data-theme="dark"] body > div[class*="fixed"] {
+  filter: invert(1) hue-rotate(180deg);
+}
 .ambient-glow {
   position: absolute;
   top: -120px;
