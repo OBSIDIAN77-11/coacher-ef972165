@@ -14,12 +14,12 @@
   --radius-2xl: 24px;
   --radius-3xl: 28px;
 
-  --color-bg: #F4F7FB;
-  --color-background: #F4F7FB;
-  --color-foreground: #1E3A8A;
-  --color-surface: #FFFFFF;
-  --color-card: #F4F7FB;
-  --color-card-foreground: #1E3A8A;
+  --color-bg: #000000;
+  --color-background: #000000;
+  --color-foreground: #FFFFFF;
+  --color-surface: #0F1525;
+  --color-card: #000000;
+  --color-card-foreground: #FFFFFF;
 
   --color-emerald: #2563EB;
   --color-emerald-dark: #1D4ED8;
@@ -27,11 +27,11 @@
   --color-sapphire: #60A5FA;
   --color-sapphire-light: rgba(96,165,250, 0.1);
 
-  --color-text-p: #1E3A8A;
-  --color-text-s: #6B7A99;
-  --color-text-m: #94A3B8;
-  --color-border-dark: #E6ECF4;
-  --color-border-hover: #CBD5E1;
+  --color-text-p: #FFFFFF;
+  --color-text-s: #8B98B0;
+  --color-text-m: #4A5A75;
+  --color-border-dark: #1E2A44;
+  --color-border-hover: #2A3B5C;
 
   --color-red: #ff4d6a;
   --color-orange: #ff8c42;
@@ -39,7 +39,7 @@
 
   /* shadcn aliases (kept so primitives compile) */
   --color-primary: var(--color-emerald);
-  --color-primary-foreground: #F4F7FB;
+  --color-primary-foreground: #000000;
   --color-secondary: var(--color-emerald-light);
   --color-secondary-foreground: var(--color-emerald);
   --color-popover: var(--color-card);
@@ -49,7 +49,7 @@
   --color-accent: var(--color-emerald-light);
   --color-accent-foreground: var(--color-emerald);
   --color-destructive: var(--color-red);
-  --color-destructive-foreground: #F4F7FB;
+  --color-destructive-foreground: #000000;
   --color-input: var(--color-border-dark);
   --color-ring: var(--color-emerald);
   --color-border: var(--color-border-dark);
@@ -63,18 +63,18 @@
 
 html,
 body {
-  background: #F4F7FB;
+  background: #000000;
 }
 
 body {
   font-family: "Plus Jakarta Sans", sans-serif;
   -webkit-font-smoothing: antialiased;
-  color: #1E3A8A;
+  color: #FFFFFF;
 }
 
 @layer base {
   * {
-    border-color: #E6ECF4;
+    border-color: #1E2A44;
   }
 }
 
@@ -172,27 +172,26 @@ body {
   max-width: 430px;
   margin: 0 auto;
   min-height: 100vh;
-  background: #F4F7FB;
+  background: #000000;
   position: relative;
   overflow: hidden;
 }
 
-/* Dark theme — applied via filter so hardcoded inline colors flip
+/* Light theme — applied via filter so the native dark UI flips to light
    while blue accents (hue-rotated twice) stay intact. */
-html[data-theme="dark"] body,
-html[data-theme="dark"] {
-  background: #0b1220;
+html[data-theme="light"] body,
+html[data-theme="light"] {
+  background: #F4F7FB;
 }
-html[data-theme="dark"] .app-shell {
-  background: #0b1220;
+html[data-theme="light"] .app-shell {
+  background: #F4F7FB;
   filter: invert(1) hue-rotate(180deg);
 }
-/* Undo inversion on media so photos/avatars stay correct */
-html[data-theme="dark"] .app-shell img,
-html[data-theme="dark"] .app-shell video,
-html[data-theme="dark"] .app-shell canvas,
-html[data-theme="dark"] .app-shell svg image,
-html[data-theme="dark"] .app-shell [data-no-invert] {
+html[data-theme="light"] .app-shell img,
+html[data-theme="light"] .app-shell video,
+html[data-theme="light"] .app-shell canvas,
+html[data-theme="light"] .app-shell svg image,
+html[data-theme="light"] .app-shell [data-no-invert] {
   filter: invert(1) hue-rotate(180deg);
 }
 .ambient-glow {

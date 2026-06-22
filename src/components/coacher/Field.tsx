@@ -7,7 +7,7 @@ export function Label({ children }: { children: React.ReactNode }) {
       style={{
         fontSize: 11,
         fontWeight: 800,
-        color: "#6B7A99",
+        color: "#8B98B0",
         letterSpacing: "0.6px",
       }}
     >
@@ -19,9 +19,9 @@ export function Label({ children }: { children: React.ReactNode }) {
 const inputStyle = (error?: boolean): React.CSSProperties => ({
   padding: "13px 15px",
   borderRadius: 13,
-  border: `1.5px solid ${error ? "#FF4D6A" : "#E6ECF4"}`,
-  background: "#FFFFFF",
-  color: "#1E3A8A",
+  border: `1.5px solid ${error ? "#FF4D6A" : "#1E2A44"}`,
+  background: "#0F1525",
+  color: "#FFFFFF",
   fontSize: 14,
   fontFamily: "Plus Jakarta Sans, sans-serif",
   width: "100%",
@@ -46,7 +46,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           onFocus?.(e);
         }}
         onBlur={(e) => {
-          e.currentTarget.style.borderColor = error ? "#FF4D6A" : "#E6ECF4";
+          e.currentTarget.style.borderColor = error ? "#FF4D6A" : "#1E2A44";
           e.currentTarget.style.boxShadow = "none";
           onBlur?.(e);
         }}

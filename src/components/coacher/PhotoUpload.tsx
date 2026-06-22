@@ -23,8 +23,8 @@ export function PhotoUpload({ size = 84 }: { size?: number }) {
           width: size,
           height: size,
           borderRadius: "50%",
-          border: `2px dashed ${src ? "#2563EB" : "#CBD5E1"}`,
-          background: src ? "transparent" : "#FFFFFF",
+          border: `2px dashed ${src ? "#2563EB" : "#2A3B5C"}`,
+          background: src ? "transparent" : "#0F1525",
           cursor: "pointer",
         }}
       >

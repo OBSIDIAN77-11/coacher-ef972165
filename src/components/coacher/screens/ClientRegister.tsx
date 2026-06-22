@@ -55,13 +55,13 @@ export function ClientRegister({
         <form onSubmit={submit} className="w-full">
           <h2
             className="text-center"
-            style={{ fontSize: 22, fontWeight: 900, color: "#1E3A8A", letterSpacing: "-0.5px" }}
+            style={{ fontSize: 22, fontWeight: 900, color: "#FFFFFF", letterSpacing: "-0.5px" }}
           >
             Klant registratie
           </h2>
           <p
             className="text-center"
-            style={{ fontSize: 12, color: "#6B7A99", fontWeight: 600, marginBottom: 20 }}
+            style={{ fontSize: 12, color: "#8B98B0", fontWeight: 600, marginBottom: 20 }}
           >
             €10/maand — altijd opzegbaar
           </p>
@@ -112,7 +112,7 @@ export function ClientRegister({
             <div className="mt-1">
               <div className="mb-2 flex items-baseline gap-2">
                 <Label>Mijn doelen</Label>
-                <span style={{ fontSize: 10, color: "#94A3B8", fontWeight: 600 }}>
+                <span style={{ fontSize: 10, color: "#4A5A75", fontWeight: 600 }}>
                   (meerdere mogelijk)
                 </span>
               </div>
@@ -130,9 +130,9 @@ export function ClientRegister({
                         borderRadius: 13,
                         fontSize: 13,
                         fontWeight: 700,
-                        border: `1.5px solid ${active ? "#2563EB" : "#E6ECF4"}`,
-                        background: active ? "rgba(37,99,235,0.10)" : "#F4F7FB",
-                        color: active ? "#2563EB" : "#6B7A99",
+                        border: `1.5px solid ${active ? "#2563EB" : "#1E2A44"}`,
+                        background: active ? "rgba(37,99,235,0.10)" : "#000000",
+                        color: active ? "#2563EB" : "#8B98B0",
                       }}
                     >
                       {g}

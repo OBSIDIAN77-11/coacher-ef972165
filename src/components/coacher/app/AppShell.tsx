@@ -95,10 +95,10 @@ export function AppShell({
         className="sticky top-0 z-50 flex items-center justify-between"
         style={{
           padding: "12px 16px",
-          background: "rgba(255,255,255,0.93)",
+          background: "rgba(15,21,37,0.93)",
           backdropFilter: "blur(18px)",
           WebkitBackdropFilter: "blur(18px)",
-          borderBottom: "1px solid #E6ECF4",
+          borderBottom: "1px solid #1E2A44",
         }}
       >
         <span
@@ -115,8 +115,8 @@ export function AppShell({
             style={{
               padding: 3,
               borderRadius: 999,
-              background: "#F4F7FB",
-              border: "1px solid #E6ECF4",
+              background: "#000000",
+              border: "1px solid #1E2A44",
             }}
           >
             {(["coach", "klant"] as Mode[]).map((m) => {
@@ -131,7 +131,7 @@ export function AppShell({
                     fontSize: 11,
                     fontWeight: 800,
                     background: active ? "linear-gradient(135deg,#2563EB,#60A5FA)" : "transparent",
-                    color: active ? "white" : "#6B7A99",
+                    color: active ? "white" : "#8B98B0",
                     textTransform: "capitalize",
                     border: "none",
                   }}
@@ -150,11 +150,11 @@ export function AppShell({
               width: 36,
               height: 36,
               borderRadius: "50%",
-              background: "#F4F7FB",
-              border: "1px solid #E6ECF4",
+              background: "#000000",
+              border: "1px solid #1E2A44",
             }}
           >
-            <Bell color="#1E3A8A" size={16} />
+            <Bell color="#FFFFFF" size={16} />
             <span
               className="dot-pulse absolute"
               style={{
@@ -164,7 +164,7 @@ export function AppShell({
                 height: 8,
                 borderRadius: "50%",
                 background: "#FF4D6A",
-                border: "2px solid #F4F7FB",
+                border: "2px solid #000000",
               }}
             />
           </button>
@@ -203,7 +203,7 @@ export function AppShell({
           transform: "translateX(-50%)",
           padding: "8px 12px 16px",
           background:
-            "linear-gradient(to top, #F4F7FB 60%, rgba(244,247,251,0) 100%)",
+            "linear-gradient(to top, #000000 60%, rgba(0,0,0,0) 100%)",
         }}
       >
         <div
@@ -211,10 +211,10 @@ export function AppShell({
           style={{
             padding: 6,
             borderRadius: 28,
-            background: "#FFFFFF",
+            background: "#0F1525",
             backdropFilter: "blur(24px)",
             WebkitBackdropFilter: "blur(24px)",
-            border: "1px solid #E6ECF4",
+            border: "1px solid #1E2A44",
             boxShadow: "0 8px 24px rgba(30,58,138,0.08)",
           }}
         >
@@ -229,7 +229,7 @@ export function AppShell({
                   padding: active ? "10px 8px" : "12px 8px",
                   borderRadius: 22,
                   background: active ? "linear-gradient(135deg,#2563EB,#60A5FA)" : "transparent",
-                  color: active ? "white" : "#6B7A99",
+                  color: active ? "white" : "#8B98B0",
                   transition: "all 0.2s",
                   border: "none",
                 }}
@@ -270,8 +270,8 @@ export function AppShell({
                 style={{
                   padding: "14px 14px",
                   borderRadius: 14,
-                  background: n.unread ? "rgba(37,99,235,0.08)" : "#FFFFFF",
-                  border: `1px solid ${n.unread ? "rgba(37,99,235,0.25)" : "#E6ECF4"}`,
+                  background: n.unread ? "rgba(37,99,235,0.08)" : "#0F1525",
+                  border: `1px solid ${n.unread ? "rgba(37,99,235,0.25)" : "#1E2A44"}`,
                 }}
               >
                 <div className="flex items-start gap-3">
@@ -282,10 +282,10 @@ export function AppShell({
                     />
                   )}
                   <div>
-                    <div style={{ fontSize: 13, fontWeight: 700, color: "#1E3A8A" }}>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: "#FFFFFF" }}>
                       {n.title}
                     </div>
-                    <div style={{ fontSize: 11, color: "#6B7A99", fontWeight: 600, marginTop: 2 }}>
+                    <div style={{ fontSize: 11, color: "#8B98B0", fontWeight: 600, marginTop: 2 }}>
                       {n.time}
                     </div>
                   </div>
@@ -299,7 +299,7 @@ export function AppShell({
       {/* Logout sheet */}
       {logoutOpen && (
         <BottomSheet onClose={() => setLogoutOpen(false)} title="Uitloggen?">
-          <p style={{ fontSize: 13, color: "#6B7A99", lineHeight: 1.6, marginBottom: 16 }}>
+          <p style={{ fontSize: 13, color: "#8B98B0", lineHeight: 1.6, marginBottom: 16 }}>
             Je wordt uitgelogd en teruggebracht naar het welkomstscherm.
           </p>
           <div className="flex gap-3">
@@ -340,10 +340,10 @@ function BottomSheet({
           maxWidth: 430,
           marginLeft: "auto",
           marginRight: "auto",
-          background: "#FFFFFF",
+          background: "#0F1525",
           borderTopLeftRadius: 28,
           borderTopRightRadius: 28,
-          border: "1px solid #E6ECF4",
+          border: "1px solid #1E2A44",
           borderBottom: "none",
           padding: "12px 20px 32px",
           maxHeight: "75vh",
@@ -352,10 +352,10 @@ function BottomSheet({
       >
         <div
           className="mx-auto mb-4"
-          style={{ width: 44, height: 4, borderRadius: 2, background: "#CBD5E1" }}
+          style={{ width: 44, height: 4, borderRadius: 2, background: "#2A3B5C" }}
         />
         <div className="mb-4 flex items-center justify-between">
-          <h3 style={{ fontSize: 17, fontWeight: 800, color: "#1E3A8A" }}>{title}</h3>
+          <h3 style={{ fontSize: 17, fontWeight: 800, color: "#FFFFFF" }}>{title}</h3>
           <button
             onClick={onClose}
             className="flex items-center justify-center"
@@ -363,11 +363,11 @@ function BottomSheet({
               width: 30,
               height: 30,
               borderRadius: "50%",
-              background: "#F4F7FB",
-              border: "1px solid #E6ECF4",
+              background: "#000000",
+              border: "1px solid #1E2A44",
             }}
           >
-            <X color="#6B7A99" size={14} />
+            <X color="#8B98B0" size={14} />
           </button>
         </div>
         {children}
@@ -439,13 +439,13 @@ function Placeholder({ tab, mode }: { tab: string; mode: Mode }) {
         style={{
           fontSize: 28,
           fontWeight: 900,
-          color: "#1E3A8A",
+          color: "#FFFFFF",
           letterSpacing: "-0.5px",
         }}
       >
         {titles[tab] ?? tab}
       </h1>
-      <p style={{ fontSize: 13, color: "#6B7A99", fontWeight: 600, marginTop: 4 }}>
+      <p style={{ fontSize: 13, color: "#8B98B0", fontWeight: 600, marginTop: 4 }}>
         {mode === "coach" ? "Coach modus" : "Klant modus"}
       </p>
 
@@ -455,13 +455,13 @@ function Placeholder({ tab, mode }: { tab: string; mode: Mode }) {
           padding: 24,
           borderRadius: 20,
           background: "var(--grad-soft)",
-          border: "1px solid #E6ECF4",
+          border: "1px solid #1E2A44",
         }}
       >
-        <p style={{ fontSize: 14, color: "#1E3A8A", fontWeight: 600, lineHeight: 1.6 }}>
+        <p style={{ fontSize: 14, color: "#FFFFFF", fontWeight: 600, lineHeight: 1.6 }}>
           Skelet klaar — hier komen straks de echte schermen.
         </p>
-        <p style={{ fontSize: 12, color: "#6B7A99", fontWeight: 500, lineHeight: 1.6, marginTop: 8 }}>
+        <p style={{ fontSize: 12, color: "#8B98B0", fontWeight: 500, lineHeight: 1.6, marginTop: 8 }}>
           Topbar, mode-toggle, notificatie sheet en bottom nav werken al volledig.
         </p>
       </div>

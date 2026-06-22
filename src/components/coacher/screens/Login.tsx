@@ -34,13 +34,13 @@ export function Login({
       <div className="flex flex-1 flex-col fade pt-8 pb-6">
         <h1
           className="text-center"
-          style={{ fontSize: 28, fontWeight: 900, color: "#1E3A8A", letterSpacing: "-0.5px" }}
+          style={{ fontSize: 28, fontWeight: 900, color: "#FFFFFF", letterSpacing: "-0.5px" }}
         >
           Inloggen
         </h1>
         <p
           className="mt-2 text-center"
-          style={{ fontSize: 13, color: "#6B7A99", fontWeight: 600, marginBottom: 28 }}
+          style={{ fontSize: 13, color: "#8B98B0", fontWeight: 600, marginBottom: 28 }}
         >
           Welkom terug bij Coacher
         </p>
@@ -76,7 +76,7 @@ export function Login({
         <button
           onClick={onBack}
           className="mt-4 w-full text-center"
-          style={{ fontSize: 13, color: "#6B7A99", fontWeight: 600 }}
+          style={{ fontSize: 13, color: "#8B98B0", fontWeight: 600 }}
         >
           Terug
         </button>

@@ -29,7 +29,7 @@ export function Success({ role, onOpen }: { role: Role; onOpen: () => void }) {
           style={{
             fontSize: 30,
             fontWeight: 900,
-            color: "#1E3A8A",
+            color: "#FFFFFF",
             letterSpacing: "-0.5px",
             marginBottom: 12,
           }}
@@ -39,7 +39,7 @@ export function Success({ role, onOpen }: { role: Role; onOpen: () => void }) {
         <p
           style={{
             fontSize: 14,
-            color: "#6B7A99",
+            color: "#8B98B0",
             lineHeight: 1.7,
             marginBottom: 32,
             maxWidth: 320,
