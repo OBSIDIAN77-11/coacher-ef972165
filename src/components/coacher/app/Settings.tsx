@@ -42,6 +42,16 @@ type ModalKey =
 export function Settings({ mode, name, initials, onLogout }: Props) {
   const [modal, setModal] = useState<ModalKey>(null);
   const [confirmLogout, setConfirmLogout] = useState(false);
+  const [theme, setTheme] = useState<"light" | "dark">(() => {
+    if (typeof window === "undefined") return "light";
+    return (localStorage.getItem("coacher-theme") as "light" | "dark") ?? "light";
+  });
+
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("coacher-theme", theme);
+  }, [theme]);
 
   const items: {
     key: ModalKey;
