@@ -177,22 +177,21 @@ body {
   overflow: hidden;
 }
 
-/* Dark theme — applied via filter so hardcoded inline colors flip
+/* Light theme — applied via filter so the native dark UI flips to light
    while blue accents (hue-rotated twice) stay intact. */
-html[data-theme="dark"] body,
-html[data-theme="dark"] {
-  background: #0b1220;
+html[data-theme="light"] body,
+html[data-theme="light"] {
+  background: #F4F7FB;
 }
-html[data-theme="dark"] .app-shell {
-  background: #0b1220;
+html[data-theme="light"] .app-shell {
+  background: #F4F7FB;
   filter: invert(1) hue-rotate(180deg);
 }
-/* Undo inversion on media so photos/avatars stay correct */
-html[data-theme="dark"] .app-shell img,
-html[data-theme="dark"] .app-shell video,
-html[data-theme="dark"] .app-shell canvas,
-html[data-theme="dark"] .app-shell svg image,
-html[data-theme="dark"] .app-shell [data-no-invert] {
+html[data-theme="light"] .app-shell img,
+html[data-theme="light"] .app-shell video,
+html[data-theme="light"] .app-shell canvas,
+html[data-theme="light"] .app-shell svg image,
+html[data-theme="light"] .app-shell [data-no-invert] {
   filter: invert(1) hue-rotate(180deg);
 }
 .ambient-glow {
