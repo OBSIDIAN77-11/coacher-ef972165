@@ -206,3 +206,8 @@ html[data-theme="light"] .app-shell svg image {
   pointer-events: none;
   z-index: 0;
 }
+
+/* Dark theme: keep the background truly black — no ambient glow tint. */
+html:not([data-theme="light"]) .ambient-glow {
+  display: none;
+}
