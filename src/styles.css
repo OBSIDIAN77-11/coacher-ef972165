@@ -181,11 +181,11 @@ body {
    invert(1) + hue-rotate(180deg) keeps blues blue, makes #000 → #fff. */
 html[data-theme="light"],
 html[data-theme="light"] body {
-  background: #FFFFFF;
+  background: #F3F4F6;
 }
 html[data-theme="light"] .app-shell {
   filter: invert(1) hue-rotate(180deg);
-  background: #000000; /* will become white after filter */
+  background: #0C0B09; /* inverts to ~#F3F4F6 after filter */
 }
 /* Re-invert media so photos/videos keep their natural colors. */
 html[data-theme="light"] .app-shell img,
