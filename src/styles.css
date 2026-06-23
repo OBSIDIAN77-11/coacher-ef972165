@@ -184,7 +184,7 @@ html[data-theme="light"] body {
   background: #F3F4F6;
 }
 html[data-theme="light"] .app-shell {
-  filter: invert(1) hue-rotate(180deg);
+  filter: invert(100%) hue-rotate(180deg);
   background: #0C0B09; /* inverts to ~#F3F4F6 after filter */
 }
 /* Re-invert media so photos/videos keep their natural colors. */
@@ -192,13 +192,16 @@ html[data-theme="light"] .app-shell img,
 html[data-theme="light"] .app-shell video,
 html[data-theme="light"] .app-shell canvas,
 html[data-theme="light"] .app-shell svg image {
-  filter: invert(1) hue-rotate(180deg);
+  filter: invert(100%) hue-rotate(180deg);
 }
-/* Re-invert blue-gradient pills/bars so their white text stays white in light theme. */
+/* Re-invert blue-gradient pills/bars so their white text stays white in light theme.
+   Browsers normalize inline style colors to rgb(), so match both hex and rgb forms. */
 html[data-theme="light"] .app-shell .bg-grad,
-html[data-theme="light"] .app-shell [style*="linear-gradient(135deg,#2563EB"],
-html[data-theme="light"] .app-shell [style*="linear-gradient(135deg, #2563EB"] {
-  filter: invert(1) hue-rotate(180deg);
+html[data-theme="light"] .app-shell [style*="#2563EB"],
+html[data-theme="light"] .app-shell [style*="#2563eb"],
+html[data-theme="light"] .app-shell [style*="rgb(37, 99, 235)"],
+html[data-theme="light"] .app-shell [style*="rgb(37,99,235)"] {
+  filter: invert(100%) hue-rotate(180deg);
 }
 
 .ambient-glow {
