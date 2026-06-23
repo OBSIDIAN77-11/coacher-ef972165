@@ -194,6 +194,12 @@ html[data-theme="light"] .app-shell canvas,
 html[data-theme="light"] .app-shell svg image {
   filter: invert(1) hue-rotate(180deg);
 }
+/* Re-invert blue-gradient pills/bars so their white text stays white in light theme. */
+html[data-theme="light"] .app-shell .bg-grad,
+html[data-theme="light"] .app-shell [style*="linear-gradient(135deg,#2563EB"],
+html[data-theme="light"] .app-shell [style*="linear-gradient(135deg, #2563EB"] {
+  filter: invert(1) hue-rotate(180deg);
+}
 
 .ambient-glow {
   position: absolute;
