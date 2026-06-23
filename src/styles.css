@@ -184,9 +184,8 @@ html[data-theme="light"] body {
   background: #F3F4F6;
 }
 html[data-theme="light"] .app-shell {
-  background: #0C0B09; /* inverts to ~#F3F4F6 via filter below */
   filter: invert(1) hue-rotate(180deg);
-  background: #000000; /* will become white after filter */
+  background: #0C0B09; /* inverts to ~#F3F4F6 after filter */
 }
 /* Re-invert media so photos/videos keep their natural colors. */
 html[data-theme="light"] .app-shell img,
