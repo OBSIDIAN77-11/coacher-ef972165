@@ -177,56 +177,24 @@ body {
   overflow: hidden;
 }
 
-/* Light theme — explicit overrides targeting inline styles used across screens. */
+/* Light theme — invert the native dark UI to a light UI while preserving hue.
+   invert(1) + hue-rotate(180deg) keeps blues blue, makes #000 → #fff. */
 html[data-theme="light"],
 html[data-theme="light"] body {
-  background: #F4F7FB;
-  color: #0F172A;
+  background: #FFFFFF;
 }
 html[data-theme="light"] .app-shell {
-  background: #FFFFFF !important;
-  color: #0F172A;
+  filter: invert(1) hue-rotate(180deg);
+  background: #000000; /* will become white after filter */
 }
-/* Surfaces: dark card bg -> white */
-html[data-theme="light"] .app-shell [style*="background: #000000"],
-html[data-theme="light"] .app-shell [style*="background:#000000"],
-html[data-theme="light"] .app-shell [style*="background: rgb(0, 0, 0)"] {
-  background: #FFFFFF !important;
-}
-html[data-theme="light"] .app-shell [style*="background: #0F1525"],
-html[data-theme="light"] .app-shell [style*="background:#0F1525"] {
-  background: #F4F7FB !important;
-}
-html[data-theme="light"] .app-shell [style*="background: rgba(15,21,37,0.93)"],
-html[data-theme="light"] .app-shell [style*="background: rgba(15, 21, 37, 0.93)"],
-html[data-theme="light"] .app-shell [style*="background:rgba(15,21,37,0.93)"] {
-  background: rgba(255, 255, 255, 0.93) !important;
-}
-html[data-theme="light"] .app-shell [style*="linear-gradient(to top, #000000"],
-html[data-theme="light"] .app-shell [style*="linear-gradient(to top,#000000"] {
-  background: linear-gradient(to top, #FFFFFF 70%, rgba(255, 255, 255, 0) 100%) !important;
-}
-/* Borders */
-html[data-theme="light"] .app-shell [style*="#1E2A44"] {
-  border-color: #E6ECF4 !important;
-}
-html[data-theme="light"] .app-shell [style*="#2A3B5C"] {
-  border-color: #CBD5E1 !important;
+/* Re-invert media so photos/videos keep their natural colors. */
+html[data-theme="light"] .app-shell img,
+html[data-theme="light"] .app-shell video,
+html[data-theme="light"] .app-shell canvas,
+html[data-theme="light"] .app-shell svg image {
+  filter: invert(1) hue-rotate(180deg);
 }
 
-/* Text colors */
-html[data-theme="light"] .app-shell [style*="color: #FFFFFF"],
-html[data-theme="light"] .app-shell [style*="color:#FFFFFF"] {
-  color: #0F172A !important;
-}
-html[data-theme="light"] .app-shell [style*="color: #8B98B0"],
-html[data-theme="light"] .app-shell [style*="color:#8B98B0"] {
-  color: #6B7A99 !important;
-}
-html[data-theme="light"] .app-shell [style*="color: #4A5A75"],
-html[data-theme="light"] .app-shell [style*="color:#4A5A75"] {
-  color: #94A3B8 !important;
-}
 .ambient-glow {
   position: absolute;
   top: -120px;
