@@ -1,10 +1,17 @@
 import { Check } from "lucide-react";
 import { Shell } from "../Shell";
 import { Button } from "../Button";
+import { GoogleButton } from "./GoogleButton";
 
 const trustItems = ["AVG-proof", "iDEAL betaling"];
 
-export function Welcome({ onStart, onDemo, onLogin }: { onStart: () => void; onDemo: () => void; onLogin: () => void }) {
+export function Welcome({
+  onStart,
+  onLogin,
+}: {
+  onStart: () => void;
+  onLogin: () => void;
+}) {
   return (
     <Shell>
       <div className="flex flex-1 flex-col justify-end pb-8 fade">
@@ -72,12 +79,19 @@ export function Welcome({ onStart, onDemo, onLogin }: { onStart: () => void; onD
 
         {/* CTAs */}
         <div className="mt-9 flex flex-col gap-3">
-          <Button size="lg" fullWidth onClick={onLogin} style={{ borderRadius: 50 }}>
+          <Button size="lg" fullWidth onClick={onStart} style={{ borderRadius: 50 }}>
+            Account aanmaken
+          </Button>
+          <Button
+            size="lg"
+            variant="outline"
+            fullWidth
+            onClick={onLogin}
+            style={{ borderRadius: 50 }}
+          >
             Inloggen
           </Button>
-          <Button size="lg" variant="outline" fullWidth onClick={onDemo} style={{ borderRadius: 50 }}>
-            Demo bekijken
-          </Button>
+          <GoogleButton />
         </div>
       </div>
     </Shell>
