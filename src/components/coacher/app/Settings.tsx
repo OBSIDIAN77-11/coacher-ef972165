@@ -17,8 +17,12 @@ import {
   ChevronDown,
   Sun,
   Moon,
+  Trash2,
 } from "lucide-react";
+import { useServerFn } from "@tanstack/react-start";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "../Button";
+import { deleteMyAccount } from "@/lib/account.functions";
 
 type Mode = "coach" | "klant";
 
@@ -42,6 +46,11 @@ type ModalKey =
 export function Settings({ mode, name, initials, onLogout }: Props) {
   const [modal, setModal] = useState<ModalKey>(null);
   const [confirmLogout, setConfirmLogout] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [deleteText, setDeleteText] = useState("");
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [deleteErr, setDeleteErr] = useState("");
+  const deleteAccountFn = useServerFn(deleteMyAccount);
   const [theme, setTheme] = useState<"light" | "dark">(() => {
     if (typeof window === "undefined") return "light";
     return (localStorage.getItem("coacher-theme") as "light" | "dark") ?? "dark";
