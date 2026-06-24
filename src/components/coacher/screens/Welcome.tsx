@@ -8,9 +8,11 @@ const trustItems = ["AVG-proof", "iDEAL betaling"];
 export function Welcome({
   onStart,
   onLogin,
+  onDemo,
 }: {
   onStart: () => void;
   onLogin: () => void;
+  onDemo: () => void;
 }) {
   return (
     <Shell>
