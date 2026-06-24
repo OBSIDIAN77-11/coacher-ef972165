@@ -117,7 +117,7 @@ export function KlantHome() {
       {/* Stats */}
       <div className="grid grid-cols-3 gap-2 mt-4">
         <Stat value="28" label="Sessies" color="#2563EB" />
-        <Stat value="14d" label="Streak" color="#FFD166" icon={<Flame size={12} />} />
+        <Stat value="14d" label="Streak" color="#5EEAD4" icon={<Flame size={12} />} />
         <Stat value="1.420" label="Kcal" color="#60A5FA" />
       </div>
 
@@ -144,7 +144,7 @@ function RecoveryCard() {
     { label: "Hartslag", value: "58 bpm", color: "#FF4D6A" },
     { label: "Slaap", value: "7.2u", color: "#60A5FA" },
     { label: "Stappen", value: "8.4k", color: "#2563EB" },
-    { label: "VO2Max", value: "44.5", color: "#FFD166" },
+    { label: "VO2Max", value: "44.5", color: "#5EEAD4" },
   ];
   return (
     <div style={{ padding: 18, borderRadius: 20, background: "#000000", border: "1px solid #1E2A44" }}>

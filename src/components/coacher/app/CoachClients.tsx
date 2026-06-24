@@ -372,7 +372,7 @@ function TabGezondheid() {
     { label: "Herstel", value: "78%", color: "#2563EB" },
     { label: "HRV", value: "52 ms", color: "#60A5FA" },
     { label: "Hartslag", value: "58 bpm", color: "#FF4D6A" },
-    { label: "VO2Max", value: "44.5", color: "#FFD166" },
+    { label: "VO2Max", value: "44.5", color: "#5EEAD4" },
   ];
   const phases = [
     { name: "Diep", pct: 24, color: "#60A5FA" },

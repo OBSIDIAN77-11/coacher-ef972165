@@ -16,7 +16,7 @@ type Contact = {
 const COACH_CONTACTS: Contact[] = [
   { id: "sophie", name: "Sophie B.", last: "Top, gisteren ging het super!", time: "14:02", unread: 2, online: true, grad: "linear-gradient(135deg,#2563EB,#60A5FA)" },
   { id: "tim", name: "Tim R.", last: "Kunnen we vrijdag schuiven?", time: "11:48", unread: 0, online: false, grad: "linear-gradient(135deg,#60A5FA,#8B5CF6)" },
-  { id: "nora", name: "Nora K.", last: "Dankjewel voor het schema 🙌", time: "gisteren", unread: 1, online: true, grad: "linear-gradient(135deg,#FF8C42,#FFD166)" },
+  { id: "nora", name: "Nora K.", last: "Dankjewel voor het schema 🙌", time: "gisteren", unread: 1, online: true, grad: "linear-gradient(135deg,#FF4D6A,#5EEAD4)" },
   { id: "bas", name: "Bas H.", last: "Geen probleem, tot maandag.", time: "ma", unread: 0, online: false, grad: "linear-gradient(135deg,#60A5FA,#2563EB)" },
 ];
 

@@ -51,7 +51,7 @@ const C = {
   accent: "#60A5FA",
   green: "#2563EB",
   red: "#FF4D6A",
-  amber: "#FFD166",
+  amber: "#5EEAD4",
 };
 
 type MeasurePoint = { date: string; value: number };
