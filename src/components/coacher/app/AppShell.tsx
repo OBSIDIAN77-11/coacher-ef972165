@@ -10,7 +10,8 @@ import {
   X,
   LogOut,
 } from "lucide-react";
-import { type ReactNode, useState } from "react";
+import { type ReactNode, useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import type { Role } from "../screens/RoleSelect";
 import { Button } from "../Button";
 import { CoachHome } from "./CoachHome";
@@ -72,11 +73,34 @@ export function AppShell({
   const [tab, setTab] = useState("home");
   const [notifOpen, setNotifOpen] = useState(false);
   const [logoutOpen, setLogoutOpen] = useState(false);
+  const [profileName, setProfileName] = useState<string>("");
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user || cancelled) return;
+      const { data } = await supabase
+        .from("profiles")
+        .select("name")
+        .eq("id", user.id)
+        .maybeSingle();
+      if (!cancelled && data?.name) setProfileName(data.name);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const tabs = mode === "coach" ? COACH_TABS : KLANT_TABS;
   const notifs = mode === "coach" ? COACH_NOTIFS : KLANT_NOTIFS;
-  const initials = mode === "coach" ? "YK" : "SB";
-  const name = mode === "coach" ? "Yasmine El Karimi" : "Sophie Bakker";
+  const name = profileName || (mode === "coach" ? "Coach" : "Jij");
+  const initials = name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((p) => p[0]?.toUpperCase() ?? "")
+    .join("") || "·";
 
   // ensure current tab exists in new mode
   if (!tabs.find((t) => t.key === tab)) {
@@ -192,7 +216,7 @@ export function AppShell({
         className="relative z-0"
         style={{ paddingBottom: 110, minHeight: "calc(100vh - 60px)" }}
       >
-        <TabContent tab={tab} mode={mode} name={name} onLogout={() => setLogoutOpen(true)} onTab={setTab} />
+        <TabContent tab={tab} mode={mode} name={name} initials={initials} onLogout={() => setLogoutOpen(true)} onTab={setTab} />
       </main>
 
       {/* Bottom nav */}
@@ -380,12 +404,14 @@ function TabContent({
   tab,
   mode,
   name,
+  initials,
   onLogout,
   onTab,
 }: {
   tab: string;
   mode: Mode;
   name: string;
+  initials: string;
   onLogout: () => void;
   onTab: (t: string) => void;
 }) {
@@ -415,7 +441,7 @@ function TabContent({
       <SettingsScreen
         mode={mode}
         name={name}
-        initials={mode === "coach" ? "YK" : "SB"}
+        initials={initials}
         onLogout={onLogout}
       />
     );
