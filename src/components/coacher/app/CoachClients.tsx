@@ -54,8 +54,8 @@ export function CoachClients() {
         {loading
           ? "Laden…"
           : hasReal
-            ? `${clients.length} actieve cli\u00ebnt${clients.length === 1 ? "" : "en"}`
-            : "Nog geen cli\u00ebnten gekoppeld"}
+            ? `${clients.length} actieve cliënt${clients.length === 1 ? "" : "en"}`
+            : "Nog geen cliënten gekoppeld"}
       </p>
 
       {!loading && !hasReal && (
@@ -81,10 +81,10 @@ export function CoachClients() {
             <Users color="white" size={24} />
           </div>
           <div style={{ fontSize: 15, fontWeight: 800, color: "#FFFFFF" }}>
-            Nog geen cli\u00ebnten
+            Nog geen cliënten
           </div>
           <p style={{ fontSize: 12.5, color: "#8B98B0", fontWeight: 600, marginTop: 6, lineHeight: 1.6 }}>
-            Cli\u00ebnten verschijnen hier zodra ze jou koppelen via hun profiel.
+            Cliënten verschijnen hier zodra ze jou koppelen via hun profiel.
           </p>
         </div>
       )}
@@ -119,7 +119,7 @@ export function CoachClients() {
                 <div className="flex-1">
                   <div style={{ fontSize: 14, fontWeight: 800, color: "#FFFFFF" }}>{c.name}</div>
                   <div style={{ fontSize: 11, color: "#8B98B0", fontWeight: 600, marginTop: 2 }}>
-                    Cli\u00ebnt
+                    Cliënt
                   </div>
                 </div>
               </div>
