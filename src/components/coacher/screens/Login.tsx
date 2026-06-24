@@ -3,13 +3,16 @@ import { supabase } from "@/integrations/supabase/client";
 import { Shell } from "../Shell";
 import { Button } from "../Button";
 import { FieldError, Input, Label } from "../Field";
+import { GoogleButton } from "./GoogleButton";
 
 export function Login({
   onBack,
   onSuccess,
+  onForgot,
 }: {
   onBack: () => void;
   onSuccess: () => void;
+  onForgot: () => void;
 }) {
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
@@ -71,7 +74,24 @@ export function Login({
           <Button type="submit" size="lg" fullWidth loading={loading} className="mt-2">
             Inloggen
           </Button>
+
+          <button
+            type="button"
+            onClick={onForgot}
+            className="mt-1 w-full text-center"
+            style={{ fontSize: 12, color: "#60A5FA", fontWeight: 700 }}
+          >
+            Wachtwoord vergeten?
+          </button>
         </form>
+
+        <div className="my-4 flex items-center gap-3">
+          <div style={{ flex: 1, height: 1, background: "#1E2A44" }} />
+          <span style={{ fontSize: 11, color: "#8B98B0", fontWeight: 700 }}>OF</span>
+          <div style={{ flex: 1, height: 1, background: "#1E2A44" }} />
+        </div>
+
+        <GoogleButton />
 
         <button
           onClick={onBack}
