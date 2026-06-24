@@ -27,7 +27,7 @@ const INITIAL: AlertItem[] = [
     title: "Herhaaldelijk te laat",
     user: "Daan Verhoeven",
     severity: "hoog",
-    color: "#FF8C42",
+    color: "#FF4D6A",
     detail: "Coach is de afgelopen 3 weken meermaals >15 min te laat verschenen bij geplande sessies.",
   },
   {
@@ -35,7 +35,7 @@ const INITIAL: AlertItem[] = [
     title: "Valse reviews geplaatst",
     user: "Onbekend",
     severity: "middel",
-    color: "#FFD166",
+    color: "#5EEAD4",
     detail: "Vermoeden van zelfgeschreven positieve reviews op het profiel. Vraagt nader onderzoek.",
   },
 ];
@@ -67,7 +67,7 @@ export function CoachAlerts() {
 
       <div className="grid grid-cols-3 gap-2 mt-5">
         <StatCard value={stats.kritiek} label="Kritiek" color="#FF4D6A" />
-        <StatCard value={stats.hoog} label="Hoog" color="#FF8C42" />
+        <StatCard value={stats.hoog} label="Hoog" color="#FF4D6A" />
         <StatCard value={stats.done} label="Afgehandeld" color="#2563EB" />
       </div>
 

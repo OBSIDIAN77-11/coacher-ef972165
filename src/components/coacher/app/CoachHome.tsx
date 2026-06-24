@@ -10,7 +10,7 @@ const SESSIONS = [
 const CLIENTS = [
   { name: "Sophie B.", goal: "Afvallen", week: "Week 8", delta: "-4.2 kg", pct: 72, grad: "linear-gradient(135deg,#2563EB,#60A5FA)" },
   { name: "Tim R.", goal: "Spieropbouw", week: "Week 6", delta: "+3.1 kg", pct: 55, grad: "linear-gradient(135deg,#60A5FA,#8B5CF6)" },
-  { name: "Nora K.", goal: "Conditie", week: "Week 8", delta: "Wk 8/10", pct: 88, grad: "linear-gradient(135deg,#FF8C42,#FFD166)" },
+  { name: "Nora K.", goal: "Conditie", week: "Week 8", delta: "Wk 8/10", pct: 88, grad: "linear-gradient(135deg,#FF4D6A,#5EEAD4)" },
   { name: "Bas H.", goal: "Kracht", week: "Week 4", delta: "+15 kg", pct: 40, grad: "linear-gradient(135deg,#60A5FA,#2563EB)" },
 ];
 
