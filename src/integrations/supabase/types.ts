@@ -16,6 +16,7 @@ export type Database = {
     Tables: {
       profiles: {
         Row: {
+          coach_id: string | null
           created_at: string
           goals: string[] | null
           hourly_rate: number | null
@@ -29,6 +30,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          coach_id?: string | null
           created_at?: string
           goals?: string[] | null
           hourly_rate?: number | null
@@ -42,6 +44,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          coach_id?: string | null
           created_at?: string
           goals?: string[] | null
           hourly_rate?: number | null
@@ -54,7 +57,15 @@ export type Database = {
           specialization?: string | null
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profiles_coach_id_fkey"
+            columns: ["coach_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       progress_measurements: {
         Row: {
