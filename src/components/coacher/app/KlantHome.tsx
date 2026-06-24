@@ -1,18 +1,57 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Heart, Lightbulb, Flame, Check } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+
+const DAY_FMT = new Intl.DateTimeFormat("nl-NL", {
+  weekday: "long",
+  day: "numeric",
+  month: "long",
+});
 
 export function KlantHome() {
+  const [name, setName] = useState<string>("");
+  const [coachName, setCoachName] = useState<string>("");
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user || cancelled) return;
+      const { data: me } = await supabase
+        .from("profiles")
+        .select("name, coach_id")
+        .eq("id", user.id)
+        .maybeSingle();
+      if (cancelled) return;
+      if (me?.name) setName(me.name);
+      if (me?.coach_id) {
+        const { data: coach } = await supabase
+          .from("profiles")
+          .select("name")
+          .eq("id", me.coach_id)
+          .maybeSingle();
+        if (!cancelled && coach?.name) setCoachName(coach.name);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const firstName = (name.split(" ")[0] || "daar").trim();
+  const today = DAY_FMT.format(new Date());
+
   return (
     <div className="fade px-5 py-6">
       {/* Header */}
       <div style={{ fontSize: 10, fontWeight: 800, color: "#8B98B0", letterSpacing: 1.2, textTransform: "uppercase" }}>
-        Vrijdag, 6 juni
+        {today}
       </div>
       <h1 className="text-grad" style={{ fontSize: 26, fontWeight: 900, letterSpacing: "-0.5px", marginTop: 4 }}>
-        Hallo, Sophie
+        Hallo, {firstName}
       </h1>
       <p style={{ fontSize: 13, color: "#8B98B0", fontWeight: 600, marginTop: 4 }}>
-        Coach: Yasmine · Week 8 van 12
+        {coachName ? `Coach: ${coachName.split(" ")[0]}` : "Nog geen coach gekoppeld"}
       </p>
 
       {/* Health section */}
