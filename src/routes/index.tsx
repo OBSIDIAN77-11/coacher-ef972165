@@ -159,6 +159,10 @@ function Index() {
         <Welcome
           onStart={() => setStep("role")}
           onLogin={() => setStep("login")}
+          onDemo={() => {
+            setRole("klant");
+            setStep("app");
+          }}
         />
       );
     case "login":
