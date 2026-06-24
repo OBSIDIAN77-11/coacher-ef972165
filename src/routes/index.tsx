@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { AppShell } from "@/components/coacher/app/AppShell";
 import { ClientRegister, type ClientRegisterData } from "@/components/coacher/screens/ClientRegister";
 import { CoachRegister, type CoachRegisterData } from "@/components/coacher/screens/CoachRegister";
+import { ForgotPassword } from "@/components/coacher/screens/ForgotPassword";
 import { Login } from "@/components/coacher/screens/Login";
 import { Payment } from "@/components/coacher/screens/Payment";
 import { type Role, RoleSelect } from "@/components/coacher/screens/RoleSelect";
@@ -35,31 +36,50 @@ type Step =
   | "splash"
   | "welcome"
   | "login"
+  | "forgot"
   | "role"
   | "register"
   | "verification"
   | "payment"
   | "success"
+  | "oauth-role"
   | "app";
 
 function Index() {
   const [step, setStep] = useState<Step>("splash");
   const [role, setRole] = useState<Role | null>(null);
 
-  // If already signed in, jump straight to the app
   useEffect(() => {
+    const resolve = async (userId: string, metaRole: Role | undefined) => {
+      if (metaRole) {
+        setRole(metaRole);
+        setStep((s) => (s === "splash" || s === "welcome" || s === "login" ? "app" : s));
+        return;
+      }
+      // OAuth user without role yet — check profile
+      const { data } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", userId)
+        .maybeSingle();
+      if (data?.role) {
+        setRole(data.role as Role);
+        setStep((s) => (s === "splash" || s === "welcome" || s === "login" ? "app" : s));
+      } else {
+        setStep("oauth-role");
+      }
+    };
+
     const { data: sub } = supabase.auth.onAuthStateChange((_evt, session) => {
       if (session?.user) {
-        const r = (session.user.user_metadata?.role as Role) ?? "klant";
-        setRole(r);
-        setStep((s) => (s === "splash" || s === "welcome" || s === "login" ? "app" : s));
+        const r = (session.user.user_metadata?.role as Role | undefined) ?? undefined;
+        resolve(session.user.id, r);
       }
     });
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) {
-        const r = (session.user.user_metadata?.role as Role) ?? "klant";
-        setRole(r);
-        setStep((s) => (s === "splash" || s === "welcome" ? "app" : s));
+        const r = (session.user.user_metadata?.role as Role | undefined) ?? undefined;
+        resolve(session.user.id, r);
       }
     });
     return () => sub.subscription.unsubscribe();
@@ -98,6 +118,33 @@ function Index() {
     setStep("verification");
   };
 
+  const handleOauthRole = async (r: Role) => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      setStep("welcome");
+      return;
+    }
+    // Trigger handle_new_user normally inserts on signup; for existing OAuth user without profile we upsert.
+    await supabase.from("profiles").upsert(
+      {
+        id: user.id,
+        name:
+          (user.user_metadata?.full_name as string) ??
+          (user.user_metadata?.name as string) ??
+          user.email?.split("@")[0] ??
+          "",
+        role: r,
+      },
+      { onConflict: "id" },
+    );
+    await supabase.from("user_roles").upsert(
+      { user_id: user.id, role: r },
+      { onConflict: "user_id,role" },
+    );
+    setRole(r);
+    setStep("app");
+  };
+
   const handleLogout = async () => {
     await supabase.auth.signOut();
     setRole(null);
@@ -112,14 +159,18 @@ function Index() {
         <Welcome
           onStart={() => setStep("role")}
           onLogin={() => setStep("login")}
-          onDemo={() => {
-            setRole("klant");
-            setStep("app");
-          }}
         />
       );
     case "login":
-      return <Login onBack={() => setStep("welcome")} onSuccess={() => setStep("app")} />;
+      return (
+        <Login
+          onBack={() => setStep("welcome")}
+          onSuccess={() => setStep("app")}
+          onForgot={() => setStep("forgot")}
+        />
+      );
+    case "forgot":
+      return <ForgotPassword onBack={() => setStep("login")} />;
     case "role":
       return (
         <RoleSelect
@@ -154,6 +205,13 @@ function Index() {
       );
     case "success":
       return <Success role={role ?? "klant"} onOpen={() => setStep("app")} />;
+    case "oauth-role":
+      return (
+        <RoleSelect
+          onBack={handleLogout}
+          onContinue={handleOauthRole}
+        />
+      );
     case "app":
       return <AppShell initialMode={role ?? "klant"} onLogout={handleLogout} />;
   }
