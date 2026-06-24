@@ -232,6 +232,27 @@ export function Settings({ mode, name, initials, onLogout }: Props) {
         <LogOut size={15} /> Uitloggen
       </button>
 
+      {/* Delete account */}
+      <button
+        onClick={() => {
+          setDeleteText("");
+          setDeleteErr("");
+          setConfirmDelete(true);
+        }}
+        className="mt-3 w-full inline-flex items-center justify-center gap-2"
+        style={{
+          padding: "13px",
+          borderRadius: 50,
+          background: "transparent",
+          color: "#8B98B0",
+          fontSize: 13,
+          fontWeight: 700,
+          border: "1px solid #1E2A44",
+        }}
+      >
+        <Trash2 size={14} /> Account verwijderen
+      </button>
+
       <p
         style={{
           fontSize: 11,
@@ -265,6 +286,60 @@ export function Settings({ mode, name, initials, onLogout }: Props) {
             <Button variant="danger" onClick={onLogout} className="flex-1">
               <span className="inline-flex items-center justify-center gap-2">
                 <LogOut size={14} /> Uitloggen
+              </span>
+            </Button>
+      {confirmDelete && (
+        <Sheet onClose={() => setConfirmDelete(false)} title="Account verwijderen?">
+          <p style={{ fontSize: 13, color: "#8B98B0", lineHeight: 1.6, marginBottom: 14 }}>
+            Dit verwijdert je account en alle bijbehorende gegevens permanent.
+            Typ <b style={{ color: "#FF4D6A" }}>VERWIJDER</b> om te bevestigen.
+          </p>
+          <input
+            value={deleteText}
+            onChange={(e) => setDeleteText(e.target.value)}
+            placeholder="VERWIJDER"
+            style={{
+              width: "100%",
+              padding: "12px 14px",
+              borderRadius: 12,
+              background: "#000000",
+              border: "1px solid #1E2A44",
+              color: "#FFFFFF",
+              fontSize: 14,
+              fontWeight: 700,
+              marginBottom: 12,
+            }}
+          />
+          {deleteErr && (
+            <p style={{ fontSize: 12, color: "#FF4D6A", fontWeight: 600, marginBottom: 10 }}>
+              {deleteErr}
+            </p>
+          )}
+          <div className="flex gap-3">
+            <Button variant="muted" onClick={() => setConfirmDelete(false)} className="flex-1">
+              Annuleren
+            </Button>
+            <Button
+              variant="danger"
+              loading={deleteLoading}
+              disabled={deleteText !== "VERWIJDER"}
+              onClick={async () => {
+                setDeleteErr("");
+                setDeleteLoading(true);
+                try {
+                  await deleteAccountFn();
+                  await supabase.auth.signOut();
+                  onLogout();
+                } catch (e) {
+                  setDeleteErr(e instanceof Error ? e.message : "Mislukt");
+                } finally {
+                  setDeleteLoading(false);
+                }
+              }}
+              className="flex-1"
+            >
+              <span className="inline-flex items-center justify-center gap-2">
+                <Trash2 size={14} /> Verwijder
               </span>
             </Button>
           </div>
