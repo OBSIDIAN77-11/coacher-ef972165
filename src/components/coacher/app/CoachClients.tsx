@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { ChevronLeft, Lightbulb, Heart } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ChevronLeft, Lightbulb, Heart, Users } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import { COACH_CLIENTS } from "./CoachHome";
 
 type Tab = "schema" | "voeding" | "voortgang" | "checkin" | "gezondheid";
@@ -12,34 +13,94 @@ const TABS: { key: Tab; label: string }[] = [
   { key: "gezondheid", label: "Gezondheid" },
 ];
 
+type RealClient = { id: string; name: string };
+
 export function CoachClients() {
   const [selected, setSelected] = useState<string | null>(null);
+  const [clients, setClients] = useState<RealClient[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user || cancelled) return;
+      const { data } = await supabase
+        .from("profiles")
+        .select("id, name")
+        .eq("coach_id", user.id)
+        .order("name");
+      if (!cancelled) {
+        setClients((data ?? []).map((d) => ({ id: d.id, name: d.name || "Naamloos" })));
+        setLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   if (selected) {
     const c = COACH_CLIENTS.find((x) => x.name === selected)!;
     return <ClientDetail client={c} onBack={() => setSelected(null)} />;
   }
 
+  const hasReal = clients.length > 0;
+
   return (
     <div className="fade px-5 py-6">
       <h1 style={{ fontSize: 28, fontWeight: 900, color: "#FFFFFF", letterSpacing: "-0.5px" }}>Cliënten</h1>
       <p style={{ fontSize: 13, color: "#8B98B0", fontWeight: 600, marginTop: 4 }}>
-        {COACH_CLIENTS.length} actieve cliënten
+        {loading
+          ? "Laden…"
+          : hasReal
+            ? `${clients.length} actieve cli\u00ebnt${clients.length === 1 ? "" : "en"}`
+            : "Nog geen cli\u00ebnten gekoppeld"}
       </p>
-      <div className="flex flex-col gap-2 mt-5">
-        {COACH_CLIENTS.map((c) => (
-          <button
-            key={c.name}
-            onClick={() => setSelected(c.name)}
-            className="text-left"
+
+      {!loading && !hasReal && (
+        <div
+          className="mt-5 flex flex-col items-center text-center"
+          style={{
+            padding: 28,
+            borderRadius: 20,
+            background: "var(--grad-soft)",
+            border: "1px solid #1E2A44",
+          }}
+        >
+          <div
+            className="flex items-center justify-center"
             style={{
-              padding: 14,
-              borderRadius: 16,
-              background: "#000000",
-              border: "1px solid #1E2A44",
+              width: 56,
+              height: 56,
+              borderRadius: "50%",
+              background: "linear-gradient(135deg,#2563EB,#60A5FA)",
+              marginBottom: 14,
             }}
           >
-            <div className="flex items-center justify-between">
+            <Users color="white" size={24} />
+          </div>
+          <div style={{ fontSize: 15, fontWeight: 800, color: "#FFFFFF" }}>
+            Nog geen cli\u00ebnten
+          </div>
+          <p style={{ fontSize: 12.5, color: "#8B98B0", fontWeight: 600, marginTop: 6, lineHeight: 1.6 }}>
+            Cli\u00ebnten verschijnen hier zodra ze jou koppelen via hun profiel.
+          </p>
+        </div>
+      )}
+
+      {hasReal && (
+        <div className="flex flex-col gap-2 mt-5">
+          {clients.map((c) => (
+            <div
+              key={c.id}
+              style={{
+                padding: 14,
+                borderRadius: 16,
+                background: "#000000",
+                border: "1px solid #1E2A44",
+              }}
+            >
               <div className="flex items-center gap-3">
                 <div
                   className="flex items-center justify-center"
@@ -47,29 +108,25 @@ export function CoachClients() {
                     width: 44,
                     height: 44,
                     borderRadius: "50%",
-                    background: c.grad,
+                    background: "linear-gradient(135deg,#2563EB,#60A5FA)",
                     color: "white",
                     fontSize: 13,
                     fontWeight: 800,
                   }}
                 >
-                  {c.name.split(" ").map((p) => p[0]).join("")}
+                  {c.name.split(" ").filter(Boolean).slice(0, 2).map((p) => p[0]).join("").toUpperCase()}
                 </div>
-                <div>
+                <div className="flex-1">
                   <div style={{ fontSize: 14, fontWeight: 800, color: "#FFFFFF" }}>{c.name}</div>
                   <div style={{ fontSize: 11, color: "#8B98B0", fontWeight: 600, marginTop: 2 }}>
-                    {c.goal} · {c.week}
+                    Cli\u00ebnt
                   </div>
                 </div>
               </div>
-              <div style={{ fontSize: 13, fontWeight: 800, color: "#2563EB" }}>{c.delta}</div>
             </div>
-            <div className="mt-3" style={{ height: 6, borderRadius: 999, background: "#000000", overflow: "hidden" }}>
-              <div style={{ height: "100%", width: `${c.pct}%`, background: c.grad, borderRadius: 999 }} />
-            </div>
-          </button>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
