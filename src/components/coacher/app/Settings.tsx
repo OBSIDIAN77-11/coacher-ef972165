@@ -288,6 +288,10 @@ export function Settings({ mode, name, initials, onLogout }: Props) {
                 <LogOut size={14} /> Uitloggen
               </span>
             </Button>
+          </div>
+        </Sheet>
+      )}
+
       {confirmDelete && (
         <Sheet onClose={() => setConfirmDelete(false)} title="Account verwijderen?">
           <p style={{ fontSize: 13, color: "#8B98B0", lineHeight: 1.6, marginBottom: 14 }}>
