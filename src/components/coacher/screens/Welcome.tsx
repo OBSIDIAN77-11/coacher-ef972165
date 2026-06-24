@@ -8,9 +8,11 @@ const trustItems = ["AVG-proof", "iDEAL betaling"];
 export function Welcome({
   onStart,
   onLogin,
+  onDemo,
 }: {
   onStart: () => void;
   onLogin: () => void;
+  onDemo: () => void;
 }) {
   return (
     <Shell>
@@ -92,6 +94,14 @@ export function Welcome({
             Inloggen
           </Button>
           <GoogleButton />
+          <button
+            type="button"
+            onClick={onDemo}
+            className="mt-2 w-full text-center"
+            style={{ fontSize: 13, color: "#8B98B0", fontWeight: 700 }}
+          >
+            Demo bekijken →
+          </button>
         </div>
       </div>
     </Shell>
