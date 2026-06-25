@@ -24,7 +24,11 @@ export function CoachClients() {
     let cancelled = false;
     (async () => {
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user || cancelled) return;
+      if (cancelled) return;
+      if (!user) {
+        setLoading(false);
+        return;
+      }
       const { data } = await supabase
         .from("profiles")
         .select("id, name")
