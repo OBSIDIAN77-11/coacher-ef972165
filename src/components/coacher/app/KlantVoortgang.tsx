@@ -57,7 +57,7 @@ const C = {
 type MeasurePoint = { date: string; value: number };
 type PhotoItem = { id: string; path: string; url: string };
 
-export function KlantVoortgang() {
+export function KlantVoortgang({ viewUserId }: { viewUserId?: string } = {}) {
   const [tab, setTab] = useState<Tab>("gewicht");
   const [entries, setEntries] = useState<Record<MeasureKey, MeasurePoint[]>>(
     () => ({} as Record<MeasureKey, MeasurePoint[]>),
@@ -72,13 +72,19 @@ export function KlantVoortgang() {
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (cancelled || !user) return;
-      setUserId(user.id);
+      let targetId = viewUserId ?? null;
+      if (!targetId) {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (cancelled || !user) return;
+        targetId = user.id;
+      }
+      if (cancelled) return;
+      setUserId(targetId);
 
       const { data: meas } = await supabase
         .from("progress_measurements")
         .select("measure_key, value, measured_at")
+        .eq("user_id", targetId)
         .order("measured_at", { ascending: true });
       if (meas && !cancelled) {
         const grouped = {} as Record<MeasureKey, MeasurePoint[]>;
@@ -92,6 +98,7 @@ export function KlantVoortgang() {
       const { data: pics } = await supabase
         .from("progress_photos")
         .select("id, photo_key, storage_path, created_at")
+        .eq("user_id", targetId)
         .order("created_at", { ascending: true });
       if (pics && !cancelled) {
         const paths = pics.map((p) => p.storage_path);
@@ -109,7 +116,8 @@ export function KlantVoortgang() {
       }
     })();
     return () => { cancelled = true; };
-  }, []);
+  }, [viewUserId]);
+
 
   const addMeasurement = useCallback(async (vals: Partial<Record<MeasureKey, number>>) => {
     if (!userId) return;

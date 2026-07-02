@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { ChevronLeft, Lightbulb, Heart, Users } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { COACH_CLIENTS } from "./CoachHome";
+import { KlantVoortgang } from "./KlantVoortgang";
 
 type Tab = "schema" | "voeding" | "voortgang" | "checkin" | "gezondheid";
 
@@ -16,7 +16,7 @@ const TABS: { key: Tab; label: string }[] = [
 type RealClient = { id: string; name: string };
 
 export function CoachClients() {
-  const [selected, setSelected] = useState<string | null>(null);
+  const [selected, setSelected] = useState<RealClient | null>(null);
   const [clients, setClients] = useState<RealClient[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -45,8 +45,7 @@ export function CoachClients() {
   }, []);
 
   if (selected) {
-    const c = COACH_CLIENTS.find((x) => x.name === selected)!;
-    return <ClientDetail client={c} onBack={() => setSelected(null)} />;
+    return <ClientDetail client={selected} onBack={() => setSelected(null)} />;
   }
 
   const hasReal = clients.length > 0;
@@ -96,8 +95,10 @@ export function CoachClients() {
       {hasReal && (
         <div className="flex flex-col gap-2 mt-5">
           {clients.map((c) => (
-            <div
+            <button
               key={c.id}
+              onClick={() => setSelected(c)}
+              className="text-left"
               style={{
                 padding: 14,
                 borderRadius: 16,
@@ -123,11 +124,11 @@ export function CoachClients() {
                 <div className="flex-1">
                   <div style={{ fontSize: 14, fontWeight: 800, color: "#FFFFFF" }}>{c.name}</div>
                   <div style={{ fontSize: 11, color: "#8B98B0", fontWeight: 600, marginTop: 2 }}>
-                    Cliënt
+                    Cliënt · tik om te openen
                   </div>
                 </div>
               </div>
-            </div>
+            </button>
           ))}
         </div>
       )}
@@ -139,10 +140,10 @@ function ClientDetail({
   client,
   onBack,
 }: {
-  client: (typeof COACH_CLIENTS)[number];
+  client: RealClient;
   onBack: () => void;
 }) {
-  const [tab, setTab] = useState<Tab>("schema");
+  const [tab, setTab] = useState<Tab>("voortgang");
 
   return (
     <div className="fade pb-6">
@@ -161,22 +162,13 @@ function ClientDetail({
         style={{
           padding: 20,
           borderRadius: 22,
-          background: client.grad,
+          background: "linear-gradient(135deg,#2563EB,#60A5FA)",
           boxShadow: "0 10px 30px rgba(0,0,0,0.30)",
         }}
       >
         <div style={{ fontSize: 20, fontWeight: 900, color: "white" }}>{client.name}</div>
         <div style={{ fontSize: 12, color: "rgba(255,255,255,0.85)", fontWeight: 600, marginTop: 4 }}>
-          {client.goal} · {client.week}
-        </div>
-        <div className="flex items-end justify-between mt-4">
-          <div style={{ fontSize: 36, fontWeight: 900, color: "white", letterSpacing: "-1px", lineHeight: 1 }}>
-            {client.pct}%
-          </div>
-          <div style={{ fontSize: 14, fontWeight: 800, color: "rgba(255,255,255,0.92)" }}>{client.delta}</div>
-        </div>
-        <div className="mt-3" style={{ height: 6, borderRadius: 999, background: "rgba(255,255,255,0.22)", overflow: "hidden" }}>
-          <div style={{ height: "100%", width: `${client.pct}%`, background: "white", borderRadius: 999 }} />
+          Cliënt van jou
         </div>
       </div>
 
@@ -207,16 +199,22 @@ function ClientDetail({
         </div>
       </div>
 
-      <div className="px-5 mt-5">
-        {tab === "schema" && <TabSchema />}
-        {tab === "voeding" && <TabVoeding />}
-        {tab === "voortgang" && <TabVoortgang />}
-        {tab === "checkin" && <TabCheckin />}
-        {tab === "gezondheid" && <TabGezondheid />}
+      <div className="mt-5">
+        {tab === "voortgang" ? (
+          <KlantVoortgang viewUserId={client.id} />
+        ) : (
+          <div className="px-5">
+            {tab === "schema" && <TabSchema />}
+            {tab === "voeding" && <TabVoeding />}
+            {tab === "checkin" && <TabCheckin />}
+            {tab === "gezondheid" && <TabGezondheid />}
+          </div>
+        )}
       </div>
     </div>
   );
 }
+
 
 function Card({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) {
   return (
@@ -263,6 +261,7 @@ function TabSchema() {
 
 function TabVoeding() {
   const meals = [
+
     { name: "Ontbijt", desc: "Havermout, banaan, walnoten", kcal: 420 },
     { name: "Lunch", desc: "Kip, zoete aardappel, broccoli", kcal: 610 },
     { name: "Diner", desc: "Zalm, quinoa, gegrilde groenten", kcal: 580 },
