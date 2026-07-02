@@ -216,7 +216,49 @@ function ClientDetail({
 }
 
 
-function TabVoeding() {
+function Card({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) {
+  return (
+    <div
+      style={{
+        padding: 16,
+        borderRadius: 18,
+        background: "#000000",
+        border: "1px solid #1E2A44",
+        ...style,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+function TabSchema() {
+  const days = [
+    { day: "Maandag", focus: "Bovenlichaam", items: ["Bench press 4×8", "Pull-ups 3×10", "Shoulder press 3×12", "Tricep dips 3×10"] },
+    { day: "Woensdag", focus: "Onderlichaam", items: ["Squat 4×8", "Romanian deadlift 3×10", "Lunges 3×12", "Calf raises 3×15"] },
+    { day: "Vrijdag", focus: "Full body", items: ["Deadlift 4×6", "Push press 3×8", "Rows 3×10", "Plank 3×60s"] },
+  ];
+  return (
+    <div className="flex flex-col gap-3 fade">
+      {days.map((d) => (
+        <Card key={d.day}>
+          <div className="flex items-center justify-between mb-2">
+            <div style={{ fontSize: 14, fontWeight: 800, color: "#FFFFFF" }}>{d.day}</div>
+            <div style={{ fontSize: 10, fontWeight: 800, color: "#2563EB" }}>{d.focus}</div>
+          </div>
+          <div className="flex flex-col gap-1">
+            {d.items.map((it) => (
+              <div key={it} style={{ fontSize: 12, color: "#8B98B0", fontWeight: 600 }}>
+                · {it}
+              </div>
+            ))}
+          </div>
+        </Card>
+      ))}
+    </div>
+  );
+}
+
   const meals = [
     { name: "Ontbijt", desc: "Havermout, banaan, walnoten", kcal: 420 },
     { name: "Lunch", desc: "Kip, zoete aardappel, broccoli", kcal: 610 },
