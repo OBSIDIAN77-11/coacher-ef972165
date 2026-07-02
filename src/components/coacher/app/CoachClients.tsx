@@ -259,7 +259,9 @@ function TabSchema() {
   );
 }
 
+function TabVoeding() {
   const meals = [
+
     { name: "Ontbijt", desc: "Havermout, banaan, walnoten", kcal: 420 },
     { name: "Lunch", desc: "Kip, zoete aardappel, broccoli", kcal: 610 },
     { name: "Diner", desc: "Zalm, quinoa, gegrilde groenten", kcal: 580 },
