@@ -111,7 +111,7 @@ class _KlantVoortgangState extends ConsumerState<KlantVoortgang> {
   }
 
   void _openDetail(MeasureMeta meta) {
-    final data = [...(_entries[meta.key] ?? [])]
+    final data = <MeasurePoint>[...?_entries[meta.key]]
       ..sort((a, b) => a.date.compareTo(b.date));
     showAppBottomSheet(
       context: context,
@@ -122,7 +122,7 @@ class _KlantVoortgangState extends ConsumerState<KlantVoortgang> {
 
   @override
   Widget build(BuildContext context) {
-    final weightData = [...(_entries['gewicht'] ?? [])]
+    final weightData = <MeasurePoint>[...?_entries['gewicht']]
       ..sort((a, b) => a.date.compareTo(b.date));
 
     return FadeUp(
