@@ -1,11 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../app/theme/tokens.dart';
+import '../../core/supabase.dart';
 import '../../data/models/role.dart';
+import '../../data/repos/payment_repo.dart';
 import '../../widgets/anim/fade_up.dart';
+import '../../widgets/app_field.dart';
 import '../../widgets/coacher_button.dart';
 import '../../widgets/shell.dart';
 
@@ -48,9 +53,11 @@ const _methods = [
   (PayMethod.incasso, 'Incasso', LucideIcons.repeat),
 ];
 
-/// Port van Payment.tsx. De submit is nu nog een mock (zoals de bron);
-/// in fase 6 wordt dit de Mollie-checkout via een Edge Function.
-class PaymentScreen extends StatefulWidget {
+/// Port van Payment.tsx, gekoppeld aan Mollie (testmodus) via de
+/// Edge Function mollie-create-payment. Zonder ingelogde sessie (e-mail
+/// nog niet bevestigd tijdens onboarding) valt de submit terug op de
+/// mock-flow uit de bron.
+class PaymentScreen extends ConsumerStatefulWidget {
   const PaymentScreen({
     super.key,
     required this.role,
@@ -63,14 +70,16 @@ class PaymentScreen extends StatefulWidget {
   final VoidCallback onDone;
 
   @override
-  State<PaymentScreen> createState() => _PaymentScreenState();
+  ConsumerState<PaymentScreen> createState() => _PaymentScreenState();
 }
 
-class _PaymentScreenState extends State<PaymentScreen> {
+class _PaymentScreenState extends ConsumerState<PaymentScreen> {
   PlanKey _plan = PlanKey.pro;
   PayMethod? _method;
   String? _bank;
   var _success = false;
+  var _loading = false;
+  var _err = '';
   Timer? _timer;
 
   bool get _isCoach => widget.role == Role.coach;
@@ -85,11 +94,54 @@ class _PaymentScreenState extends State<PaymentScreen> {
     super.dispose();
   }
 
-  void _submit() {
-    if (!_canPay) return;
-    _timer = Timer(const Duration(milliseconds: 400), () {
-      if (mounted) setState(() => _success = true);
+  Future<void> _submit() async {
+    if (!_canPay || _loading) return;
+
+    // Geen sessie (e-mail nog niet bevestigd): mock-gedrag zoals de bron.
+    if (supabase.auth.currentSession == null) {
+      _timer = Timer(const Duration(milliseconds: 400), () {
+        if (mounted) setState(() => _success = true);
+      });
+      return;
+    }
+
+    setState(() {
+      _err = '';
+      _loading = true;
     });
+    try {
+      final repo = ref.read(paymentRepoProvider);
+      final created = await repo.createPayment(
+        plan: _isCoach ? _plan.name : 'klant',
+        method: switch (_method) {
+          PayMethod.ideal => 'ideal',
+          PayMethod.card => 'card',
+          PayMethod.incasso => 'incasso',
+          null => null,
+        },
+      );
+      await launchUrl(
+        Uri.parse(created.checkoutUrl),
+        mode: LaunchMode.externalApplication,
+        webOnlyWindowName: '_self',
+      );
+      // Poll tot Mollie de webhook heeft afgevuurd (testcheckout:
+      // status "Paid" kiezen). Op web neemt /payment-result het over
+      // na de redirect; dit vangt het geval dat de tab open blijft.
+      final status = await repo.waitForStatus(created.paymentId);
+      if (!mounted) return;
+      if (status == 'paid') {
+        setState(() => _success = true);
+      } else if (status != 'open') {
+        setState(() => _err = 'Betaling niet gelukt ($status). Probeer opnieuw.');
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() => _err = 'Betaling starten mislukt. Probeer opnieuw.');
+      }
+    } finally {
+      if (mounted) setState(() => _loading = false);
+    }
   }
 
   @override
@@ -303,9 +355,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
             ),
             const Spacer(),
             const SizedBox(height: 24),
+            if (_err.isNotEmpty) ...[
+              FieldErrorText(_err),
+              const SizedBox(height: 8),
+            ],
             CoacherButton(
               size: ButtonSize.lg,
               fullWidth: true,
+              loading: _loading,
               onPressed: _canPay ? _submit : null,
               child: Text(_method == PayMethod.ideal
                   ? 'Activeren via iDEAL'

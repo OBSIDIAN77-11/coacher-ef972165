@@ -68,9 +68,27 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
     super.dispose();
   }
 
+  /// Eenmalige welkomstmail (Resend via Edge Function) bij de eerste
+  /// ingelogde sessie; user_metadata voorkomt herhaling. Best effort.
+  Future<void> _maybeSendWelcome(User user) async {
+    if (user.userMetadata?['welcome_sent'] == true) return;
+    try {
+      await supabase.functions.invoke('send-email', body: {
+        'template': 'welcome',
+        'name': (user.userMetadata?['name'] as String?) ?? '',
+      });
+      await supabase.auth.updateUser(
+        UserAttributes(data: {'welcome_sent': true}),
+      );
+    } catch (_) {
+      // Mail is niet kritisch voor de flow.
+    }
+  }
+
   /// Zelfde logica als resolve() in index.tsx: rol uit user_metadata,
   /// anders uit profiles; geen van beide → rol laten kiezen (OAuth).
   Future<void> _resolve(User user) async {
+    _maybeSendWelcome(user);
     final metaRole = Role.tryParse(user.userMetadata?['role'] as String?);
     if (metaRole != null) {
       if (!mounted) return;
