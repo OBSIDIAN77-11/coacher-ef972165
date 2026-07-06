@@ -211,11 +211,13 @@ class _PillButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Zelfde maat als Button lg in de bron (py-4 + 15px tekst), maar
+    // met borderRadius 50 zoals Welcome die override meegeeft.
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 56,
         width: double.infinity,
+        padding: const EdgeInsets.symmetric(vertical: 16),
         decoration: BoxDecoration(
           gradient: gradient,
           border: border,

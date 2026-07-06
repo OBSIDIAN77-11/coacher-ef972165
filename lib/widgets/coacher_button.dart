@@ -7,8 +7,10 @@ enum ButtonVariant { primary, outline, ghost, muted, danger }
 
 enum ButtonSize { sm, md, lg }
 
-/// Port van archive/src/components/coacher/Button.tsx.
-class CoacherButton extends StatelessWidget {
+/// Port van archive/src/components/coacher/Button.tsx, inclusief de
+/// interactie-states uit de bron: hover → opacity 0.9, indrukken →
+/// 1px omlaag, disabled → opacity 0.4.
+class CoacherButton extends StatefulWidget {
   const CoacherButton({
     super.key,
     required this.onPressed,
@@ -25,6 +27,21 @@ class CoacherButton extends StatelessWidget {
   final ButtonSize size;
   final bool loading;
   final bool fullWidth;
+
+  @override
+  State<CoacherButton> createState() => _CoacherButtonState();
+}
+
+class _CoacherButtonState extends State<CoacherButton> {
+  var _hovered = false;
+  var _pressed = false;
+
+  VoidCallback? get onPressed => widget.onPressed;
+  Widget get child => widget.child;
+  ButtonVariant get variant => widget.variant;
+  ButtonSize get size => widget.size;
+  bool get loading => widget.loading;
+  bool get fullWidth => widget.fullWidth;
 
   bool get _disabled => onPressed == null || loading;
 
@@ -113,26 +130,39 @@ class CoacherButton extends StatelessWidget {
             ),
           );
 
+    // Bron: disabled:opacity-40 geldt óók tijdens laden (disabled||loading).
     return Opacity(
-      opacity: _disabled && !loading ? 0.4 : 1,
+      opacity: _disabled
+          ? 0.4
+          : _hovered
+              ? 0.9
+              : 1,
       child: GestureDetector(
         onTap: _disabled ? null : onPressed,
+        onTapDown: _disabled ? null : (_) => setState(() => _pressed = true),
+        onTapUp: (_) => setState(() => _pressed = false),
+        onTapCancel: () => setState(() => _pressed = false),
         child: MouseRegion(
           cursor: _disabled
               ? SystemMouseCursors.forbidden
               : SystemMouseCursors.click,
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 150),
-            width: fullWidth ? double.infinity : null,
-            padding: padding,
-            decoration: BoxDecoration(
-              gradient: gradient,
-              color: bg,
-              border: border,
-              borderRadius: BorderRadius.circular(radius),
-              boxShadow: shadows,
+          onEnter: (_) => setState(() => _hovered = true),
+          onExit: (_) => setState(() => _hovered = false),
+          child: Transform.translate(
+            offset: Offset(0, _pressed ? 1 : 0),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 150),
+              width: fullWidth ? double.infinity : null,
+              padding: padding,
+              decoration: BoxDecoration(
+                gradient: gradient,
+                color: bg,
+                border: border,
+                borderRadius: BorderRadius.circular(radius),
+                boxShadow: shadows,
+              ),
+              child: Center(widthFactor: 1, child: content),
             ),
-            child: Center(widthFactor: 1, child: content),
           ),
         ),
       ),

@@ -153,8 +153,8 @@ class _ChatScreenState extends State<ChatScreen> {
     }
 
     return FadeUp(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(20, 24, 20, 110),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -380,10 +380,10 @@ class _ChatThreadState extends State<_ChatThread> {
   @override
   Widget build(BuildContext context) {
     final c = widget.contact;
-    // Het gesprek vult de hele tab (de AppShell scrollt normaal zelf; dit
-    // scherm heeft een eigen scroller + composer onderin, zoals de bron).
-    return SizedBox(
-      height: MediaQuery.of(context).size.height - 170,
+    // Het gesprek vult de hele tab: eigen scroller + composer onderin,
+    // zoals de bron (fixed composer boven de bottom-nav).
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 92),
       child: Column(
         children: [
           // Header

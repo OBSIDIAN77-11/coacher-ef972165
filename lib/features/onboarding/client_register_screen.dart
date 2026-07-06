@@ -198,7 +198,7 @@ class _ClientRegisterScreenState extends State<ClientRegisterScreen> {
               physics: const NeverScrollableScrollPhysics(),
               mainAxisSpacing: 10,
               crossAxisSpacing: 10,
-              childAspectRatio: 3.6,
+              childAspectRatio: 4.3,
               children: [
                 for (final g in _goalOptions)
                   _GoalChip(

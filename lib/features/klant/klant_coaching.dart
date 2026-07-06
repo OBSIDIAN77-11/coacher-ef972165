@@ -8,6 +8,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../app/theme/tokens.dart';
 import '../../widgets/anim/fade_up.dart';
 import '../../widgets/coacher_button.dart';
+import '../../widgets/dashed_border.dart';
 
 /// Port van KlantCoaching.tsx — tabs Training/Voeding/Voortgang/Check-in,
 /// inclusief de gesimuleerde barcode-scanner en de voor/na-vergelijker.
@@ -480,17 +481,9 @@ class _VoedingTabState extends State<_VoedingTab> {
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    SizedBox(
-                      width: 122,
-                      height: 122,
-                      child: CircularProgressIndicator(
-                        value: pct,
-                        strokeWidth: 10,
-                        strokeCap: StrokeCap.round,
-                        backgroundColor: AppColors.border,
-                        valueColor: const AlwaysStoppedAnimation(
-                            AppColors.primary),
-                      ),
+                    CustomPaint(
+                      size: const Size(130, 130),
+                      painter: _KcalDonutPainter(pct: pct),
                     ),
                     Column(
                       mainAxisSize: MainAxisSize.min,
@@ -536,7 +529,7 @@ class _VoedingTabState extends State<_VoedingTab> {
                         label: 'Vetten',
                         g: 48,
                         target: 70,
-                        color: AppColors.orange),
+                        color: Color(0xFFFF8A4C)),
                   ],
                 ),
               ),
@@ -547,12 +540,15 @@ class _VoedingTabState extends State<_VoedingTab> {
         // Barcode-scanknop
         GestureDetector(
           onTap: _openScanner,
-          child: Container(
+          child: DashedRRectBorder(
+            color: const Color(0x662563EB),
+            radius: 14,
+            strokeWidth: 1.5,
+            child: Container(
             padding: const EdgeInsets.symmetric(vertical: 14),
             decoration: BoxDecoration(
               color: const Color(0x0F2563EB),
               borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: const Color(0x662563EB), width: 1.5),
             ),
             child: const Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -568,6 +564,7 @@ class _VoedingTabState extends State<_VoedingTab> {
                   ),
                 ),
               ],
+            ),
             ),
           ),
         ),
@@ -632,6 +629,44 @@ class _VoedingTabState extends State<_VoedingTab> {
       ],
     );
   }
+}
+
+class _KcalDonutPainter extends CustomPainter {
+  _KcalDonutPainter({required this.pct});
+
+  final double pct;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    const stroke = 10.0;
+    final rect = (Offset.zero & size).deflate(stroke / 2 + 4);
+
+    final bg = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = stroke
+      ..color = AppColors.border;
+    canvas.drawArc(rect, 0, 3.141592653589793 * 2, false, bg);
+
+    if (pct > 0) {
+      final fg = Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = stroke
+        ..strokeCap = StrokeCap.round
+        ..shader =
+            AppGradients.primary.createShader(Offset.zero & size);
+      canvas.drawArc(
+        rect,
+        -3.141592653589793 / 2,
+        3.141592653589793 * 2 * pct,
+        false,
+        fg,
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(_KcalDonutPainter oldDelegate) =>
+      oldDelegate.pct != pct;
 }
 
 class _MacroBar extends StatelessWidget {
@@ -1136,37 +1171,44 @@ class _PhotoSlot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final content = Container(
+      height: 160,
+      decoration: BoxDecoration(
+        color: bytes != null ? Colors.transparent : AppColors.card,
+        borderRadius: BorderRadius.circular(14),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: bytes != null
+          ? Image.memory(bytes!, fit: BoxFit.cover)
+          : Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(LucideIcons.upload,
+                    size: 22, color: AppColors.textS),
+                const SizedBox(height: 6),
+                Text(
+                  label,
+                  style: const TextStyle(
+                    fontSize: 11,
+                    color: AppColors.textS,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
+            ),
+    );
+
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        height: 160,
-        decoration: BoxDecoration(
-          color: bytes != null ? Colors.transparent : AppColors.card,
-          borderRadius: BorderRadius.circular(14),
-          border: bytes != null
-              ? null
-              : Border.all(color: AppColors.borderHover, width: 1.5),
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: bytes != null
-            ? Image.memory(bytes!, fit: BoxFit.cover)
-            : Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(LucideIcons.upload,
-                      size: 22, color: AppColors.textS),
-                  const SizedBox(height: 6),
-                  Text(
-                    label,
-                    style: const TextStyle(
-                      fontSize: 11,
-                      color: AppColors.textS,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ],
-              ),
-      ),
+      // Zonder foto: gestreepte rand zoals de bron (1.5px dashed #2A3B5C).
+      child: bytes != null
+          ? content
+          : DashedRRectBorder(
+              color: AppColors.borderHover,
+              radius: 14,
+              strokeWidth: 1.5,
+              child: content,
+            ),
     );
   }
 }

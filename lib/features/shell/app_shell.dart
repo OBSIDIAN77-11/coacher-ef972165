@@ -255,7 +255,7 @@ class _AppShellState extends State<AppShell> {
     if (_mode == Role.klant && _tab == 'home') return const KlantHome();
     if (_mode == Role.klant && _tab == 'coaching') return const KlantCoaching();
     if (_mode == Role.klant && _tab == 'voortgang') {
-      return const KlantVoortgang();
+      return const KlantVoortgang(standalone: true);
     }
     if (_tab == 'settings') {
       return SettingsScreen(
@@ -272,6 +272,12 @@ class _AppShellState extends State<AppShell> {
   Widget build(BuildContext context) {
     if (!_tabs.any((t) => t.key == _tab)) _tab = 'home';
 
+    // Berichten en (klant-)Voortgang beheren hun eigen scroll: de chat
+    // heeft een vaste composer onderin, Voortgang een sticky header met
+    // tabs (parity met position:sticky in de bron).
+    final selfScrolling = _tab == 'messages' ||
+        (_mode == Role.klant && _tab == 'voortgang');
+
     return Scaffold(
       backgroundColor: AppColors.bg,
       body: SafeArea(
@@ -286,10 +292,12 @@ class _AppShellState extends State<AppShell> {
                   onBell: _openNotifs,
                 ),
                 Expanded(
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.only(bottom: 110),
-                    child: _tabContent(),
-                  ),
+                  child: selfScrolling
+                      ? _tabContent()
+                      : SingleChildScrollView(
+                          padding: const EdgeInsets.only(bottom: 110),
+                          child: _tabContent(),
+                        ),
                 ),
               ],
             ),
@@ -405,8 +413,8 @@ class _TopBar extends StatelessWidget {
                           const Icon(LucideIcons.bell,
                               color: Colors.white, size: 16),
                           Positioned(
-                            top: 6,
-                            right: 7,
+                            top: 7,
+                            right: 8,
                             child: SoftPulse(
                               child: Container(
                                 width: 8,

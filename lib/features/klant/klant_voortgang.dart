@@ -13,16 +13,22 @@ import '../../data/models/measurement.dart';
 import '../../data/repos/progress_repo.dart';
 import '../../widgets/anim/fade_up.dart';
 import '../../widgets/app_bottom_sheet.dart';
+import '../../widgets/dashed_border.dart';
 
 /// Port van KlantVoortgang.tsx — het grootste echte-data scherm:
 /// gewicht-gauge + grafiek, 17 metingen, progressiefoto's en de
 /// foto-vergelijker met versleepbare divider.
 class KlantVoortgang extends ConsumerStatefulWidget {
-  const KlantVoortgang({super.key, this.viewUserId});
+  const KlantVoortgang({super.key, this.viewUserId, this.standalone = false});
 
   /// Wanneer gezet bekijkt een coach de voortgang van deze klant
   /// (RLS staat dat toe via profiles.coach_id).
   final String? viewUserId;
+
+  /// Als eigen tab in de AppShell: header blijft sticky en de inhoud
+  /// scrolt eronder (position:sticky in de bron). Embedded (in
+  /// ClientDetail) scrolt alles mee met de buitenste scroller.
+  final bool standalone;
 
   @override
   ConsumerState<KlantVoortgang> createState() => _KlantVoortgangState();
@@ -119,6 +125,17 @@ class _KlantVoortgangState extends ConsumerState<KlantVoortgang> {
       builder: (context) => _MeasureDetailBody(meta: meta, data: data),
     );
   }
+
+  Widget _tabBody(List<MeasurePoint> weightData) => switch (_tab) {
+        'gewicht' => _GewichtTab(data: weightData),
+        'metingen' => _MetingenTab(entries: _entries, onOpen: _openDetail),
+        'fotos' => _FotosTab(
+            photos: _photos,
+            onAdd: _addPhoto,
+            onCompare: () => setState(() => _tab = 'vergelijk'),
+          ),
+        _ => _VergelijkTab(photos: _photos),
+      };
 
   @override
   Widget build(BuildContext context) {
@@ -235,20 +252,20 @@ class _KlantVoortgangState extends ConsumerState<KlantVoortgang> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
-            child: switch (_tab) {
-              'gewicht' => _GewichtTab(data: weightData),
-              'metingen' =>
-                _MetingenTab(entries: _entries, onOpen: _openDetail),
-              'fotos' => _FotosTab(
-                  photos: _photos,
-                  onAdd: _addPhoto,
-                  onCompare: () => setState(() => _tab = 'vergelijk'),
-                ),
-              _ => _VergelijkTab(photos: _photos),
-            },
-          ),
+          if (widget.standalone)
+            // Eigen scroller: de header hierboven blijft staan
+            // (position:sticky-parity met de bron).
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 110),
+                child: _tabBody(weightData),
+              ),
+            )
+          else
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+              child: _tabBody(weightData),
+            ),
         ],
       ),
     );
@@ -1089,22 +1106,26 @@ class _VergelijkTabState extends State<_VergelijkTab> {
           ),
           const SizedBox(height: 16),
           if (all.length < 2)
-            Container(
-              height: 320,
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: AppColors.bg,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppColors.border),
-              ),
-              child: const Center(
-                child: Text(
-                  "Upload minstens twee progressiefoto's om te vergelijken.",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: AppColors.textS,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
+            DashedRRectBorder(
+              color: AppColors.border,
+              radius: 16,
+              strokeWidth: 1,
+              child: Container(
+                height: 320,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: AppColors.bg,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: const Center(
+                  child: Text(
+                    "Upload minstens twee progressiefoto's om te vergelijken.",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: AppColors.textS,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ),

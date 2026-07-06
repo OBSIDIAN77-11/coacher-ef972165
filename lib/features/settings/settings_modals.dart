@@ -200,7 +200,7 @@ class _PaymentModalBodyState extends State<_PaymentModalBody> {
             physics: const NeverScrollableScrollPhysics(),
             mainAxisSpacing: 8,
             crossAxisSpacing: 8,
-            childAspectRatio: 3.4,
+            childAspectRatio: 4.1,
             children: [
               for (final b in _banks)
                 GestureDetector(

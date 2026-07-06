@@ -49,7 +49,7 @@ InputDecoration _decoration({String? hint, bool error = false}) {
   );
 }
 
-class AppField extends StatelessWidget {
+class AppField extends StatefulWidget {
   const AppField({
     super.key,
     this.controller,
@@ -78,24 +78,49 @@ class AppField extends StatelessWidget {
   final bool enabled;
 
   @override
+  State<AppField> createState() => _AppFieldState();
+}
+
+class _AppFieldState extends State<AppField> {
+  var _focused = false;
+
+  @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: controller,
-      enabled: enabled,
-      obscureText: obscureText,
-      keyboardType: keyboardType,
-      textInputAction: textInputAction,
-      onChanged: onChanged,
-      onSubmitted: onSubmitted,
-      autofillHints: autofillHints,
-      maxLines: maxLines,
-      cursorColor: AppColors.primary,
-      style: const TextStyle(
-        color: AppColors.textP,
-        fontSize: 14,
-        fontWeight: FontWeight.w500,
+    // Focus-glow uit de bron: 0 0 0 3px rgba(37,99,235,0.12).
+    return Focus(
+      onFocusChange: (has) => setState(() => _focused = has),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 150),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(13),
+          boxShadow: _focused && !widget.error
+              ? const [
+                  BoxShadow(
+                    color: Color(0x1F2563EB),
+                    spreadRadius: 3,
+                  ),
+                ]
+              : null,
+        ),
+        child: TextField(
+          controller: widget.controller,
+          enabled: widget.enabled,
+          obscureText: widget.obscureText,
+          keyboardType: widget.keyboardType,
+          textInputAction: widget.textInputAction,
+          onChanged: widget.onChanged,
+          onSubmitted: widget.onSubmitted,
+          autofillHints: widget.autofillHints,
+          maxLines: widget.maxLines,
+          cursorColor: AppColors.primary,
+          style: const TextStyle(
+            color: AppColors.textP,
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+          ),
+          decoration: _decoration(hint: widget.hint, error: widget.error),
+        ),
       ),
-      decoration: _decoration(hint: hint, error: error),
     );
   }
 }

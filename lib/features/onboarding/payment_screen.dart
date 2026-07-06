@@ -276,7 +276,7 @@ class _PaymentScreenState extends ConsumerState<PaymentScreen> {
                       physics: const NeverScrollableScrollPhysics(),
                       mainAxisSpacing: 10,
                       crossAxisSpacing: 10,
-                      childAspectRatio: 3.8,
+                      childAspectRatio: 4.5,
                       children: [
                         for (final b in _banks)
                           _BankCard(

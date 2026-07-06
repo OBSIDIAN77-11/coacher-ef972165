@@ -10,6 +10,7 @@ import '../../data/models/role.dart';
 import '../../widgets/anim/fade_up.dart';
 import '../../widgets/anim/spinner.dart';
 import '../../widgets/coacher_button.dart';
+import '../../widgets/dashed_border.dart';
 import '../../widgets/photo_upload.dart' show DashedCirclePainter;
 import '../../widgets/shell.dart';
 
@@ -268,15 +269,14 @@ class _IdScanState extends State<_IdScan> {
           onTap: _pick,
           child: AspectRatio(
             aspectRatio: 1.6,
-            child: Container(
+            child: DashedRRectBorder(
+              color: _img != null ? AppColors.primary : AppColors.borderHover,
+              radius: 18,
+              strokeWidth: 2,
+              child: Container(
               decoration: BoxDecoration(
                 color: _img != null ? Colors.transparent : AppColors.surface,
                 borderRadius: BorderRadius.circular(18),
-                border: Border.all(
-                  color:
-                      _img != null ? AppColors.primary : AppColors.borderHover,
-                  width: 2,
-                ),
               ),
               clipBehavior: Clip.antiAlias,
               child: _img != null
@@ -332,6 +332,7 @@ class _IdScanState extends State<_IdScan> {
                         ),
                       ],
                     ),
+              ),
             ),
           ),
         ),
