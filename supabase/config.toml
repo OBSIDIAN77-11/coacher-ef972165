@@ -4,3 +4,12 @@ project_id = "bzdaxtzzxbyomwzdxrnz"
 # de betaling zelf door hem terug op te vragen bij de Mollie API.
 [functions.mollie-webhook]
 verify_jwt = false
+
+# Veriff-webhook authenticeert via HMAC-signature (shared secret).
+[functions.veriff-webhook]
+verify_jwt = false
+
+# Token-validatie gebeurt vóór registratie, dus zonder JWT; de functie
+# geeft alleen coach-naam + e-mail terug bij een geldig token.
+[functions.validate-invite]
+verify_jwt = false

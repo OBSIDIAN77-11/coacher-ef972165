@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
+import '../../app/demo_mode.dart';
 import '../../app/theme/theme_provider.dart';
 import '../../app/theme/tokens.dart';
 import '../../core/supabase.dart';
@@ -161,9 +162,11 @@ class SettingsScreen extends ConsumerWidget {
                           ),
                           const SizedBox(height: 2),
                           Text(
-                            mode == Role.coach
-                                ? 'Coach · Maastricht'
-                                : 'Klant · Week 8',
+                            ref.watch(demoModeProvider)
+                                ? (mode == Role.coach
+                                    ? 'Coach · Maastricht'
+                                    : 'Klant · Week 8')
+                                : (mode == Role.coach ? 'Coach' : 'Klant'),
                             style: const TextStyle(
                               fontSize: 12,
                               color: Color(0xD9FFFFFF),

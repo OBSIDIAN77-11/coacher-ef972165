@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../app/theme/tokens.dart';
 import '../../core/supabase.dart';
 import '../../widgets/anim/fade_up.dart';
+import '../../widgets/app_bottom_sheet.dart';
+import '../../widgets/app_field.dart';
+import '../../widgets/coacher_button.dart';
 import '../klant/klant_voortgang.dart';
 
 /// Port van CoachClients.tsx — echte cliëntenlijst (profiles waar
@@ -70,6 +74,14 @@ class _CoachClientsState extends State<CoachClients> {
     }
   }
 
+  void _openInviteSheet() {
+    showAppBottomSheet(
+      context: context,
+      title: 'Cliënt uitnodigen',
+      builder: (context) => const _InviteSheetBody(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final selected = _selected;
@@ -88,14 +100,53 @@ class _CoachClientsState extends State<CoachClients> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text(
-              'Cliënten',
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.w900,
-                color: AppColors.textP,
-                letterSpacing: -0.5,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Cliënten',
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.w900,
+                    color: AppColors.textP,
+                    letterSpacing: -0.5,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: _openInviteSheet,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 14, vertical: 8),
+                    decoration: BoxDecoration(
+                      gradient: AppGradients.primary,
+                      borderRadius: BorderRadius.circular(999),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0x4D2563EB),
+                          offset: Offset(0, 4),
+                          blurRadius: 14,
+                        ),
+                      ],
+                    ),
+                    child: const Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(LucideIcons.userPlus,
+                            size: 14, color: Colors.white),
+                        SizedBox(width: 6),
+                        Text(
+                          'Uitnodigen',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 4),
             Text(
@@ -222,6 +273,158 @@ class _CoachClientsState extends State<CoachClients> {
           ],
         ),
       ),
+    );
+  }
+}
+
+/// Sheet: e-mail invullen → Edge Function maakt de uitnodiging aan en
+/// stuurt de mail via Resend; de link is ook direct kopieerbaar.
+class _InviteSheetBody extends StatefulWidget {
+  const _InviteSheetBody();
+
+  @override
+  State<_InviteSheetBody> createState() => _InviteSheetBodyState();
+}
+
+class _InviteSheetBodyState extends State<_InviteSheetBody> {
+  final _email = TextEditingController();
+  bool _loading = false;
+  String _err = '';
+  String? _link;
+  bool _emailSent = false;
+  bool _copied = false;
+
+  @override
+  void dispose() {
+    _email.dispose();
+    super.dispose();
+  }
+
+  Future<void> _invite() async {
+    final email = _email.text.trim();
+    if (!email.contains('@')) {
+      setState(() => _err = 'Vul een geldig e-mailadres in.');
+      return;
+    }
+    setState(() {
+      _err = '';
+      _loading = true;
+    });
+    try {
+      final res = await supabase.functions
+          .invoke('invite-client', body: {'email': email});
+      final data = res.data as Map<String, dynamic>;
+      if (data['ok'] == true) {
+        setState(() {
+          _link = data['link'] as String?;
+          _emailSent = data['emailSent'] == true;
+        });
+      } else {
+        setState(() =>
+            _err = (data['error'] as String?) ?? 'Uitnodigen mislukt.');
+      }
+    } catch (_) {
+      setState(() => _err =
+          'Uitnodigen mislukt. Controleer je verbinding of probeer later opnieuw.');
+    } finally {
+      if (mounted) setState(() => _loading = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final link = _link;
+    if (link != null) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(14),
+            decoration: BoxDecoration(
+              color: AppColors.primarySoft,
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(color: const Color(0x402563EB)),
+            ),
+            child: Text(
+              _emailSent
+                  ? 'Uitnodiging verstuurd naar ${_email.text.trim()}. De link is 14 dagen geldig.'
+                  : 'Uitnodiging aangemaakt (de e-mail kon niet worden verstuurd) — deel de link hieronder zelf.',
+              style: const TextStyle(
+                fontSize: 13,
+                color: AppColors.textP,
+                fontWeight: FontWeight.w600,
+                height: 1.6,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: AppColors.card,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: AppColors.border),
+            ),
+            child: Text(
+              link,
+              style: const TextStyle(
+                fontSize: 12,
+                color: AppColors.textS,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+          CoacherButton(
+            size: ButtonSize.lg,
+            fullWidth: true,
+            onPressed: () async {
+              await Clipboard.setData(ClipboardData(text: link));
+              if (mounted) setState(() => _copied = true);
+            },
+            child: Text(_copied ? 'Gekopieerd ✓' : 'Link kopiëren'),
+          ),
+          const SizedBox(height: 8),
+          CoacherButton(
+            variant: ButtonVariant.muted,
+            fullWidth: true,
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Klaar'),
+          ),
+        ],
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const Text(
+          'Je cliënt ontvangt een e-mail met een link om een account aan te maken en wordt direct aan jou gekoppeld.',
+          style: TextStyle(
+            fontSize: 13,
+            color: AppColors.textS,
+            fontWeight: FontWeight.w600,
+            height: 1.6,
+          ),
+        ),
+        const SizedBox(height: 16),
+        const AppLabel('E-mail van je cliënt'),
+        AppField(
+          controller: _email,
+          hint: 'client@email.nl',
+          keyboardType: TextInputType.emailAddress,
+          onSubmitted: (_) => _invite(),
+        ),
+        if (_err.isNotEmpty) FieldErrorText(_err),
+        const SizedBox(height: 16),
+        CoacherButton(
+          size: ButtonSize.lg,
+          fullWidth: true,
+          loading: _loading,
+          onPressed: _invite,
+          child: const Text('Uitnodiging versturen'),
+        ),
+      ],
     );
   }
 }

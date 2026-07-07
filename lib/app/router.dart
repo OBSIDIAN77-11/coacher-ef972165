@@ -22,6 +22,12 @@ final routerProvider = Provider<GoRouter>((ref) {
           paymentRef: state.uri.queryParameters['ref'],
         ),
       ),
+      GoRoute(
+        path: '/invite',
+        builder: (context, state) => OnboardingFlow(
+          inviteToken: state.uri.queryParameters['token'],
+        ),
+      ),
     ],
   );
 });

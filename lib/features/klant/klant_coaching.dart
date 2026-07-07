@@ -2,26 +2,31 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
+import '../../app/demo_mode.dart';
 import '../../app/theme/invert_filter.dart';
 import '../../app/theme/tokens.dart';
+import '../../core/supabase.dart';
 import '../../widgets/anim/fade_up.dart';
 import '../../widgets/coacher_button.dart';
 import '../../widgets/dashed_border.dart';
 
-/// Port van KlantCoaching.tsx — tabs Training/Voeding/Voortgang/Check-in,
-/// inclusief de gesimuleerde barcode-scanner en de voor/na-vergelijker.
-class KlantCoaching extends StatefulWidget {
+/// Port van KlantCoaching.tsx — tabs Training/Voeding/Voortgang/Check-in.
+/// Demo toont de mock-inhoud ("Week 8 · Yasmine"); een echt account ziet
+/// lege staten totdat de coach een schema klaarzet.
+class KlantCoaching extends ConsumerStatefulWidget {
   const KlantCoaching({super.key});
 
   @override
-  State<KlantCoaching> createState() => _KlantCoachingState();
+  ConsumerState<KlantCoaching> createState() => _KlantCoachingState();
 }
 
-class _KlantCoachingState extends State<KlantCoaching> {
+class _KlantCoachingState extends ConsumerState<KlantCoaching> {
   String _tab = 'training';
+  String _coachName = '';
 
   static const _tabs = [
     ('training', 'Training'),
@@ -31,7 +36,38 @@ class _KlantCoachingState extends State<KlantCoaching> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    _loadCoach();
+  }
+
+  Future<void> _loadCoach() async {
+    final user = supabase.auth.currentUser;
+    if (user == null) return;
+    try {
+      final me = await supabase
+          .from('profiles')
+          .select('coach_id')
+          .eq('id', user.id)
+          .maybeSingle();
+      final coachId = me?['coach_id'] as String?;
+      if (coachId == null) return;
+      final coach = await supabase
+          .from('profiles')
+          .select('name')
+          .eq('id', coachId)
+          .maybeSingle();
+      if (mounted && coach?['name'] != null) {
+        setState(() => _coachName = coach!['name'] as String);
+      }
+    } catch (_) {
+      // Geen sessie of netwerkfout.
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final demo = ref.watch(demoModeProvider);
     return FadeUp(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
@@ -52,9 +88,13 @@ class _KlantCoachingState extends State<KlantCoaching> {
               ),
             ),
             const SizedBox(height: 4),
-            const Text(
-              'Week 8 · Yasmine El Karimi',
-              style: TextStyle(
+            Text(
+              demo
+                  ? 'Week 8 · Yasmine El Karimi'
+                  : _coachName.isNotEmpty
+                      ? 'Coach: $_coachName'
+                      : 'Nog geen coach gekoppeld',
+              style: const TextStyle(
                 fontSize: 13,
                 color: AppColors.textS,
                 fontWeight: FontWeight.w600,
@@ -101,14 +141,87 @@ class _KlantCoachingState extends State<KlantCoaching> {
               ),
             ),
             const SizedBox(height: 20),
-            switch (_tab) {
-              'training' => const _TrainingTab(),
-              'voeding' => const _VoedingTab(),
-              'voortgang' => const _VoortgangTab(),
-              _ => const _CheckinTab(),
-            },
+            if (demo)
+              switch (_tab) {
+                'training' => const _TrainingTab(),
+                'voeding' => const _VoedingTab(),
+                'voortgang' => const _VoortgangTab(),
+                _ => const _CheckinTab(coachFirstName: 'Yasmine'),
+              }
+            else
+              switch (_tab) {
+                'training' => _RealEmptyTab(
+                    icon: LucideIcons.dumbbell,
+                    text: _coachName.isNotEmpty
+                        ? '${_coachName.split(' ').first} heeft nog geen trainingsschema klaargezet.'
+                        : 'Zodra je aan een coach gekoppeld bent verschijnt hier je trainingsschema.',
+                  ),
+                'voeding' => _RealEmptyTab(
+                    icon: LucideIcons.utensils,
+                    text: _coachName.isNotEmpty
+                        ? '${_coachName.split(' ').first} heeft nog geen voedingsplan klaargezet.'
+                        : 'Zodra je aan een coach gekoppeld bent verschijnt hier je voedingsplan.',
+                  ),
+                'voortgang' => const _RealEmptyTab(
+                    icon: LucideIcons.trendingUp,
+                    text:
+                        'Je voortgang houd je bij via de Voortgang-tab onderin — metingen en foto\'s verschijnen daar.',
+                  ),
+                _ => _coachName.isNotEmpty
+                    ? _CheckinTab(coachFirstName: _coachName.split(' ').first)
+                    : const _RealEmptyTab(
+                        icon: LucideIcons.clipboardCheck,
+                        text:
+                            'Check-ins werken zodra je aan een coach gekoppeld bent.',
+                      ),
+              },
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// Lege staat voor echte accounts zonder schema/plan.
+class _RealEmptyTab extends StatelessWidget {
+  const _RealEmptyTab({required this.icon, required this.text});
+
+  final IconData icon;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(28),
+      decoration: BoxDecoration(
+        gradient: AppGradients.soft,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppColors.border),
+      ),
+      child: Column(
+        children: [
+          Container(
+            width: 56,
+            height: 56,
+            margin: const EdgeInsets.only(bottom: 14),
+            decoration: const BoxDecoration(
+              gradient: AppGradients.primary,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(icon, color: Colors.white, size: 24),
+          ),
+          Text(
+            text,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 13,
+              color: AppColors.textS,
+              fontWeight: FontWeight.w600,
+              height: 1.6,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -1377,7 +1490,9 @@ class _SplitClipper extends CustomClipper<Rect> {
 /* ─── CHECK-IN ─── */
 
 class _CheckinTab extends StatefulWidget {
-  const _CheckinTab();
+  const _CheckinTab({required this.coachFirstName});
+
+  final String coachFirstName;
 
   @override
   State<_CheckinTab> createState() => _CheckinTabState();
@@ -1429,9 +1544,9 @@ class _CheckinTabState extends State<_CheckinTab> {
               ),
             ),
             const SizedBox(height: 6),
-            const Text(
-              'Yasmine reageert binnen 24 uur',
-              style: TextStyle(
+            Text(
+              '${widget.coachFirstName} reageert binnen 24 uur',
+              style: const TextStyle(
                 fontSize: 12,
                 color: AppColors.textS,
                 fontWeight: FontWeight.w600,
@@ -1457,9 +1572,9 @@ class _CheckinTabState extends State<_CheckinTab> {
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: const Color(0x402563EB)),
           ),
-          child: const Text(
-            'Yasmine reageert binnen 24 uur',
-            style: TextStyle(
+          child: Text(
+            '${widget.coachFirstName} reageert binnen 24 uur',
+            style: const TextStyle(
               fontSize: 12,
               color: AppColors.textP,
               fontWeight: FontWeight.w700,

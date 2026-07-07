@@ -1,26 +1,29 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
+import '../../app/demo_mode.dart';
 import '../../app/theme/tokens.dart';
 import '../../core/supabase.dart';
 import '../../widgets/anim/fade_up.dart';
 
-/// Port van KlantHome.tsx — dashboard met herstel-donut, slaapkaart,
-/// AI-tip, voortgangs-hero en trainingskaart. Naam en coach komen uit
-/// de database, de rest is mock (parity met de bron).
-class KlantHome extends StatefulWidget {
+/// Port van KlantHome.tsx. Demo-modus toont de mock-data uit het
+/// origineel; met een echte sessie: echte naam/coach, echte
+/// gewichtsvoortgang en lege staten voor gezondheid/training.
+class KlantHome extends ConsumerStatefulWidget {
   const KlantHome({super.key});
 
   @override
-  State<KlantHome> createState() => _KlantHomeState();
+  ConsumerState<KlantHome> createState() => _KlantHomeState();
 }
 
-class _KlantHomeState extends State<KlantHome> {
+class _KlantHomeState extends ConsumerState<KlantHome> {
   String _name = '';
   String _coachName = '';
+  double? _weightLost;
 
   @override
   void initState() {
@@ -50,13 +53,27 @@ class _KlantHomeState extends State<KlantHome> {
           setState(() => _coachName = coach!['name'] as String);
         }
       }
+      // Echte gewichtsvoortgang uit de metingen.
+      final rows = await supabase
+          .from('progress_measurements')
+          .select('value, measured_at')
+          .eq('user_id', user.id)
+          .eq('measure_key', 'gewicht')
+          .order('measured_at', ascending: true);
+      if (mounted && rows.length >= 2) {
+        final first = (rows.first['value'] as num).toDouble();
+        final last = (rows.last['value'] as num).toDouble();
+        setState(() => _weightLost =
+            double.parse((first - last).toStringAsFixed(1)));
+      }
     } catch (_) {
-      // Demo-modus zonder sessie.
+      // Geen sessie of netwerkfout.
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final demo = ref.watch(demoModeProvider);
     final firstName =
         _name.split(' ').firstOrNull?.trim().isNotEmpty == true
             ? _name.split(' ').first.trim()
@@ -142,36 +159,197 @@ class _KlantHomeState extends State<KlantHome> {
               ],
             ),
             const SizedBox(height: 12),
-            const _RecoveryCard(),
-            const SizedBox(height: 12),
-            const _SleepCard(),
-            const SizedBox(height: 12),
-            const _AiTip(),
-            const SizedBox(height: 20),
-            const _ProgressHero(),
-            const SizedBox(height: 16),
-            const Row(
-              children: [
-                Expanded(
-                    child: _Stat(
-                        value: '28', label: 'Sessies', color: AppColors.primary)),
-                SizedBox(width: 8),
-                Expanded(
-                    child: _Stat(
-                        value: '14d',
-                        label: 'Streak',
-                        color: AppColors.cyan,
-                        icon: LucideIcons.flame)),
-                SizedBox(width: 8),
-                Expanded(
-                    child: _Stat(
-                        value: '1.420', label: 'Kcal', color: AppColors.accent)),
-              ],
-            ),
-            const SizedBox(height: 24),
-            const _TrainingCard(),
+            if (demo) ...[
+              const _RecoveryCard(),
+              const SizedBox(height: 12),
+              const _SleepCard(),
+              const SizedBox(height: 12),
+              const _AiTip(),
+              const SizedBox(height: 20),
+              const _ProgressHero(),
+              const SizedBox(height: 16),
+              const Row(
+                children: [
+                  Expanded(
+                      child: _Stat(
+                          value: '28',
+                          label: 'Sessies',
+                          color: AppColors.primary)),
+                  SizedBox(width: 8),
+                  Expanded(
+                      child: _Stat(
+                          value: '14d',
+                          label: 'Streak',
+                          color: AppColors.cyan,
+                          icon: LucideIcons.flame)),
+                  SizedBox(width: 8),
+                  Expanded(
+                      child: _Stat(
+                          value: '1.420',
+                          label: 'Kcal',
+                          color: AppColors.accent)),
+                ],
+              ),
+              const SizedBox(height: 24),
+              const _TrainingCard(),
+            ] else ...[
+              // Echt account: geen gezondheidskoppeling → nette lege staat.
+              const _EmptyInfoCard(
+                icon: LucideIcons.heart,
+                text:
+                    'Nog geen gezondheidsdata. Koppel Apple Health of Google Fit om herstel en slaap te zien.',
+              ),
+              const SizedBox(height: 20),
+              _RealProgressHero(weightLost: _weightLost),
+              const SizedBox(height: 16),
+              const Row(
+                children: [
+                  Expanded(
+                      child: _Stat(
+                          value: '0',
+                          label: 'Sessies',
+                          color: AppColors.primary)),
+                  SizedBox(width: 8),
+                  Expanded(
+                      child: _Stat(
+                          value: '0d',
+                          label: 'Streak',
+                          color: AppColors.cyan,
+                          icon: LucideIcons.flame)),
+                  SizedBox(width: 8),
+                  Expanded(
+                      child: _Stat(
+                          value: '—',
+                          label: 'Kcal',
+                          color: AppColors.accent)),
+                ],
+              ),
+              const SizedBox(height: 24),
+              _EmptyInfoCard(
+                icon: LucideIcons.dumbbell,
+                text: _coachName.isNotEmpty
+                    ? '${_coachName.split(' ').first} heeft nog geen training voor vandaag klaargezet.'
+                    : 'Zodra je gekoppeld bent aan een coach verschijnt hier je training.',
+              ),
+            ],
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _EmptyInfoCard extends StatelessWidget {
+  const _EmptyInfoCard({required this.icon, required this.text});
+
+  final IconData icon;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: AppColors.card,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: AppColors.border),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, size: 18, color: AppColors.textM),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              text,
+              style: const TextStyle(
+                fontSize: 13,
+                color: AppColors.textS,
+                fontWeight: FontWeight.w600,
+                height: 1.5,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _RealProgressHero extends StatelessWidget {
+  const _RealProgressHero({required this.weightLost});
+
+  final double? weightLost;
+
+  @override
+  Widget build(BuildContext context) {
+    final lost = weightLost;
+    return Container(
+      padding: const EdgeInsets.all(22),
+      decoration: BoxDecoration(
+        gradient: AppGradients.primary,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x4D2563EB),
+            offset: Offset(0, 10),
+            blurRadius: 30,
+          ),
+        ],
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: Stack(
+        children: [
+          Positioned(
+            top: -62,
+            right: -62,
+            child: Container(
+              width: 180,
+              height: 180,
+              decoration: const BoxDecoration(
+                color: Color(0x12FFFFFF),
+                shape: BoxShape.circle,
+              ),
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Voortgang',
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xA6FFFFFF),
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                lost != null
+                    ? (lost > 0 ? '-$lost' : '+${lost.abs()}')
+                    : '—',
+                style: const TextStyle(
+                  fontSize: 48,
+                  fontWeight: FontWeight.w900,
+                  color: Colors.white,
+                  letterSpacing: -1.5,
+                  height: 1,
+                ),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                lost != null
+                    ? 'kg ${lost >= 0 ? 'verloren' : 'aangekomen'}'
+                    : 'Voeg metingen toe via Voortgang',
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: Color(0xD9FFFFFF),
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
+import '../../app/demo_mode.dart';
 import '../../app/theme/tokens.dart';
 import '../../widgets/anim/fade_up.dart';
 import '../../widgets/coacher_button.dart';
 
-/// Port van CoachAlerts.tsx — meldingen/escalaties met ernst-niveaus
-/// en een actie-sheet (mock-data).
-class CoachAlerts extends StatefulWidget {
+/// Port van CoachAlerts.tsx — meldingen/escalaties met ernst-niveaus en
+/// een actie-sheet. Demo toont de mock-meldingen; echt account een
+/// lege staat (er is nog geen meldingssysteem gekoppeld).
+class CoachAlerts extends ConsumerStatefulWidget {
   const CoachAlerts({super.key});
 
   @override
-  State<CoachAlerts> createState() => _CoachAlertsState();
+  ConsumerState<CoachAlerts> createState() => _CoachAlertsState();
 }
 
 class _AlertItem {
@@ -69,7 +72,7 @@ const _actions = [
   ('delete', 'Account permanent verwijderen', true),
 ];
 
-class _CoachAlertsState extends State<CoachAlerts> {
+class _CoachAlertsState extends ConsumerState<CoachAlerts> {
   final _resolved = <String>{};
 
   void _openSheet(_AlertItem alert) {
@@ -91,10 +94,12 @@ class _CoachAlertsState extends State<CoachAlerts> {
 
   @override
   Widget build(BuildContext context) {
-    final kritiek = _initialAlerts
+    final demo = ref.watch(demoModeProvider);
+    final alerts = demo ? _initialAlerts : const <_AlertItem>[];
+    final kritiek = alerts
         .where((a) => a.severity == 'kritiek' && !_resolved.contains(a.id))
         .length;
-    final hoog = _initialAlerts
+    final hoog = alerts
         .where((a) => a.severity == 'hoog' && !_resolved.contains(a.id))
         .length;
 
@@ -141,7 +146,34 @@ class _CoachAlertsState extends State<CoachAlerts> {
               ],
             ),
             const SizedBox(height: 20),
-            for (final a in _initialAlerts)
+            if (alerts.isEmpty)
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: AppColors.card,
+                  borderRadius: BorderRadius.circular(18),
+                  border: Border.all(color: AppColors.border),
+                ),
+                child: const Row(
+                  children: [
+                    Icon(LucideIcons.shieldCheck,
+                        size: 18, color: AppColors.textM),
+                    SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        'Geen openstaande meldingen.',
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: AppColors.textS,
+                          fontWeight: FontWeight.w600,
+                          height: 1.5,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            for (final a in alerts)
               Padding(
                 padding: const EdgeInsets.only(bottom: 8),
                 child: _AlertCard(

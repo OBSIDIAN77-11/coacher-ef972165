@@ -31,16 +31,21 @@ class ClientRegisterData {
   final List<String> goals;
 }
 
-/// Port van ClientRegister.tsx.
+/// Port van ClientRegister.tsx, uitgebreid met invite-gegevens:
+/// e-mail wordt voorgevuld uit de uitnodiging en de coachnaam getoond.
 class ClientRegisterScreen extends StatefulWidget {
   const ClientRegisterScreen({
     super.key,
     required this.onBack,
     required this.onSubmit,
+    this.initialEmail,
+    this.invitedBy,
   });
 
   final VoidCallback onBack;
   final Future<void> Function(ClientRegisterData data) onSubmit;
+  final String? initialEmail;
+  final String? invitedBy;
 
   @override
   State<ClientRegisterScreen> createState() => _ClientRegisterScreenState();
@@ -48,7 +53,7 @@ class ClientRegisterScreen extends StatefulWidget {
 
 class _ClientRegisterScreenState extends State<ClientRegisterScreen> {
   final _name = TextEditingController();
-  final _email = TextEditingController();
+  late final _email = TextEditingController(text: widget.initialEmail ?? '');
   final _pw = TextEditingController();
   final _pw2 = TextEditingController();
   final _goals = <String>{};
@@ -124,10 +129,12 @@ class _ClientRegisterScreenState extends State<ClientRegisterScreen> {
               ),
             ),
             const SizedBox(height: 4),
-            const Text(
-              '€10/maand — altijd opzegbaar',
+            Text(
+              widget.invitedBy != null
+                  ? 'Uitgenodigd door ${widget.invitedBy} · €10/maand — altijd opzegbaar'
+                  : '€10/maand — altijd opzegbaar',
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 12,
                 color: AppColors.textS,
                 fontWeight: FontWeight.w600,

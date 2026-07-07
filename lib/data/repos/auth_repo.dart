@@ -21,12 +21,19 @@ class AuthRepo {
     required String email,
     required String password,
     required List<String> goals,
+    String? inviteToken,
   }) async {
     await supabase.auth.signUp(
       email: email,
       password: password,
       emailRedirectTo: '$_emailRedirect/',
-      data: {'name': name, 'role': 'klant', 'goals': goals},
+      data: {
+        'name': name,
+        'role': 'klant',
+        'goals': goals,
+        // handle_new_user koppelt de klant hiermee direct aan de coach.
+        if (inviteToken != null) 'invite_token': inviteToken,
+      },
     );
   }
 

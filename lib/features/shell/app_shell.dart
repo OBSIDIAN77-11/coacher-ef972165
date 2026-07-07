@@ -1,8 +1,10 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
+import '../../app/demo_mode.dart';
 import '../../app/theme/tokens.dart';
 import '../../core/supabase.dart';
 import '../../data/models/role.dart';
@@ -66,7 +68,7 @@ const _klantNotifs = [
 
 /// Port van AppShell.tsx — glass topbar met rol-toggle, tab-inhoud en
 /// glass bottom-nav met 5 tabs per rol.
-class AppShell extends StatefulWidget {
+class AppShell extends ConsumerStatefulWidget {
   const AppShell({
     super.key,
     required this.initialMode,
@@ -77,10 +79,10 @@ class AppShell extends StatefulWidget {
   final VoidCallback onLogout;
 
   @override
-  State<AppShell> createState() => _AppShellState();
+  ConsumerState<AppShell> createState() => _AppShellState();
 }
 
-class _AppShellState extends State<AppShell> {
+class _AppShellState extends ConsumerState<AppShell> {
   late Role _mode = widget.initialMode;
   String _tab = 'home';
   String _profileName = '';
@@ -126,12 +128,33 @@ class _AppShellState extends State<AppShell> {
       });
 
   void _openNotifs() {
-    final notifs = _mode == Role.coach ? _coachNotifs : _klantNotifs;
+    final demo = ref.read(demoModeProvider);
+    final notifs = demo
+        ? (_mode == Role.coach ? _coachNotifs : _klantNotifs)
+        : const <_Notif>[];
     showAppBottomSheet(
       context: context,
       title: 'Meldingen',
       builder: (context) => Column(
         children: [
+          if (notifs.isEmpty)
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: AppColors.card,
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: AppColors.border),
+              ),
+              child: const Text(
+                'Geen nieuwe meldingen.',
+                style: TextStyle(
+                  fontSize: 13,
+                  color: AppColors.textS,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
           for (final n in notifs)
             Container(
               width: double.infinity,

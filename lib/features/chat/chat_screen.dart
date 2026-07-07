@@ -1,21 +1,25 @@
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
+import '../../app/demo_mode.dart';
 import '../../app/theme/tokens.dart';
+import '../../core/supabase.dart';
 import '../../data/models/role.dart';
 import '../../widgets/anim/fade_up.dart';
 
-/// Port van ChatScreen.tsx — contactenlijst + chatgesprek (mock-data,
-/// geen realtime; pariteit met de bron).
-class ChatScreen extends StatefulWidget {
+/// Port van ChatScreen.tsx. Demo-modus: de mock-contacten en -berichten
+/// uit het origineel. Echte sessie: contacten uit de database (coach ↔
+/// gekoppelde cliënten), zonder verzonnen berichten.
+class ChatScreen extends ConsumerStatefulWidget {
   const ChatScreen({super.key, required this.mode});
 
   final Role mode;
 
   @override
-  State<ChatScreen> createState() => _ChatScreenState();
+  ConsumerState<ChatScreen> createState() => _ChatScreenState();
 }
 
 class _Contact {
@@ -136,13 +140,71 @@ const _seed = <String, List<_Msg>>{
   ],
 };
 
-class _ChatScreenState extends State<ChatScreen> {
+class _ChatScreenState extends ConsumerState<ChatScreen> {
   _Contact? _active;
+  List<_Contact> _realContacts = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadRealContacts();
+  }
+
+  Future<void> _loadRealContacts() async {
+    final user = supabase.auth.currentUser;
+    if (user == null) return;
+    try {
+      final rows = widget.mode == Role.coach
+          ? await supabase
+              .from('profiles')
+              .select('id, name')
+              .eq('coach_id', user.id)
+              .order('name')
+          : await _coachRow(user.id);
+      if (!mounted) return;
+      setState(() {
+        _realContacts = [
+          for (final r in rows)
+            _Contact(
+              id: r['id'] as String,
+              name: (r['name'] as String?)?.isNotEmpty == true
+                  ? r['name'] as String
+                  : 'Naamloos',
+              last: 'Nog geen berichten',
+              time: '',
+              unread: 0,
+              online: false,
+              gradient: _gradBlue,
+            ),
+        ];
+      });
+    } catch (_) {
+      // Geen sessie of netwerkfout.
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> _coachRow(String userId) async {
+    final me = await supabase
+        .from('profiles')
+        .select('coach_id')
+        .eq('id', userId)
+        .maybeSingle();
+    final coachId = me?['coach_id'] as String?;
+    if (coachId == null) return [];
+    final coach = await supabase
+        .from('profiles')
+        .select('id, name')
+        .eq('id', coachId)
+        .maybeSingle();
+    return coach == null ? [] : [coach];
+  }
 
   @override
   Widget build(BuildContext context) {
-    final contacts =
-        widget.mode == Role.coach ? _coachContacts : _klantContacts;
+    final demo = ref.watch(demoModeProvider);
+    final contacts = demo
+        ? (widget.mode == Role.coach ? _coachContacts : _klantContacts)
+        : _realContacts;
     final active = _active;
 
     if (active != null) {
@@ -177,6 +239,35 @@ class _ChatScreenState extends State<ChatScreen> {
               ),
             ),
             const SizedBox(height: 20),
+            if (contacts.isEmpty)
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: AppColors.card,
+                  borderRadius: BorderRadius.circular(18),
+                  border: Border.all(color: AppColors.border),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(LucideIcons.messageSquare,
+                        size: 18, color: AppColors.textM),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        widget.mode == Role.coach
+                            ? 'Nog geen gesprekken. Nodig een cliënt uit om te kunnen chatten.'
+                            : 'Nog geen gesprekken. Zodra je aan een coach gekoppeld bent kun je chatten.',
+                        style: const TextStyle(
+                          fontSize: 13,
+                          color: AppColors.textS,
+                          fontWeight: FontWeight.w600,
+                          height: 1.5,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             for (final c in contacts)
               Padding(
                 padding: const EdgeInsets.only(bottom: 8),
