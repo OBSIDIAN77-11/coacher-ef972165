@@ -61,8 +61,8 @@ class _KlantHomeState extends State<KlantHome> {
         _name.split(' ').firstOrNull?.trim().isNotEmpty == true
             ? _name.split(' ').first.trim()
             : 'daar';
-    final today =
-        DateFormat('EEEE, d MMMM', 'nl_NL').format(DateTime.now());
+    // Zelfde output als Intl.DateTimeFormat("nl-NL", ...): geen komma.
+    final today = DateFormat('EEEE d MMMM', 'nl_NL').format(DateTime.now());
 
     return FadeUp(
       child: Padding(

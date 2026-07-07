@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
+import '../../app/theme/invert_filter.dart';
 import '../../app/theme/tokens.dart';
 import '../../widgets/anim/fade_up.dart';
 import '../../widgets/coacher_button.dart';
@@ -1179,7 +1180,7 @@ class _PhotoSlot extends StatelessWidget {
       ),
       clipBehavior: Clip.antiAlias,
       child: bytes != null
-          ? Image.memory(bytes!, fit: BoxFit.cover)
+          ? MediaReInvert(child: Image.memory(bytes!, fit: BoxFit.cover))
           : Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -1241,10 +1242,13 @@ class _CompareViewState extends State<_CompareView> {
             child: Stack(
               fit: StackFit.expand,
               children: [
-                Image.memory(widget.now, fit: BoxFit.cover),
+                MediaReInvert(
+                    child: Image.memory(widget.now, fit: BoxFit.cover)),
                 ClipRect(
                   clipper: _SplitClipper(fraction: _split),
-                  child: Image.memory(widget.before, fit: BoxFit.cover),
+                  child: MediaReInvert(
+                      child:
+                          Image.memory(widget.before, fit: BoxFit.cover)),
                 ),
                 Positioned(
                   left: _split * width - 1,
@@ -1383,7 +1387,6 @@ class _CheckinTabState extends State<_CheckinTab> {
   double _energy = 7;
   double _intensity = 6;
   String _sleep = 'Goed';
-  String _nutrition = 'Ja';
   final _notes = TextEditingController();
   bool _sent = false;
 
@@ -1524,10 +1527,11 @@ class _CheckinTabState extends State<_CheckinTab> {
         const SizedBox(height: 16),
         _Question(
           label: 'Heb je je voeding gehaald?',
+          // In de bron hebben deze pills geen onClick: "Ja" staat vast.
           child: _PillOptions(
             options: const ['Nee', 'Bijna', 'Ja'],
-            value: _nutrition,
-            onChanged: (v) => setState(() => _nutrition = v),
+            value: 'Ja',
+            onChanged: (_) {},
           ),
         ),
         const SizedBox(height: 16),

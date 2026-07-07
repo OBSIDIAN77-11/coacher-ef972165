@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' show AuthException;
 
 import '../../app/theme/tokens.dart';
 import '../../widgets/anim/fade_up.dart';
@@ -94,7 +95,11 @@ class _ClientRegisterScreenState extends State<ClientRegisterScreen> {
         goals: _goals.toList(),
       ));
     } catch (e) {
-      if (mounted) setState(() => _err = 'Er ging iets mis');
+      // Bron: ex?.message ?? "Er ging iets mis".
+      if (mounted) {
+        setState(
+            () => _err = e is AuthException ? e.message : 'Er ging iets mis');
+      }
     } finally {
       if (mounted) setState(() => _loading = false);
     }

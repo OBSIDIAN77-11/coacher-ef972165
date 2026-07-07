@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' show AuthException;
 
 import '../../app/theme/tokens.dart';
 import '../../data/repos/auth_repo.dart';
@@ -52,7 +53,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       widget.onSuccess();
     } catch (e) {
       if (!mounted) return;
-      setState(() => _err = _friendlyAuthError(e));
+      // Bron toont error.message van Supabase letterlijk.
+      setState(
+          () => _err = e is AuthException ? e.message : 'Er ging iets mis');
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -172,13 +175,3 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 }
 
-String _friendlyAuthError(Object e) {
-  final msg = e.toString();
-  if (msg.contains('Invalid login credentials')) {
-    return 'Ongeldige inloggegevens';
-  }
-  if (msg.contains('Email not confirmed')) {
-    return 'Bevestig eerst je e-mailadres via de link in je inbox';
-  }
-  return 'Inloggen mislukt. Probeer het opnieuw.';
-}

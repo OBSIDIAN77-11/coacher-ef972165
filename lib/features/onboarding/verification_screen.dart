@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
+import '../../app/theme/invert_filter.dart';
 import '../../app/theme/tokens.dart';
 import '../../data/models/role.dart';
 import '../../widgets/anim/fade_up.dart';
@@ -283,7 +284,8 @@ class _IdScanState extends State<_IdScan> {
                   ? Stack(
                       fit: StackFit.expand,
                       children: [
-                        Image.memory(_img!, fit: BoxFit.cover),
+                        MediaReInvert(
+                            child: Image.memory(_img!, fit: BoxFit.cover)),
                         Container(
                           color: const Color(0x2E2563EB),
                           child: Center(
@@ -446,7 +448,8 @@ class _SelfieState extends State<_Selfie> {
                 ),
                 clipBehavior: Clip.antiAlias,
                 child: _img != null
-                    ? Image.memory(_img!, fit: BoxFit.cover)
+                    ? MediaReInvert(
+                        child: Image.memory(_img!, fit: BoxFit.cover))
                     : const Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

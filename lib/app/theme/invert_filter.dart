@@ -1,4 +1,7 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'theme_provider.dart';
 
 /// Licht thema, identiek aan de React-app: de donkere UI wordt geïnverteerd
 /// met behoud van tint (CSS `invert(100%) hue-rotate(180deg)`).
@@ -33,15 +36,15 @@ class LightThemeFilter extends StatelessWidget {
 /// Wrap foto's/afbeeldingen hiermee zodat ze in het lichte thema opnieuw
 /// geïnverteerd worden en dus hun echte kleuren tonen (parity met de
 /// `img { filter: ... }` regel in styles.css).
-class MediaReInvert extends StatelessWidget {
-  const MediaReInvert({super.key, required this.lightTheme, required this.child});
+class MediaReInvert extends ConsumerWidget {
+  const MediaReInvert({super.key, required this.child});
 
-  final bool lightTheme;
   final Widget child;
 
   @override
-  Widget build(BuildContext context) {
-    if (!lightTheme) return child;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final light = ref.watch(themeProvider) == CoacherTheme.light;
+    if (!light) return child;
     return ColorFiltered(colorFilter: invertHueRotateFilter, child: child);
   }
 }

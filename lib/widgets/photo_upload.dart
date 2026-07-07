@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
+import '../app/theme/invert_filter.dart';
 import '../app/theme/tokens.dart';
 
 /// Port van archive/src/components/coacher/PhotoUpload.tsx —
@@ -52,7 +53,8 @@ class _PhotoUploadState extends State<PhotoUpload> {
           ),
           clipBehavior: Clip.antiAlias,
           child: _bytes != null
-              ? Image.memory(_bytes!, fit: BoxFit.cover)
+              ? MediaReInvert(
+                  child: Image.memory(_bytes!, fit: BoxFit.cover))
               : const Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
+import '../../app/theme/invert_filter.dart';
 import '../../app/theme/tokens.dart';
 import '../../core/supabase.dart';
 import '../../data/models/measurement.dart';
@@ -1033,15 +1034,17 @@ class _PhotoRow extends StatelessWidget {
                 separatorBuilder: (_, _) => const SizedBox(width: 8),
                 itemBuilder: (context, i) => ClipRRect(
                   borderRadius: BorderRadius.circular(12),
-                  child: Image.network(
-                    list[i].url,
-                    width: 110,
-                    height: 150,
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, _, _) => Container(
+                  child: MediaReInvert(
+                    child: Image.network(
+                      list[i].url,
                       width: 110,
                       height: 150,
-                      color: AppColors.surface,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, _, _) => Container(
+                        width: 110,
+                        height: 150,
+                        color: AppColors.surface,
+                      ),
                     ),
                   ),
                 ),
@@ -1175,12 +1178,15 @@ class _VergelijkTabState extends State<_VergelijkTab> {
                       fit: StackFit.expand,
                       children: [
                         if (_right != null)
-                          Image.network(_right!, fit: BoxFit.cover),
+                          MediaReInvert(
+                              child:
+                                  Image.network(_right!, fit: BoxFit.cover)),
                         if (_left != null)
                           ClipRect(
                             clipper: _LeftClipper(fraction: _pos),
-                            child:
-                                Image.network(_left!, fit: BoxFit.cover),
+                            child: MediaReInvert(
+                                child:
+                                    Image.network(_left!, fit: BoxFit.cover)),
                           ),
                         Positioned(
                           left: _pos * width - 1,

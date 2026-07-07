@@ -148,8 +148,9 @@ class AppSelect<T> extends StatelessWidget {
       items: items,
       onChanged: onChanged,
       dropdownColor: AppColors.surface,
+      // Chevron-kleur exact uit de bron-SVG (#8BA89D).
       icon: const Icon(Icons.keyboard_arrow_down,
-          color: AppColors.textS, size: 20),
+          color: Color(0xFF8BA89D), size: 20),
       style: const TextStyle(
         color: AppColors.textP,
         fontSize: 14,

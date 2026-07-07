@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' show AuthException;
 
 import '../../app/theme/tokens.dart';
 import '../../data/repos/auth_repo.dart';
@@ -42,7 +43,8 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
       setState(() => _sent = true);
     } catch (e) {
       if (!mounted) return;
-      setState(() => _err = 'Versturen mislukt. Controleer het e-mailadres.');
+      setState(
+          () => _err = e is AuthException ? e.message : 'Er ging iets mis');
     } finally {
       if (mounted) setState(() => _loading = false);
     }
