@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart' show AuthException;
-
 import '../../app/theme/tokens.dart';
+import '../../core/auth_error.dart';
 import '../../widgets/anim/fade_up.dart';
 import '../../widgets/app_field.dart';
 import '../../widgets/app_toggle.dart';
@@ -111,10 +110,8 @@ class _CoachRegisterScreenState extends State<CoachRegisterScreen> {
         onlineCoaching: _online,
       ));
     } catch (e) {
-      // Bron: ex?.message ?? "Er ging iets mis".
       if (mounted) {
-        setState(
-            () => _err = e is AuthException ? e.message : 'Er ging iets mis');
+        setState(() => _err = authErrorMessage(e));
       }
     } finally {
       if (mounted) setState(() => _loading = false);

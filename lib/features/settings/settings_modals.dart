@@ -4,6 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart'
     show AuthException, UserAttributes;
 
 import '../../app/theme/tokens.dart';
+import '../../core/auth_error.dart';
 import '../../core/supabase.dart';
 import '../../widgets/app_bottom_sheet.dart';
 import '../../widgets/coacher_button.dart';
@@ -816,7 +817,7 @@ class _PasswordModalBodyState extends State<_PasswordModalBody> {
     } on AuthException catch (e) {
       final msg = e.message.contains('Invalid login credentials')
           ? 'Huidig wachtwoord is onjuist'
-          : e.message;
+          : authErrorMessage(e);
       if (mounted) setState(() => _err = msg);
     } catch (_) {
       if (mounted) setState(() => _err = 'Wijzigen mislukt. Probeer opnieuw.');

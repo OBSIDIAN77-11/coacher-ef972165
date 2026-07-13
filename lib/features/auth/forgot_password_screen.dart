@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:supabase_flutter/supabase_flutter.dart' show AuthException;
 
 import '../../app/theme/tokens.dart';
+import '../../core/auth_error.dart';
 import '../../data/repos/auth_repo.dart';
 import '../../widgets/anim/fade_up.dart';
 import '../../widgets/app_field.dart';
@@ -43,8 +43,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
       setState(() => _sent = true);
     } catch (e) {
       if (!mounted) return;
-      setState(
-          () => _err = e is AuthException ? e.message : 'Er ging iets mis');
+      setState(() => _err = authErrorMessage(e));
     } finally {
       if (mounted) setState(() => _loading = false);
     }

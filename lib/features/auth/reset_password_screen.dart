@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:supabase_flutter/supabase_flutter.dart' show AuthException;
 
 import '../../app/theme/tokens.dart';
+import '../../core/auth_error.dart';
 import '../../data/repos/auth_repo.dart';
 import '../../widgets/anim/fade_up.dart';
 import '../../widgets/app_field.dart';
@@ -57,8 +57,7 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
       });
     } catch (e) {
       if (mounted) {
-        setState(
-            () => _err = e is AuthException ? e.message : 'Er ging iets mis');
+        setState(() => _err = authErrorMessage(e));
       }
     } finally {
       if (mounted) setState(() => _loading = false);

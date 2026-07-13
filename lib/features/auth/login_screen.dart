@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:supabase_flutter/supabase_flutter.dart' show AuthException;
 
 import '../../app/theme/tokens.dart';
+import '../../core/auth_error.dart';
 import '../../data/repos/auth_repo.dart';
 import '../../widgets/anim/fade_up.dart';
 import '../../widgets/app_field.dart';
@@ -53,9 +53,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       widget.onSuccess();
     } catch (e) {
       if (!mounted) return;
-      // Bron toont error.message van Supabase letterlijk.
-      setState(
-          () => _err = e is AuthException ? e.message : 'Er ging iets mis');
+      setState(() => _err = authErrorMessage(e));
     } finally {
       if (mounted) setState(() => _loading = false);
     }

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:supabase_flutter/supabase_flutter.dart' show AuthException;
-
 import '../../app/theme/tokens.dart';
+import '../../core/auth_error.dart';
 import '../../widgets/anim/fade_up.dart';
 import '../../widgets/app_field.dart';
 import '../../widgets/coacher_button.dart';
@@ -100,10 +99,8 @@ class _ClientRegisterScreenState extends State<ClientRegisterScreen> {
         goals: _goals.toList(),
       ));
     } catch (e) {
-      // Bron: ex?.message ?? "Er ging iets mis".
       if (mounted) {
-        setState(
-            () => _err = e is AuthException ? e.message : 'Er ging iets mis');
+        setState(() => _err = authErrorMessage(e));
       }
     } finally {
       if (mounted) setState(() => _loading = false);
