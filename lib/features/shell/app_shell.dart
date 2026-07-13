@@ -301,6 +301,12 @@ class _AppShellState extends ConsumerState<AppShell> {
     final selfScrolling = _tab == 'messages' ||
         (_mode == Role.klant && _tab == 'voortgang');
 
+    // De coach/klant-toggle is alleen zinvol in demo-modus (om beide
+    // ervaringen te laten zien zonder twee accounts). Een echt account
+    // heeft een vaste rol in de database — coach ziet coach-schermen,
+    // klant ziet klant-schermen, zonder wisselknop.
+    final isDemo = ref.watch(demoModeProvider);
+
     return Scaffold(
       backgroundColor: AppColors.bg,
       body: SafeArea(
@@ -311,6 +317,7 @@ class _AppShellState extends ConsumerState<AppShell> {
                 _TopBar(
                   mode: _mode,
                   initials: _initials,
+                  showModeToggle: isDemo,
                   onSwitchMode: _switchMode,
                   onBell: _openNotifs,
                 ),
@@ -343,12 +350,14 @@ class _TopBar extends StatelessWidget {
   const _TopBar({
     required this.mode,
     required this.initials,
+    required this.showModeToggle,
     required this.onSwitchMode,
     required this.onBell,
   });
 
   final Role mode;
   final String initials;
+  final bool showModeToggle;
   final ValueChanged<Role> onSwitchMode;
   final VoidCallback onBell;
 
@@ -381,44 +390,47 @@ class _TopBar extends StatelessWidget {
               ),
               Row(
                 children: [
-                  // Mode toggle
-                  Container(
-                    padding: const EdgeInsets.all(3),
-                    decoration: BoxDecoration(
-                      color: AppColors.card,
-                      borderRadius: BorderRadius.circular(999),
-                      border: Border.all(color: AppColors.border),
-                    ),
-                    child: Row(
-                      children: [
-                        for (final m in Role.values)
-                          GestureDetector(
-                            onTap: () => onSwitchMode(m),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 6),
-                              decoration: BoxDecoration(
-                                gradient: mode == m
-                                    ? AppGradients.primary
-                                    : null,
-                                borderRadius: BorderRadius.circular(999),
-                              ),
-                              child: Text(
-                                m == Role.coach ? 'Coach' : 'Klant',
-                                style: TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w800,
-                                  color: mode == m
-                                      ? Colors.white
-                                      : AppColors.textS,
+                  // Coach/klant-toggle: alleen in demo-modus. Een echt
+                  // account heeft een vaste rol, dus geen wisselknop.
+                  if (showModeToggle) ...[
+                    Container(
+                      padding: const EdgeInsets.all(3),
+                      decoration: BoxDecoration(
+                        color: AppColors.card,
+                        borderRadius: BorderRadius.circular(999),
+                        border: Border.all(color: AppColors.border),
+                      ),
+                      child: Row(
+                        children: [
+                          for (final m in Role.values)
+                            GestureDetector(
+                              onTap: () => onSwitchMode(m),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 12, vertical: 6),
+                                decoration: BoxDecoration(
+                                  gradient: mode == m
+                                      ? AppGradients.primary
+                                      : null,
+                                  borderRadius: BorderRadius.circular(999),
+                                ),
+                                child: Text(
+                                  m == Role.coach ? 'Coach' : 'Klant',
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w800,
+                                    color: mode == m
+                                        ? Colors.white
+                                        : AppColors.textS,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 8),
+                    const SizedBox(width: 8),
+                  ],
                   // Bell
                   GestureDetector(
                     onTap: onBell,
