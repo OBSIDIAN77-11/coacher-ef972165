@@ -1,19 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'deep_links.dart';
 import 'router.dart';
 import 'theme/app_theme.dart';
 import 'theme/invert_filter.dart';
 import 'theme/theme_provider.dart';
 import 'theme/tokens.dart';
 
-class CoacherApp extends ConsumerWidget {
+class CoacherApp extends ConsumerStatefulWidget {
   const CoacherApp({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<CoacherApp> createState() => _CoacherAppState();
+}
+
+class _CoacherAppState extends ConsumerState<CoacherApp> {
+  DeepLinkListener? _deepLinks;
+
+  @override
+  void dispose() {
+    _deepLinks?.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final theme = ref.watch(themeProvider);
     final router = ref.watch(routerProvider);
+    _deepLinks ??= DeepLinkListener(router);
 
     return MaterialApp.router(
       title: 'Coacher — Personal Training',
