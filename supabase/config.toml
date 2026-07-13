@@ -1,4 +1,4 @@
-project_id = "bzdaxtzzxbyomwzdxrnz"
+project_id = "dhqiuxaefllhgrktcfbr"
 
 # Mollie roept de webhook aan zonder Supabase-JWT; de functie valideert
 # de betaling zelf door hem terug op te vragen bij de Mollie API.
