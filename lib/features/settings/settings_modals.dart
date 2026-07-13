@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:supabase_flutter/supabase_flutter.dart'
+    show AuthException, UserAttributes;
 
 import '../../app/theme/tokens.dart';
+import '../../core/supabase.dart';
 import '../../widgets/app_bottom_sheet.dart';
 import '../../widgets/coacher_button.dart';
 
@@ -267,6 +270,17 @@ class _NotificationsModalBody extends StatefulWidget {
       _NotificationsModalBodyState();
 }
 
+/// Kolomnamen in notification_preferences per weergavelabel.
+const _notifDbKeys = {
+  'Push': 'push',
+  'E-mail': 'email',
+  'SMS': 'sms',
+  'Check-in': 'checkin',
+  'Sessie': 'sessie',
+  'Betaling': 'betaling',
+  'Nieuws': 'nieuws',
+};
+
 class _NotificationsModalBodyState extends State<_NotificationsModalBody> {
   final _state = <String, bool>{
     'Push': true,
@@ -277,7 +291,67 @@ class _NotificationsModalBodyState extends State<_NotificationsModalBody> {
     'Betaling': true,
     'Nieuws': false,
   };
+  bool _loading = true;
+  bool _saving = false;
   bool _saved = false;
+  String _err = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  Future<void> _load() async {
+    final user = supabase.auth.currentUser;
+    if (user == null) {
+      setState(() => _loading = false);
+      return;
+    }
+    try {
+      final row = await supabase
+          .from('notification_preferences')
+          .select()
+          .eq('user_id', user.id)
+          .maybeSingle();
+      if (mounted && row != null) {
+        setState(() {
+          for (final entry in _notifDbKeys.entries) {
+            final value = row[entry.value];
+            if (value is bool) _state[entry.key] = value;
+          }
+        });
+      }
+    } catch (_) {
+      // Netwerkfout: standaardwaarden blijven staan.
+    } finally {
+      if (mounted) setState(() => _loading = false);
+    }
+  }
+
+  Future<void> _save() async {
+    final user = supabase.auth.currentUser;
+    if (user == null) {
+      // Demo-modus zonder sessie: niets om op te slaan, toon toch succes.
+      setState(() => _saved = true);
+      return;
+    }
+    setState(() {
+      _err = '';
+      _saving = true;
+    });
+    try {
+      await supabase.from('notification_preferences').upsert({
+        'user_id': user.id,
+        for (final entry in _notifDbKeys.entries) entry.value: _state[entry.key],
+      });
+      if (mounted) setState(() => _saved = true);
+    } catch (_) {
+      if (mounted) setState(() => _err = 'Opslaan mislukt. Probeer opnieuw.');
+    } finally {
+      if (mounted) setState(() => _saving = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -294,6 +368,22 @@ class _NotificationsModalBodyState extends State<_NotificationsModalBody> {
             child: const Text('Klaar'),
           ),
         ],
+      );
+    }
+
+    if (_loading) {
+      return const Padding(
+        padding: EdgeInsets.symmetric(vertical: 32),
+        child: Center(
+          child: SizedBox(
+            width: 24,
+            height: 24,
+            child: CircularProgressIndicator(
+              strokeWidth: 2.5,
+              color: AppColors.primary,
+            ),
+          ),
+        ),
       );
     }
 
@@ -364,11 +454,24 @@ class _NotificationsModalBodyState extends State<_NotificationsModalBody> {
               ),
             ),
           ),
-        const SizedBox(height: 12),
+        if (_err.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Text(
+              _err,
+              style: const TextStyle(
+                fontSize: 11,
+                color: AppColors.red,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        const SizedBox(height: 4),
         CoacherButton(
           size: ButtonSize.lg,
           fullWidth: true,
-          onPressed: () => setState(() => _saved = true),
+          loading: _saving,
+          onPressed: _save,
           child: const Text('Opslaan'),
         ),
       ],
@@ -679,6 +782,8 @@ class _PasswordModalBodyState extends State<_PasswordModalBody> {
   final _pw = TextEditingController();
   final _pw2 = TextEditingController();
   bool _done = false;
+  bool _loading = false;
+  String _err = '';
 
   @override
   void dispose() {
@@ -692,6 +797,33 @@ class _PasswordModalBodyState extends State<_PasswordModalBody> {
   bool get _mismatch => _pw2.text.isNotEmpty && _pw.text != _pw2.text;
   bool get _valid =>
       _cur.text.isNotEmpty && _pw.text.length >= 8 && _pw.text == _pw2.text;
+
+  Future<void> _submit() async {
+    if (!_valid || _loading) return;
+    setState(() {
+      _err = '';
+      _loading = true;
+    });
+    try {
+      final email = supabase.auth.currentUser?.email;
+      if (email == null) throw Exception('Geen sessie');
+      // Huidig wachtwoord verifiëren door opnieuw in te loggen — Supabase
+      // heeft geen aparte "verify password"-call zonder dit te doen.
+      await supabase.auth
+          .signInWithPassword(email: email, password: _cur.text);
+      await supabase.auth.updateUser(UserAttributes(password: _pw.text));
+      if (mounted) setState(() => _done = true);
+    } on AuthException catch (e) {
+      final msg = e.message.contains('Invalid login credentials')
+          ? 'Huidig wachtwoord is onjuist'
+          : e.message;
+      if (mounted) setState(() => _err = msg);
+    } catch (_) {
+      if (mounted) setState(() => _err = 'Wijzigen mislukt. Probeer opnieuw.');
+    } finally {
+      if (mounted) setState(() => _loading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -755,11 +887,17 @@ class _PasswordModalBodyState extends State<_PasswordModalBody> {
             padding: EdgeInsets.only(top: 6, left: 4),
             child: Text('Wachtwoorden komen niet overeen', style: errStyle),
           ),
+        if (_err.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.only(top: 6, left: 4),
+            child: Text(_err, style: errStyle),
+          ),
         const SizedBox(height: 20),
         CoacherButton(
           size: ButtonSize.lg,
           fullWidth: true,
-          onPressed: _valid ? () => setState(() => _done = true) : null,
+          loading: _loading,
+          onPressed: _valid ? _submit : null,
           child: const Text('Wachtwoord opslaan'),
         ),
       ],
