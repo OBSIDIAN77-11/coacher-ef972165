@@ -135,6 +135,22 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
     await _gate(user, role);
   }
 
+  /// Actief betekent: status 'active' én current_period_end nog niet
+  /// gepasseerd. De dagelijkse pg_cron-job zet verlopen abonnementen op
+  /// 'expired' in de database; deze check werkt daarnaast ook al direct
+  /// (zonder op de volgende cron-run te hoeven wachten).
+  Future<bool> _hasActiveSubscription(String userId) async {
+    final sub = await supabase
+        .from('subscriptions')
+        .select('status, current_period_end')
+        .eq('user_id', userId)
+        .maybeSingle();
+    if ((sub?['status'] as String?) != 'active') return false;
+    final periodEnd = sub?['current_period_end'] as String?;
+    if (periodEnd == null) return true;
+    return DateTime.parse(periodEnd).isAfter(DateTime.now());
+  }
+
   /// Poortjes na login. Faalt een query (bijv. migratie nog niet
   /// gedeployed), dan door naar de app — nooit blokkeren.
   Future<void> _gate(User user, Role role) async {
@@ -150,12 +166,7 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
           return;
         }
       }
-      final sub = await supabase
-          .from('subscriptions')
-          .select('status')
-          .eq('user_id', user.id)
-          .maybeSingle();
-      if ((sub?['status'] as String?) != 'active') {
+      if (!await _hasActiveSubscription(user.id)) {
         if (mounted) setState(() => _step = _Step.payment);
         return;
       }
@@ -172,12 +183,7 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
       return;
     }
     try {
-      final sub = await supabase
-          .from('subscriptions')
-          .select('status')
-          .eq('user_id', user.id)
-          .maybeSingle();
-      if ((sub?['status'] as String?) != 'active') {
+      if (!await _hasActiveSubscription(user.id)) {
         if (mounted) setState(() => _step = _Step.payment);
         return;
       }
