@@ -83,7 +83,6 @@ class AuthRepo {
 
   Future<void> signOut() => supabase.auth.signOut();
 
-  Session? get session => supabase.auth.currentSession;
   User? get user => supabase.auth.currentUser;
 
   /// Voor bestaande OAuth-gebruikers zonder profiel: profiel + rol upserten
@@ -103,19 +102,5 @@ class AuthRepo {
       {'user_id': u.id, 'role': role.db},
       onConflict: 'user_id,role',
     );
-  }
-
-  /// Rol van huidige user bepalen: eerst user_metadata, anders profiles.
-  Future<Role?> resolveRole() async {
-    final u = supabase.auth.currentUser;
-    if (u == null) return null;
-    final metaRole = Role.tryParse(u.userMetadata?['role'] as String?);
-    if (metaRole != null) return metaRole;
-    final data = await supabase
-        .from('profiles')
-        .select('role')
-        .eq('id', u.id)
-        .maybeSingle();
-    return Role.tryParse(data?['role'] as String?);
   }
 }

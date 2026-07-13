@@ -59,13 +59,4 @@ class PaymentRepo {
     }
     return status;
   }
-
-  Future<String?> fetchStatus(String paymentId) async {
-    final row = await supabase
-        .from('payments')
-        .select('status')
-        .eq('id', paymentId)
-        .maybeSingle();
-    return row?['status'] as String?;
-  }
 }

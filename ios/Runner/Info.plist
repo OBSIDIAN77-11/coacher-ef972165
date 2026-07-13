@@ -56,8 +56,6 @@
 			</array>
 		</dict>
 	</array>
-	<key>NSCameraUsageDescription</key>
-	<string>Coacher gebruikt de camera voor verificatie (ID en selfie) en het scannen van barcodes.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Coacher gebruikt je fotobibliotheek voor profiel- en voortgangsfoto's.</string>
 </dict>
