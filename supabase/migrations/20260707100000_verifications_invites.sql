@@ -15,6 +15,9 @@ CREATE TABLE public.verifications (
   UNIQUE (user_id)
 );
 
+GRANT SELECT ON public.verifications TO authenticated;
+GRANT ALL ON public.verifications TO service_role;
+
 ALTER TABLE public.verifications ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "Users view own verification"
@@ -39,6 +42,9 @@ CREATE TABLE public.client_invites (
 );
 
 CREATE INDEX client_invites_coach_idx ON public.client_invites (coach_id, created_at);
+
+GRANT SELECT, UPDATE ON public.client_invites TO authenticated;
+GRANT ALL ON public.client_invites TO service_role;
 
 ALTER TABLE public.client_invites ENABLE ROW LEVEL SECURITY;
 

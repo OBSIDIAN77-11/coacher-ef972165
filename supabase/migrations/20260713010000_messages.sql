@@ -14,6 +14,9 @@ CREATE INDEX messages_sender_recipient_idx
 CREATE INDEX messages_recipient_sender_idx
   ON public.messages (recipient_id, sender_id, created_at);
 
+GRANT SELECT, INSERT, UPDATE ON public.messages TO authenticated;
+GRANT ALL ON public.messages TO service_role;
+
 ALTER TABLE public.messages ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "Deelnemers zien eigen berichten"

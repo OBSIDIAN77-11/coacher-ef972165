@@ -30,6 +30,11 @@ CREATE TABLE public.payments (
 
 CREATE INDEX payments_user_idx ON public.payments (user_id, created_at);
 
+GRANT SELECT ON public.subscriptions TO authenticated;
+GRANT ALL ON public.subscriptions TO service_role;
+GRANT SELECT ON public.payments TO authenticated;
+GRANT ALL ON public.payments TO service_role;
+
 ALTER TABLE public.subscriptions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.payments ENABLE ROW LEVEL SECURITY;
 
