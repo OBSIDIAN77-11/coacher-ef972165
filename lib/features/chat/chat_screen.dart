@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
@@ -7,12 +8,15 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../app/demo_mode.dart';
 import '../../app/theme/tokens.dart';
 import '../../core/supabase.dart';
+import '../../data/models/message.dart';
 import '../../data/models/role.dart';
+import '../../data/repos/chat_repo.dart';
 import '../../widgets/anim/fade_up.dart';
 
 /// Port van ChatScreen.tsx. Demo-modus: de mock-contacten en -berichten
-/// uit het origineel. Echte sessie: contacten uit de database (coach ↔
-/// gekoppelde cliënten), zonder verzonnen berichten.
+/// uit het origineel, ongewijzigd. Echte sessie: contacten uit de
+/// database (coach ↔ gekoppelde cliënten) met persistente, realtime
+/// berichten via de messages-tabel.
 class ChatScreen extends ConsumerStatefulWidget {
   const ChatScreen({super.key, required this.mode});
 
@@ -40,6 +44,16 @@ class _Contact {
   final int unread;
   final bool online;
   final Gradient gradient;
+
+  _Contact copyWith({String? last, String? time, int? unread}) => _Contact(
+        id: id,
+        name: name,
+        last: last ?? this.last,
+        time: time ?? this.time,
+        unread: unread ?? this.unread,
+        online: online,
+        gradient: gradient,
+      );
 
   String get initials => name
       .split(' ')
@@ -140,9 +154,27 @@ const _seed = <String, List<_Msg>>{
   ],
 };
 
+String _clockTime(DateTime dt) =>
+    '${dt.hour.toString().padLeft(2, '0')}:${dt.minute.toString().padLeft(2, '0')}';
+
+const _weekdayAbbr = ['ma', 'di', 'wo', 'do', 'vr', 'za', 'zo'];
+
+String _listTime(DateTime dt) {
+  final now = DateTime.now();
+  final that = DateTime(dt.year, dt.month, dt.day);
+  final today = DateTime(now.year, now.month, now.day);
+  final diff = today.difference(that).inDays;
+  if (diff == 0) return _clockTime(dt);
+  if (diff == 1) return 'gisteren';
+  if (diff < 7) return _weekdayAbbr[dt.weekday - 1];
+  return '${dt.day}-${dt.month}-${dt.year.toString().substring(2)}';
+}
+
 class _ChatScreenState extends ConsumerState<ChatScreen> {
   _Contact? _active;
   List<_Contact> _realContacts = [];
+  String? _meId;
+  StreamSubscription<List<ChatMessage>>? _sub;
 
   @override
   void initState() {
@@ -150,9 +182,17 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     _loadRealContacts();
   }
 
+  @override
+  void dispose() {
+    _sub?.cancel();
+    super.dispose();
+  }
+
   Future<void> _loadRealContacts() async {
     final user = supabase.auth.currentUser;
     if (user == null) return;
+    _meId = user.id;
+    final repo = ref.read(chatRepoProvider);
     try {
       final rows = widget.mode == Role.coach
           ? await supabase
@@ -161,25 +201,85 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               .eq('coach_id', user.id)
               .order('name')
           : await _coachRow(user.id);
+
+      final contacts = <_Contact>[];
+      for (final r in rows) {
+        final id = r['id'] as String;
+        final name = (r['name'] as String?)?.isNotEmpty == true
+            ? r['name'] as String
+            : 'Naamloos';
+        var summary = const ChatSummary();
+        try {
+          summary = await repo.fetchSummary(user.id, id);
+        } catch (_) {
+          // Nieuw contact zonder berichten, of netwerkfout — lege staat.
+        }
+        contacts.add(_Contact(
+          id: id,
+          name: name,
+          last: summary.lastMessage ?? 'Nog geen berichten',
+          time:
+              summary.lastMessageAt != null ? _listTime(summary.lastMessageAt!) : '',
+          unread: summary.unreadCount,
+          online: false,
+          gradient: _gradBlue,
+        ));
+      }
+      if (!mounted) return;
+      setState(() => _realContacts = contacts);
+      _listenForIncoming(user.id, repo);
+    } catch (_) {
+      // Geen sessie of netwerkfout.
+    }
+  }
+
+  void _listenForIncoming(String meId, ChatRepo repo) {
+    _sub = repo.incomingMessages(meId).listen((rows) {
+      if (!mounted || _realContacts.isEmpty) return;
+      final bySender = <String, List<ChatMessage>>{};
+      for (final m in rows) {
+        (bySender[m.senderId] ??= []).add(m);
+      }
+      setState(() {
+        _realContacts = [
+          for (final c in _realContacts)
+            if (bySender[c.id] case final msgs?)
+              c.copyWith(
+                last: msgs.last.content,
+                time: _listTime(msgs.last.createdAt),
+                unread: msgs.length,
+              )
+            else
+              c,
+        ];
+      });
+    });
+  }
+
+  Future<void> _refreshContactSummary(String contactId) async {
+    final meId = _meId;
+    if (meId == null) return;
+    try {
+      final summary =
+          await ref.read(chatRepoProvider).fetchSummary(meId, contactId);
       if (!mounted) return;
       setState(() {
         _realContacts = [
-          for (final r in rows)
-            _Contact(
-              id: r['id'] as String,
-              name: (r['name'] as String?)?.isNotEmpty == true
-                  ? r['name'] as String
-                  : 'Naamloos',
-              last: 'Nog geen berichten',
-              time: '',
-              unread: 0,
-              online: false,
-              gradient: _gradBlue,
-            ),
+          for (final c in _realContacts)
+            if (c.id == contactId)
+              c.copyWith(
+                last: summary.lastMessage ?? 'Nog geen berichten',
+                time: summary.lastMessageAt != null
+                    ? _listTime(summary.lastMessageAt!)
+                    : '',
+                unread: summary.unreadCount,
+              )
+            else
+              c,
         ];
       });
     } catch (_) {
-      // Geen sessie of netwerkfout.
+      // Netwerkfout: lijst blijft op de vorige (mogelijk verouderde) stand.
     }
   }
 
@@ -210,7 +310,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     if (active != null) {
       return _ChatThread(
         contact: active,
-        onBack: () => setState(() => _active = null),
+        isDemo: demo,
+        meId: _meId,
+        onBack: () {
+          setState(() => _active = null);
+          if (!demo) _refreshContactSummary(active.id);
+        },
       );
     }
 
@@ -425,38 +530,81 @@ class _Avatar extends StatelessWidget {
   }
 }
 
-class _ChatThread extends StatefulWidget {
-  const _ChatThread({required this.contact, required this.onBack});
+class _ChatThread extends ConsumerStatefulWidget {
+  const _ChatThread({
+    required this.contact,
+    required this.onBack,
+    required this.isDemo,
+    required this.meId,
+  });
 
   final _Contact contact;
   final VoidCallback onBack;
+  final bool isDemo;
+  final String? meId;
 
   @override
-  State<_ChatThread> createState() => _ChatThreadState();
+  ConsumerState<_ChatThread> createState() => _ChatThreadState();
 }
 
-class _ChatThreadState extends State<_ChatThread> {
-  late final List<_Msg> _msgs = [...(_seed[widget.contact.id] ?? [])];
+class _ChatThreadState extends ConsumerState<_ChatThread> {
+  late final List<_Msg> _mockMsgs =
+      widget.isDemo ? [...(_seed[widget.contact.id] ?? [])] : [];
+  List<ChatMessage> _realMsgs = [];
+  bool _loading = false;
+  StreamSubscription<List<ChatMessage>>? _sub;
+
   final _text = TextEditingController();
   final _scroll = ScrollController();
 
   @override
+  void initState() {
+    super.initState();
+    if (!widget.isDemo) _loadReal();
+  }
+
+  @override
   void dispose() {
+    _sub?.cancel();
     _text.dispose();
     _scroll.dispose();
     super.dispose();
   }
 
-  void _send() {
-    final t = _text.text.trim();
-    if (t.isEmpty) return;
-    final now = TimeOfDay.now();
-    final time =
-        '${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}';
-    setState(() {
-      _msgs.add(_Msg(true, t, time));
-      _text.clear();
+  Future<void> _loadReal() async {
+    final meId = widget.meId;
+    if (meId == null) return;
+    setState(() => _loading = true);
+    final repo = ref.read(chatRepoProvider);
+    try {
+      final msgs = await repo.fetchConversation(meId, widget.contact.id);
+      if (mounted) setState(() => _realMsgs = msgs);
+      await repo.markConversationRead(meId, widget.contact.id);
+    } catch (_) {
+      // Netwerkfout: leeg gesprek tonen, versturen blijft mogelijk.
+    } finally {
+      if (mounted) setState(() => _loading = false);
+      _scrollToBottom();
+    }
+
+    _sub = repo.incomingMessages(meId).listen((rows) {
+      if (!mounted) return;
+      final fromContact =
+          rows.where((m) => m.senderId == widget.contact.id).toList();
+      if (fromContact.isEmpty) return;
+      final existingIds = _realMsgs.map((m) => m.id).toSet();
+      final fresh = fromContact.where((m) => !existingIds.contains(m.id));
+      if (fresh.isEmpty) return;
+      setState(() {
+        _realMsgs = [..._realMsgs, ...fresh]
+          ..sort((a, b) => a.createdAt.compareTo(b.createdAt));
+      });
+      repo.markConversationRead(meId, widget.contact.id);
+      _scrollToBottom();
     });
+  }
+
+  void _scrollToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_scroll.hasClients) {
         _scroll.animateTo(
@@ -468,11 +616,38 @@ class _ChatThreadState extends State<_ChatThread> {
     });
   }
 
+  Future<void> _send() async {
+    final t = _text.text.trim();
+    if (t.isEmpty) return;
+    _text.clear();
+
+    if (widget.isDemo) {
+      setState(() => _mockMsgs.add(_Msg(true, t, _clockTime(DateTime.now()))));
+      _scrollToBottom();
+      return;
+    }
+
+    final meId = widget.meId;
+    if (meId == null) return;
+    try {
+      final sent = await ref.read(chatRepoProvider).sendMessage(
+            senderId: meId,
+            recipientId: widget.contact.id,
+            content: t,
+          );
+      if (mounted) setState(() => _realMsgs.add(sent));
+      _scrollToBottom();
+    } catch (_) {
+      // Versturen mislukt: tekst terugzetten zodat niets verloren gaat.
+      if (mounted) _text.text = t;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final c = widget.contact;
-    // Het gesprek vult de hele tab: eigen scroller + composer onderin,
-    // zoals de bron (fixed composer boven de bottom-nav).
+    final itemCount = widget.isDemo ? _mockMsgs.length : _realMsgs.length;
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 92),
       child: Column(
@@ -561,97 +736,122 @@ class _ChatThreadState extends State<_ChatThread> {
           ),
           // Berichten
           Expanded(
-            child: ListView.builder(
-              controller: _scroll,
-              padding: const EdgeInsets.fromLTRB(16, 20, 16, 20),
-              itemCount: _msgs.length,
-              itemBuilder: (context, i) {
-                final m = _msgs[i];
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: Row(
-                    mainAxisAlignment: m.mine
-                        ? MainAxisAlignment.end
-                        : MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      if (!m.mine) ...[
-                        Container(
-                          width: 28,
-                          height: 28,
-                          decoration: BoxDecoration(
-                            gradient: c.gradient,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Center(
-                            child: Text(
-                              c.initials,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 10,
-                                fontWeight: FontWeight.w800,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                      ],
-                      ConstrainedBox(
-                        constraints: BoxConstraints(
-                          maxWidth:
-                              MediaQuery.of(context).size.width * 0.75,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: m.mine
-                              ? CrossAxisAlignment.end
-                              : CrossAxisAlignment.start,
+            child: !widget.isDemo && _loading && _realMsgs.isEmpty
+                ? const Center(
+                    child: SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2.5,
+                        color: AppColors.primary,
+                      ),
+                    ),
+                  )
+                : ListView.builder(
+                    controller: _scroll,
+                    padding: const EdgeInsets.fromLTRB(16, 20, 16, 20),
+                    itemCount: itemCount,
+                    itemBuilder: (context, i) {
+                      final bool mine;
+                      final String text;
+                      final String time;
+                      if (widget.isDemo) {
+                        final m = _mockMsgs[i];
+                        mine = m.mine;
+                        text = m.text;
+                        time = m.time;
+                      } else {
+                        final m = _realMsgs[i];
+                        mine = m.senderId == widget.meId;
+                        text = m.content;
+                        time = _clockTime(m.createdAt);
+                      }
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: Row(
+                          mainAxisAlignment: mine
+                              ? MainAxisAlignment.end
+                              : MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 14, vertical: 10),
-                              decoration: BoxDecoration(
-                                gradient:
-                                    m.mine ? AppGradients.primary : null,
-                                color: m.mine ? null : AppColors.card,
-                                border: m.mine
-                                    ? null
-                                    : Border.all(color: AppColors.border),
-                                borderRadius: BorderRadius.only(
-                                  topLeft: const Radius.circular(18),
-                                  topRight: const Radius.circular(18),
-                                  bottomLeft:
-                                      Radius.circular(m.mine ? 18 : 6),
-                                  bottomRight:
-                                      Radius.circular(m.mine ? 6 : 18),
+                            if (!mine) ...[
+                              Container(
+                                width: 28,
+                                height: 28,
+                                decoration: BoxDecoration(
+                                  gradient: c.gradient,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    c.initials,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w800,
+                                    ),
+                                  ),
                                 ),
                               ),
-                              child: Text(
-                                m.text,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w500,
-                                  height: 1.45,
-                                ),
+                              const SizedBox(width: 8),
+                            ],
+                            ConstrainedBox(
+                              constraints: BoxConstraints(
+                                maxWidth:
+                                    MediaQuery.of(context).size.width * 0.75,
                               ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              m.time,
-                              style: const TextStyle(
-                                fontSize: 9,
-                                color: AppColors.textM,
-                                fontWeight: FontWeight.w700,
+                              child: Column(
+                                crossAxisAlignment: mine
+                                    ? CrossAxisAlignment.end
+                                    : CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 14, vertical: 10),
+                                    decoration: BoxDecoration(
+                                      gradient:
+                                          mine ? AppGradients.primary : null,
+                                      color: mine ? null : AppColors.card,
+                                      border: mine
+                                          ? null
+                                          : Border.all(
+                                              color: AppColors.border),
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: const Radius.circular(18),
+                                        topRight: const Radius.circular(18),
+                                        bottomLeft:
+                                            Radius.circular(mine ? 18 : 6),
+                                        bottomRight:
+                                            Radius.circular(mine ? 6 : 18),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      text,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w500,
+                                        height: 1.45,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    time,
+                                    style: const TextStyle(
+                                      fontSize: 9,
+                                      color: AppColors.textM,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
                         ),
-                      ),
-                    ],
+                      );
+                    },
                   ),
-                );
-              },
-            ),
           ),
           // Composer
           ClipRect(
