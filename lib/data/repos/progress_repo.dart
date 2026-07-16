@@ -48,6 +48,15 @@ class ProgressRepo {
     ]);
   }
 
+  /// Live-stream van rij-wijzigingen in progress_photos voor deze klant —
+  /// de aanroeper herlaadt bij elke emissie (voor de signed URLs).
+  Stream<List<Map<String, dynamic>>> watchPhotos(String userId) {
+    return supabase
+        .from('progress_photos')
+        .stream(primaryKey: ['id'])
+        .eq('user_id', userId);
+  }
+
   Future<Map<String, List<PhotoItem>>> fetchPhotos(String userId) async {
     final rows = await supabase
         .from('progress_photos')

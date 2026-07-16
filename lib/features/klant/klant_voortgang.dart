@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 import 'dart:ui' as ui;
 
@@ -42,11 +43,18 @@ class _KlantVoortgangState extends ConsumerState<KlantVoortgang> {
   Map<String, List<PhotoItem>> _photos = {
     for (final (key, _) in photoCategories) key: [],
   };
+  StreamSubscription<void>? _photosSub;
 
   @override
   void initState() {
     super.initState();
     _load();
+  }
+
+  @override
+  void dispose() {
+    _photosSub?.cancel();
+    super.dispose();
   }
 
   Future<void> _load() async {
@@ -59,8 +67,23 @@ class _KlantVoortgangState extends ConsumerState<KlantVoortgang> {
       if (mounted) setState(() => _entries = entries);
       final photos = await repo.fetchPhotos(targetId);
       if (mounted) setState(() => _photos = photos);
+      // Realtime: nieuwe/verwijderde foto's van deze klant direct tonen,
+      // ook als de coach het scherm openhoudt terwijl de klant uploadt.
+      _photosSub?.cancel();
+      _photosSub = repo.watchPhotos(targetId).listen((_) => _reloadPhotos());
     } catch (_) {
       // Demo-modus of netwerkfout: lege staat tonen.
+    }
+  }
+
+  Future<void> _reloadPhotos() async {
+    final userId = _userId;
+    if (userId == null) return;
+    try {
+      final photos = await ref.read(progressRepoProvider).fetchPhotos(userId);
+      if (mounted) setState(() => _photos = photos);
+    } catch (_) {
+      // Netwerkfout: bestaande staat laten staan tot de volgende emissie.
     }
   }
 
