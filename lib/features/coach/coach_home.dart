@@ -47,7 +47,7 @@ class _CoachHomeState extends ConsumerState<CoachHome> {
           .from('profiles')
           .select('name')
           .eq('coach_id', user.id)
-          .order('name');
+          .order('name', ascending: true);
       if (!mounted) return;
       setState(() {
         _name = (me?['name'] as String?) ?? '';

@@ -20,11 +20,13 @@ class ChatRepo {
       'and(sender_id.eq.$otherId,recipient_id.eq.$meId)';
 
   Future<List<ChatMessage>> fetchConversation(String meId, String otherId) async {
+    // ascending staat hier standaard op false (nieuwste eerst) —
+    // expliciet true zodat de chat chronologisch (oud → nieuw) laadt.
     final rows = await supabase
         .from('messages')
         .select()
         .or(_orFilter(meId, otherId))
-        .order('created_at');
+        .order('created_at', ascending: true);
     return [for (final r in rows) ChatMessage.fromRow(r)];
   }
 

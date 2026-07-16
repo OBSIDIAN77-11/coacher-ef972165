@@ -199,7 +199,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               .from('profiles')
               .select('id, name')
               .eq('coach_id', user.id)
-              .order('name')
+              .order('name', ascending: true)
           : await _coachRow(user.id);
 
       final contacts = <_Contact>[];

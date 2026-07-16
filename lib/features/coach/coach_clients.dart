@@ -55,7 +55,7 @@ class _CoachClientsState extends State<CoachClients> {
           .from('profiles')
           .select('id, name')
           .eq('coach_id', user.id)
-          .order('name');
+          .order('name', ascending: true);
       if (!mounted) return;
       setState(() {
         _clients = [
