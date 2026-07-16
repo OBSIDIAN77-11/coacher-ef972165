@@ -37,7 +37,7 @@ class SettingsScreen extends ConsumerWidget {
         'Betaling instellen',
         'iDEAL of incasso activeren',
         LucideIcons.creditCard,
-        () => showPaymentModal(context),
+        () => showPaymentModal(context, mode),
       ),
       (
         'Notificaties',

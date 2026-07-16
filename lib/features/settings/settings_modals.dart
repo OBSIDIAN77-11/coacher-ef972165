@@ -1,12 +1,20 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:supabase_flutter/supabase_flutter.dart'
     show AuthException, UserAttributes;
+import 'package:url_launcher/url_launcher.dart';
 
+import '../../app/demo_mode.dart';
 import '../../app/theme/tokens.dart';
 import '../../core/auth_error.dart';
 import '../../core/supabase.dart';
+import '../../data/models/role.dart';
+import '../../data/repos/payment_repo.dart';
 import '../../widgets/app_bottom_sheet.dart';
+import '../../widgets/app_field.dart' show FieldErrorText;
 import '../../widgets/coacher_button.dart';
 
 /// Port van de modals uit Settings.tsx (Payment/Notifications/Payout/
@@ -110,28 +118,128 @@ InputDecoration _sheetInputDecoration(String hint) => InputDecoration(
 
 /* ─────────────────────── Betaling ─────────────────────── */
 
-void showPaymentModal(BuildContext context) {
+void showPaymentModal(BuildContext context, Role role) {
   showAppBottomSheet(
     context: context,
     title: 'Betaling instellen',
-    builder: (context) => const _PaymentModalBody(),
+    builder: (context) => _PaymentModalBody(role: role),
   );
 }
 
-class _PaymentModalBody extends StatefulWidget {
-  const _PaymentModalBody();
+enum _SettingsPlanKey { starter, pro, unlimited }
 
-  @override
-  State<_PaymentModalBody> createState() => _PaymentModalBodyState();
+class _SettingsPlan {
+  const _SettingsPlan(this.key, this.name, this.price, this.clients);
+
+  final _SettingsPlanKey key;
+  final String name;
+  final int price;
+  final String clients;
 }
 
-class _PaymentModalBodyState extends State<_PaymentModalBody> {
+const _settingsCoachPlans = [
+  _SettingsPlan(_SettingsPlanKey.starter, 'Starter', 29, 'Tot 15 cliënten'),
+  _SettingsPlan(_SettingsPlanKey.pro, 'Pro', 59, 'Tot 75 cliënten'),
+  _SettingsPlan(_SettingsPlanKey.unlimited, 'Unlimited', 99, 'Onbeperkt cliënten'),
+];
+
+class _PaymentModalBody extends ConsumerStatefulWidget {
+  const _PaymentModalBody({required this.role});
+
+  final Role role;
+
+  @override
+  ConsumerState<_PaymentModalBody> createState() => _PaymentModalBodyState();
+}
+
+class _PaymentModalBodyState extends ConsumerState<_PaymentModalBody> {
   static const _methods = ['iDEAL', 'Creditcard', 'Incasso'];
   static const _banks = ['ABN AMRO', 'ING', 'Rabobank', 'SNS', 'Bunq', 'Revolut'];
 
+  bool get _isCoach => widget.role == Role.coach;
+
+  _SettingsPlanKey _plan = _SettingsPlanKey.pro;
   String _method = 'iDEAL';
-  String _bank = 'ING';
+  String? _bank = 'ING';
+  bool _loading = false;
   bool _done = false;
+  String _err = '';
+  Timer? _demoTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadExisting();
+  }
+
+  @override
+  void dispose() {
+    _demoTimer?.cancel();
+    super.dispose();
+  }
+
+  Future<void> _loadExisting() async {
+    final uid = supabase.auth.currentUser?.id;
+    if (uid == null) return;
+    try {
+      final row = await supabase
+          .from('subscriptions')
+          .select('plan')
+          .eq('user_id', uid)
+          .maybeSingle();
+      final planStr = row?['plan'] as String?;
+      final match = _settingsCoachPlans.where((p) => p.name.toLowerCase() == planStr);
+      if (mounted && match.isNotEmpty) setState(() => _plan = match.first.key);
+    } catch (_) {
+      // Nog geen abonnement: standaard (Pro) blijft staan.
+    }
+  }
+
+  Future<void> _submit() async {
+    if (_loading) return;
+    final uid = supabase.auth.currentUser?.id;
+    if (uid == null) {
+      // Demo-modus zonder sessie: niets om echt te activeren.
+      _demoTimer = Timer(const Duration(milliseconds: 400), () {
+        if (mounted) setState(() => _done = true);
+      });
+      return;
+    }
+    setState(() {
+      _err = '';
+      _loading = true;
+    });
+    try {
+      final planName = _isCoach
+          ? _settingsCoachPlans.firstWhere((p) => p.key == _plan).name
+          : 'klant';
+      final methodKey = switch (_method) {
+        'iDEAL' => 'ideal',
+        'Creditcard' => 'card',
+        _ => 'incasso',
+      };
+      final repo = ref.read(paymentRepoProvider);
+      final created = await repo.createPayment(plan: planName, method: methodKey);
+      await launchUrl(
+        Uri.parse(created.checkoutUrl),
+        mode: LaunchMode.externalApplication,
+        webOnlyWindowName: '_self',
+      );
+      final status = await repo.waitForStatus(created.paymentId);
+      if (!mounted) return;
+      if (status == 'paid') {
+        setState(() => _done = true);
+      } else if (status != 'open') {
+        setState(() => _err = 'Betaling niet gelukt ($status). Probeer opnieuw.');
+      }
+    } catch (_) {
+      if (mounted) {
+        setState(() => _err = 'Betaling starten mislukt. Probeer opnieuw.');
+      }
+    } finally {
+      if (mounted) setState(() => _loading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -157,6 +265,69 @@ class _PaymentModalBodyState extends State<_PaymentModalBody> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        if (_isCoach) ...[
+          const _SheetLabel('Plan'),
+          for (final p in _settingsCoachPlans)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: GestureDetector(
+                onTap: () => setState(() => _plan = p.key),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16, vertical: 14),
+                  decoration: BoxDecoration(
+                    gradient: _plan == p.key ? AppGradients.soft : null,
+                    color: _plan == p.key ? null : AppColors.card,
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(
+                      color: _plan == p.key
+                          ? AppColors.primary
+                          : AppColors.border,
+                      width: 1.5,
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              p.name,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w800,
+                                color: AppColors.textP,
+                              ),
+                            ),
+                            Text(
+                              p.clients,
+                              style: const TextStyle(
+                                fontSize: 11,
+                                color: AppColors.textS,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Text(
+                        '€${p.price}/mnd',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w900,
+                          color: _plan == p.key
+                              ? AppColors.primary
+                              : AppColors.textP,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          const SizedBox(height: 12),
+        ],
         const _SheetLabel('Methode'),
         Row(
           children: [
@@ -164,7 +335,10 @@ class _PaymentModalBodyState extends State<_PaymentModalBody> {
               if (i > 0) const SizedBox(width: 8),
               Expanded(
                 child: GestureDetector(
-                  onTap: () => setState(() => _method = m),
+                  onTap: () => setState(() {
+                    _method = m;
+                    if (m != 'iDEAL') _bank = null;
+                  }),
                   child: Container(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 8, vertical: 12),
@@ -242,10 +416,16 @@ class _PaymentModalBodyState extends State<_PaymentModalBody> {
           ),
           const SizedBox(height: 20),
         ],
+        if (_err.isNotEmpty) ...[
+          FieldErrorText(_err),
+          const SizedBox(height: 8),
+        ],
         CoacherButton(
           size: ButtonSize.lg,
           fullWidth: true,
-          onPressed: () => setState(() => _done = true),
+          loading: _loading,
+          onPressed:
+              (_method == 'iDEAL' ? _bank != null : true) ? _submit : null,
           child: const Text('Activeren'),
         ),
       ],
@@ -490,14 +670,14 @@ void showPayoutModal(BuildContext context) {
   );
 }
 
-class _PayoutModalBody extends StatefulWidget {
+class _PayoutModalBody extends ConsumerStatefulWidget {
   const _PayoutModalBody();
 
   @override
-  State<_PayoutModalBody> createState() => _PayoutModalBodyState();
+  ConsumerState<_PayoutModalBody> createState() => _PayoutModalBodyState();
 }
 
-class _PayoutModalBodyState extends State<_PayoutModalBody> {
+class _PayoutModalBodyState extends ConsumerState<_PayoutModalBody> {
   static const _saldo = 1840;
   static const _schedules = [
     ('Direct', 'Binnen 1 dag'),
@@ -520,6 +700,56 @@ class _PayoutModalBodyState extends State<_PayoutModalBody> {
 
   @override
   Widget build(BuildContext context) {
+    // Uitbetalingen vereisen dat klanten eerst per sessie via het platform
+    // betalen (nog te bouwen) — tot die tijd geen verzonnen saldo/historie
+    // aan echte accounts tonen, alleen in demo-modus ter illustratie.
+    if (!ref.watch(demoModeProvider)) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 24),
+            child: Column(
+              children: [
+                Icon(LucideIcons.wallet, size: 40, color: AppColors.textM),
+                SizedBox(height: 16),
+                Text(
+                  'Nog niet beschikbaar',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w900,
+                    color: AppColors.textP,
+                  ),
+                ),
+                SizedBox(height: 8),
+                SizedBox(
+                  width: 280,
+                  child: Text(
+                    'Zodra klanten sessies rechtstreeks via Coacher kunnen '
+                    'betalen, verschijnt hier je saldo en kun je een '
+                    'uitbetaling aanvragen.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: AppColors.textS,
+                      fontWeight: FontWeight.w600,
+                      height: 1.5,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          CoacherButton(
+            size: ButtonSize.lg,
+            fullWidth: true,
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Sluiten'),
+          ),
+        ],
+      );
+    }
+
     if (_done) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
